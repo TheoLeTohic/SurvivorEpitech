@@ -1,6 +1,6 @@
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import {StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Image} from 'react-native';
 import { useState, useEffect } from 'react';
 import { data } from "../../data/peapool"
 import { Svg, Path, Use } from 'react-native-svg';
@@ -78,7 +78,7 @@ export default function App( { navigation }) {
   return (
     <View style={styles.container}>
       <View style = {styles.hellocontainer}>
-        <View style = {styles.picture}></View>
+        <Image source={require('../../../assets/avatar.png')} style = {styles.picture}></Image>
         <Text style = {styles.msg}>Hello, Julia</Text>
         <View style = {{marginLeft: "40%"}}>
         <Svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 30" fill="none">
@@ -103,20 +103,24 @@ export default function App( { navigation }) {
               <Text style = {styles.txtseaall}>See all</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style = {styles.filtercat} horizontal= {true}>
+          <ScrollView style = {styles.filtercat} horizontal= {true} showsHorizontalScrollIndicator={ false }>
             <TouchableOpacity style = {styles.filteritem}>
-              <View style= {styles.icon}></View>
+              <Image source={require('../../../assets/marketing-icon.png')} style = {styles.icon}></Image>
               <Text style = {styles.txtfilteritem}>Marketing</Text>
             </TouchableOpacity>
             <TouchableOpacity style = {styles.filteritem}>
-              <View style= {styles.icon}></View>
-              <Text style = {styles.txtfilteritem}>Marketing</Text>
+              <Image source={require('../../../assets/engineering-icon.png')} style = {styles.icon}></Image>
+              <Text style = {styles.txtfilteritem}>Engineering</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style = {styles.filteritem}>
+              <Image source={require('../../../assets/accounting-icon.png')} style = {styles.icon}></Image>
+              <Text style = {styles.txtfilteritem}>Accounting</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
       </View>
       <View style = {{flex: 1}}>
-      <ScrollView style = {styles.allcard}>
+      <ScrollView style = {styles.allcard} showsVerticalScrollIndicator={ false }>
       {datas.map((goal, index) => (
         index % 2 == 0 ? (
           (goal.isopen == false ? (
@@ -350,7 +354,7 @@ const styles = StyleSheet.create({
 
   },
   filteritem: {
-    width: 200,
+    width: 170,
     height: "74%",
     borderRadius: 15,
     backgroundColor: "#F1F5F9",
@@ -360,6 +364,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderColor: "#E5E7EB",
     borderWidth: 1,
+    marginRight: 10,
   },
   txtfilteritem: {
     marginLeft: "5%",
@@ -371,7 +376,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 50,
-    backgroundColor: "red",
     marginLeft: "5%",
   },
 
