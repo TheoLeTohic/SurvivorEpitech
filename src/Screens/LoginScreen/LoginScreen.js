@@ -10,7 +10,6 @@ export default function App( { navigation }) {
 
   function login() {
     navigation.navigate("Home")
-    return
     fetch("https://masurao.fr/api/employees/login", {
       method: "POST",
       headers: {
@@ -25,6 +24,7 @@ export default function App( { navigation }) {
       })
       .then((response) => response.json())
       .then((responseData) => {
+        console.log(responseData)
         SetToken(JSON.stringify(responseData.access_token))
       })
   }
