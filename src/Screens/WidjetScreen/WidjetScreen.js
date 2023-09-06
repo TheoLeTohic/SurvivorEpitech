@@ -135,6 +135,8 @@ export default function App( { navigation }) {
         </View>
       </View>
 
+
+      <View style = {styles.orga}>
       <View style = {styles.meteosmall}>
       <LinearGradient
         start={{ x: 0.5, y: 0 }}
@@ -154,11 +156,34 @@ export default function App( { navigation }) {
         </View>
         </View>
         <View style = {styles.bottomsmall}>
-        <View style = {styles.citycontainer}>
+        <View style = {styles.citycontainersmall}>
               <Text style = {styles.citysmall}>Barcelona</Text>
               <Text style = {styles.weathersmall}>Sunny</Text>
             </View>
           </View>
+          <View style = {styles.pointsmall}>
+            <View style = {styles.pointactivesmall}></View>
+            <View style = {styles.pointinactivesmall}></View>
+            <View style = {styles.pointinactivesmall}></View>
+          </View>
+      </View>
+
+      <View style = {styles.calendarsmall}>
+        <View style = {styles.calendardaysmall}>
+          <Text style = {styles.daywithouteventsmall}>Monday</Text>
+          <Text style = {styles.datesmall}>18</Text>
+        </View>
+        <View style = {styles.calendareventsmall}>
+          <View style = {styles.eventsmall}>
+            <View style = {styles.sttsmall}></View>
+            <View style = {styles.contentsmall}>
+              <Text style = {styles.namesmall}>Daily Standup</Text>
+              <Text style = {styles.timesmall}>10:00 AM - 11:00 AM</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
       </View>
 
 
@@ -203,6 +228,14 @@ export default function App( { navigation }) {
 }
 
 const styles = StyleSheet.create({
+
+
+  orga : { 
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
 
   background: {
     position: 'absolute',
@@ -502,7 +535,7 @@ const styles = StyleSheet.create({
     marginTop: "2%",
   },
   city : {
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: "bold",
     color: "#fff",
   },
@@ -519,6 +552,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "50%",
     display: "flex",
+    marginTop: "8%",
     flexDirection: "column",
     justifyContent: "space-around",
   },
@@ -537,6 +571,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "50%",
     display: "flex",
+    marginTop: "8%",
     flexDirection: "column",
     justifyContent: "space-around",
   },
@@ -574,6 +609,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     opacity: 0.5,
   },
+
+
 
 
 
@@ -623,6 +660,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   rightsmall : {
+    marginLeft: "4%",
     height: "70%",
     width: "40%",
     display: "flex",
@@ -641,11 +679,75 @@ const styles = StyleSheet.create({
   tempnumsmall : {
     fontSize: 40,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#000000cc",
   },
   humiditynumsmall : {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#53535399",
+  },
+  citysmall : {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "#000000cc",
+  },
+  weathersmall : {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#53535399",
+  },
+  bottomsmall : {
+    height: "27%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  citycontainersmall : {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    marginLeft: "8%",
+  },
+  pointsmall : {
+    height: "5%",
+    width: "25%",
+    marginLeft: "5%",
+    display: "flex",
+    marginBottom: "5%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  pointactivesmall : {
+    height: 7,
+    width: 7,
+    borderRadius: 20,
+    backgroundColor: "#fff",
+  },
+  pointinactivesmall : {
+    height: 7,
+    width: 7,
+    borderRadius: 20,
+    backgroundColor: "#fff",
+    opacity: 0.5,
+  },
+  calendarsmall : {
+    height: 168,
+    width: "45%",
+    backgroundColor: "#ffffff7d",
+    borderRadius: 20,
+    marginTop: 20,
+    marginLeft: 20,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    shadowColor: "#000000",
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
 });
