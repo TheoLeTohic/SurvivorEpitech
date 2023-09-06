@@ -4,11 +4,14 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 
 import { useState, useEffect } from 'react';
 import { data } from "../../data/peapool"
 import { Svg, Path } from 'react-native-svg';
+import { Dimensions } from 'react-native';
 
 
 export default function App( { navigation }) {
   const [datas, setDatas] = useState(data)
   const [search, setSearch] = useState("")
+  const screenWidth = Math.round(Dimensions.get('window').width);
+  const screenHeight = Math.round(Dimensions.get('window').height);
   function toggleOpen(index) {
     if (datas[index].isopen != true) {
       for (let i = 0; i < datas.length; i++) {
@@ -80,6 +83,7 @@ export default function App( { navigation }) {
           </ScrollView>
         </View>
       </View>
+      <View style = {{flex: 1}}>
       <ScrollView style = {styles.allcard}>
       {datas.map((goal, index) => (
         index % 2 == 0 ? (
@@ -117,7 +121,9 @@ export default function App( { navigation }) {
           </TouchableOpacity>
         )
         ))}
+        <View style = {{height: 100}}></View>
       </ScrollView>
+      </View>
       <View style = {styles.navbar}>
         <View style = {styles.navbaritem}>
         <Svg xmlns="http://www.w3.org/2000/Svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
@@ -341,9 +347,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   allcard: {
-    marginLeft: "4%",
     marginTop: "25%",
-    width: "92%",
+    width: "100%",
+    paddingHorizontal: "3%",
+    height: "200%",
   },
   card: {
     marginVertical: "3%",
@@ -358,9 +365,10 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   leftcard: {
-    width: "20%",
+    width: "21%",
     borderRadius: 20,
-    height: 80,
+    paddingVertical: "10%",
+    height: "80%",
     marginVertical: 10,
     marginLeft: 10,
     backgroundColor: "red"
@@ -412,7 +420,7 @@ const styles = StyleSheet.create({
     marginLeft: "5%"
   },
   topcard: {
-    marginLeft: "-15%",
+    marginLeft: "0%",
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
@@ -466,10 +474,12 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   leftcardopo: {
-    width: "30%",
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    height: 100,
+    width: "21%",
+    borderRadius: 20,
+    paddingVertical: "10%",
+    height: "80%",
+    marginVertical: 10,
+    marginRight: 10,
     backgroundColor: "red"
   },
   nametxtopo: {

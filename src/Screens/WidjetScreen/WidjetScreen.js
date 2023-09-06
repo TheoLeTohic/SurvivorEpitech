@@ -182,6 +182,13 @@ export default function App( { navigation }) {
             </View>
           </View>
         </View>
+        <View style = {styles.eventsmall}>
+            <View style = {styles.sttsmall}></View>
+            <View style = {styles.contentsmall}>
+              <Text style = {styles.namesmall}>Daily Standup</Text>
+              <Text style = {styles.timesmall}>10:00 AM - 11:00 AM</Text>
+            </View>
+          </View>
       </View>
 
       </View>
@@ -616,7 +623,6 @@ const styles = StyleSheet.create({
 
   meteosmall : {
     marginTop: 20,
-    marginLeft: 20,
     height: 168,
     width: "45%",
     display: "flex",
@@ -739,7 +745,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff7d",
     borderRadius: 20,
     marginTop: 20,
-    marginLeft: 20,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
@@ -750,4 +755,67 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3,
   },
+  calendardaysmall : {
+    height: "30%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    marginLeft: "15%",
+    marginTop: "10%",
+  },
+  daywithouteventsmall : {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#FF0000",
+  },
+  datesmall : {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#000000cc",
+    marginLeft: "5%",
+  },
+  calendareventsmall : {
+    height: "20%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+  },
+  eventsmall : {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  sttsmall : {
+    height: 30,
+    width: 5,
+    borderRadius: 20,
+    backgroundColor: "#367CFE",
+    marginLeft: 4,
+  },
+  contentsmall : {
+    paddingHorizontal: "3%",
+    paddingVertical: "3%",
+    backgroundColor: "#C3D0F0",
+    width: "90%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    marginLeft: "5%",
+    borderRadius: 10,
+  },
+  namesmall : {
+    fontSize: 10,
+    fontWeight: "bold",
+    color: "#367CFE",
+  },
+  timesmall : {
+    fontSize: 8,
+    fontWeight: "bold",
+    color: "#367CFE",
+  },
+
+
+  
 });
