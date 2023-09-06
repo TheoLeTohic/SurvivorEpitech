@@ -124,7 +124,7 @@ export default function App( { navigation }) {
         <View style = {styles.leftcard}></View>
         <View style = {styles.rightcard}>
           <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-          <Text style = {styles.jobtxt}>{goal.job}</Text>
+          <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
         </View>
       </TouchableOpacity>
           ) : (
@@ -133,7 +133,7 @@ export default function App( { navigation }) {
           <View style = {styles.leftcarddev}></View>
           <View style = {styles.rightcarddev}>
           <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-          <Text style = {styles.jobtxt}>undefine</Text>
+          <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
           </View>
         </View>
         <View style= {styles.bottomcard}>
@@ -148,7 +148,7 @@ export default function App( { navigation }) {
             <TouchableOpacity style = {styles.cardopo} onPress = {() => toggleOpen(index)}>
             <View style = {styles.rightcardopo}>
             <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
-          <Text style = {styles.jobtxtopo}>undefine</Text>
+          <Text style = {styles.jobtxtopo}>{"Frontend Developer"}</Text>
             </View>
             <View style = {styles.leftcardopo}></View>
           </TouchableOpacity>
@@ -158,7 +158,7 @@ export default function App( { navigation }) {
             <View style = {styles.leftcarddev}></View>
             <View style = {styles.rightcarddev}>
             <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-            <Text style = {styles.jobtxt}>undefine</Text>
+            <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
             </View>
           </View>
           <View style= {styles.bottomcard}>
@@ -274,7 +274,6 @@ const styles = StyleSheet.create({
 
 
   searchbarcontainer: {
-    marginLeft: "4%",
     width: "90%",
     height: 50,
     borderRadius: 50,
@@ -342,8 +341,8 @@ const styles = StyleSheet.create({
     opacity: 0.5
   },
   filtercat: {
-    width: "90%",
-    marginLeft: "-2%",
+    width: "100%",
+    marginLeft: "-1%",
     height: 100,
     display: "flex",
     flexDirection: "row",
@@ -353,9 +352,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: "74%",
     borderRadius: 15,
-
     backgroundColor: "#F1F5F9",
-    display: "flex",
     alignItems: "center",
     justifyContent: "left",
     display: "flex",
@@ -408,10 +405,12 @@ const styles = StyleSheet.create({
   },
   card: {
     marginVertical: "3%",
-    borderRadius: 20,
+    height: 105,
+    borderRadius: 10,
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "#fff",
     shadowColor: "#000000",
     shadowOffset: {width: -2, height: 4},
@@ -420,20 +419,26 @@ const styles = StyleSheet.create({
   },
   leftcard: {
     width: "21%",
-    borderRadius: 20,
+    borderRadius: 10,
     paddingVertical: "10%",
     height: "80%",
     marginVertical: 10,
     marginLeft: 10,
     backgroundColor: "red"
   },
+  rightcard: {
+    justifyContent: "flex-end",
+    display: "flex",
+    alignItems: "flex-end",
+    marginRight: "5%"
+  },
   nametxt: {
     marginLeft: "16%",
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: "600"
   },
   jobtxt: {
-    fontSize: 20,
+    fontSize: 16,
     color : "#78858F",
     marginLeft: "16%"
   },
@@ -450,6 +455,7 @@ const styles = StyleSheet.create({
     flexDirection: "colum",
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "#fff",
     shadowColor: "#000000",
     shadowOffset: {width: -2, height: 4},
@@ -516,11 +522,12 @@ const styles = StyleSheet.create({
 
   cardopo: {
     marginVertical: "3%",
-    borderRadius: 20,
+    height: 105,
+    borderRadius: 10,
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     backgroundColor: "#fff",
     shadowColor: "#000000",
     shadowOffset: {width: -2, height: 4},
@@ -529,7 +536,7 @@ const styles = StyleSheet.create({
   },
   leftcardopo: {
     width: "21%",
-    borderRadius: 20,
+    borderRadius: 10,
     paddingVertical: "10%",
     height: "80%",
     marginVertical: 10,
@@ -538,17 +545,15 @@ const styles = StyleSheet.create({
   },
   nametxtopo: {
     marginRight: "16%",
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: "600"
   },
   jobtxtopo: {
-    fontSize: 20,
+    fontSize: 16,
     color : "#78858F",
     marginRight: "16%"
   },
   rightcardopo: {
-    justifyContent: "flex-end",
-    display: "flex",
-    alignItems: "flex-end"
+    marginLeft: "5%",
   }
 });
