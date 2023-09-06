@@ -857,7 +857,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-  }
+  },
   calendardaysmall : {
     height: "30%",
     width: "100%",
