@@ -3,15 +3,47 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react';
 import { data } from "../../data/peapool"
-import { Svg, Path } from 'react-native-svg';
+import { Svg, Path, Use } from 'react-native-svg';
 import { Dimensions } from 'react-native';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 
 export default function App( { navigation }) {
   const [datas, setDatas] = useState(data)
   const [search, setSearch] = useState("")
+  const [employe, setEmploye] = useState("")
+
   const screenWidth = Math.round(Dimensions.get('window').width);
   const screenHeight = Math.round(Dimensions.get('window').height);
+
+
+
+  async function getemploye() {
+    await fetch("https://masurao.fr/api/employees", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "X-Group-Authorization": "UkPEzS4kSZu07iSS2d2l4OjA4PDfNiGy",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzQsImVtYWlsIjoib2xpdmVyLmxld2lzQG1hc3VyYW8uanAiLCJuYW1lIjoiT2xpdmVyIiwic3VybmFtZSI6Ikxld2lzIiwiZXhwIjoxNjk1ODI3MjQzfQ.-tSPtN90QZpMxWzO2e-VpQdIZmLwZoOa2i6zwTXNR5E"
+      },
+      })
+      .then((response) => response.json())
+      .then((responseData) => {
+        for (let i = 0; i < responseData.length; i++) {
+          responseData[i].isopen = false
+        }
+        setDatas(responseData)
+      })
+  }
+
+
+  useEffect(() => {
+    getemploye()
+  }, []);
+
+  useEffect(() => {
+  }, [datas]);
+
   function toggleOpen(index) {
     if (datas[index].isopen != true) {
       for (let i = 0; i < datas.length; i++) {
@@ -91,7 +123,7 @@ export default function App( { navigation }) {
           <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.card}>
         <View style = {styles.leftcard}></View>
         <View style = {styles.rightcard}>
-          <Text style = {styles.nametxt}>{goal.name}</Text>
+          <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
           <Text style = {styles.jobtxt}>{goal.job}</Text>
         </View>
       </TouchableOpacity>
@@ -100,8 +132,8 @@ export default function App( { navigation }) {
         <View style= {styles.topcard}>
           <View style = {styles.leftcarddev}></View>
           <View style = {styles.rightcarddev}>
-          <Text style = {styles.nametxt}>{goal.name}</Text>
-          <Text style = {styles.jobtxt}>{goal.job}</Text>
+          <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
+          <Text style = {styles.jobtxt}>undefine</Text>
           </View>
         </View>
         <View style= {styles.bottomcard}>
@@ -112,13 +144,30 @@ export default function App( { navigation }) {
       </TouchableOpacity>
           ))
         ) : (
+          (goal.isopen == false ? (
             <TouchableOpacity style = {styles.cardopo} onPress = {() => toggleOpen(index)}>
             <View style = {styles.rightcardopo}>
-            <Text style = {styles.nametxtopo}>{goal.name}</Text>
-          <Text style = {styles.jobtxtopo}>{goal.job}</Text>
+            <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
+          <Text style = {styles.jobtxtopo}>undefine</Text>
             </View>
             <View style = {styles.leftcardopo}></View>
           </TouchableOpacity>
+            ) : (
+              <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
+          <View style= {styles.topcard}>
+            <View style = {styles.leftcarddev}></View>
+            <View style = {styles.rightcarddev}>
+            <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
+            <Text style = {styles.jobtxt}>undefine</Text>
+            </View>
+          </View>
+          <View style= {styles.bottomcard}>
+            <Text style = {styles.descriptiontitle}>Minim dolor in amet nulla laboris</Text>
+            <Text style = {styles.descriptioncontent}>Lorem ipsum dolor sit amet, erat consequat orci, sit amet dignissim leo eros eleifend mi. Pellentesque ultrices libero nibh, ac posuere purus luctus at.</Text>
+            <Text style = {styles.descriptiondate}>3 September 2019</Text>
+            </View>
+        </TouchableOpacity>
+            ))
         )
         ))}
         <View style = {{height: 100}}></View>
@@ -225,7 +274,8 @@ const styles = StyleSheet.create({
 
 
   searchbarcontainer: {
-    width: "88%",
+    marginLeft: "4%",
+    width: "90%",
     height: 50,
     borderRadius: 50,
     backgroundColor: "#fff",
@@ -257,8 +307,10 @@ const styles = StyleSheet.create({
   },
   filterchoose: {
     width: "90%",
+    marginTop: "3.5%",
     height: "auto",
     display: "flex",
+    marginLeft: "2%",
     flexDirection: "column",
     justifyContent: "center",
   },
@@ -290,7 +342,8 @@ const styles = StyleSheet.create({
     opacity: 0.5
   },
   filtercat: {
-    width: "100%",
+    width: "90%",
+    marginLeft: "-2%",
     height: 100,
     display: "flex",
     flexDirection: "row",
@@ -348,7 +401,8 @@ const styles = StyleSheet.create({
   },
   allcard: {
     marginTop: "25%",
-    width: "100%",
+    width: "96%",
+    marginLeft: "2%",
     paddingHorizontal: "3%",
     height: "200%",
   },
@@ -420,7 +474,7 @@ const styles = StyleSheet.create({
     marginLeft: "5%"
   },
   topcard: {
-    marginLeft: "0%",
+    marginLeft: "-25%",
     flexDirection: "row",
     display: "flex",
     alignItems: "center",

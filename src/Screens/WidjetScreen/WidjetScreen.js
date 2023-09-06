@@ -4,6 +4,32 @@ import { Svg, Path } from 'react-native-svg';
 
 
 export default function App( { navigation }) {
+  const api = "5e5ba64ce2bba79dba8420c77f1ced3c"
+
+  const [city, setCity] = useState("Barcelona")
+  const [weather, setWeather] = useState({})
+
+  //make a call to the api
+
+  const fetchWeather = () => {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=Barcelona&appid=97738c75467adb40204f72417c447761&units=metric&lang=fr`)
+    .then((response) => response.json())
+    .then((json) => {
+      setWeather(json)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+  useEffect(() => {
+    fetchWeather()
+  }, [])
+
+  useEffect(() => {
+    console.log(weather.main.temp)
+  }, [weather])
+
   return (
     <View style={styles.container}>
       <View style = {styles.calendar}>
@@ -117,11 +143,11 @@ export default function App( { navigation }) {
           <View style = {styles.infocontainer}>
             <View style = {styles.temp}>
               <Text style = {styles.temptxt}>Partly Cloudy</Text>
-              <Text style = {styles.tempnum}>24°</Text>
+              <Text style = {styles.tempnum}>{Math.round(weather.main.temp)}°</Text>
             </View>
             <View style = {styles.humidity}>
               <Text style = {styles.humiditytxt}>Humidity</Text>
-              <Text style = {styles.humiditynum}>67%</Text>
+              <Text style = {styles.humiditynum}>{weather.main.humidity}%</Text>
             </View>
           </View>
         </View>
@@ -147,8 +173,8 @@ export default function App( { navigation }) {
           </View>
           <View style = {styles.rightsmall}>
             <View style={styles.tempnumcontainersmall}>
-              <Text style = {styles.tempnumsmall}>24°</Text>
-              <Text style = {styles.humiditynumsmall}>24°</Text>
+              <Text style = {styles.tempnumsmall}>{Math.round(weather.main.temp)}°</Text>
+              <Text style = {styles.humiditynumsmall}>{weather.main.humidity}°</Text>
             </View>
         </View>
         </View>
@@ -679,7 +705,7 @@ const styles = StyleSheet.create({
   rightsmall : {
     marginLeft: "4%",
     height: "70%",
-    width: "40%",
+    width: "45%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
