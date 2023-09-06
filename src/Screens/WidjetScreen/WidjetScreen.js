@@ -194,19 +194,42 @@ export default function App( { navigation }) {
           </View>
       </View>
 
-      <View style = {styles.calendarsmall}>
-        <View style = {styles.calendardaysmall}>
-          <Text style = {styles.daywithouteventsmall}>Monday</Text>
-          <Text style = {styles.datesmall}>18</Text>
+      <View style = { styles.tasksmall }>
+        <View style = { styles.tasksmalltop }>
+          <Text style = { styles.tasksmalltxt }>Add Task</Text>
+          <TouchableOpacity style = { styles.tasksmallplusbtn }>
+            <Svg xmlns="http://www.w3.org/2000/Svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <Path d="M7 1V13" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+              <Path d="M1 7H13" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+            </Svg>
+          </TouchableOpacity>
         </View>
-        <View style = {styles.calendareventsmall}>
-          <View style = {styles.eventsmall}>
-            <View style = {styles.sttsmall}></View>
-            <View style = {styles.contentsmall}>
-              <Text style = {styles.namesmall}>Daily Standup</Text>
-              <Text style = {styles.timesmall}>10:00 AM - 11:00 AM</Text>
-            </View>
+        <View style = { styles.tasksmallbottom }>
+          <View style = { styles.tasksmalltxtline }>
+            <View style = { styles.tasksmalltxtcircle }/>
+            <Text style = { styles.tasksmalltxtbottom }>Finish homework</Text>
           </View>
+          <View style = { styles.tasksmalltxtline }>
+            <View style = { styles.tasksmalltxtcircle }/>
+            <Text style = { styles.tasksmalltxtbottom }>Do groceries</Text>
+          </View>
+          <View style = { styles.tasksmalltxtline }>
+            <View style = { styles.tasksmalltxtcircle }/>
+            <Text style = { styles.tasksmalltxtbottom }>Call mom</Text>
+          </View>
+          <View style = { styles.tasksmalltxtline }>
+            <View style = { styles.tasksmalltxtcircle }/>
+            <Text style = { styles.tasksmalltxtbottom }>Clean room</Text>
+          </View>
+          <View style = { styles.tasksmalltxtline }>
+            <View style = { styles.tasksmalltxtcircle }/>
+            <Text style = { styles.tasksmalltxtbottom }>Code a new app</Text>
+          </View>
+          <View style = { styles.tasksmalltxtline }>
+            <View style = { styles.tasksmalltxtcircle }/>
+            <Text style = { styles.tasksmalltxtbottom }>Check the intranet</Text>
+          </View>
+          <Text style = { styles.tasksmalltxtadd }>4 more</Text>
         </View>
         <View style = {styles.eventsmall}>
             <View style = {styles.sttsmall}></View>
@@ -649,8 +672,9 @@ const styles = StyleSheet.create({
 
   meteosmall : {
     marginTop: 20,
+    marginLeft: "0.7%",
     height: 168,
-    width: "45%",
+    width: "44.8%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
@@ -676,10 +700,6 @@ const styles = StyleSheet.create({
     marginLeft: "8%",
     height: "70%",
     width: "40%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignItems: "center",
     backgroundColor: "#ffffff7d",
     borderRadius: 14,
     display: "flex",
@@ -771,6 +791,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff7d",
     borderRadius: 20,
     marginTop: 20,
+    marginLeft: 20,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
@@ -781,6 +802,62 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3,
   },
+  tasksmall : {
+    height: 168,
+    width: "45%",
+    backgroundColor: "#1695C7",
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  tasksmalltop : {
+    marginTop: "9.52%",
+    marginLeft: "9.52%",
+    marginRight: "9.52%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  tasksmalltxt : {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  tasksmallplusbtn : {
+    marginTop: 5,
+  },
+  tasksmallbottom : {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    marginLeft: "9.52%",
+    marginRight: "9.52%",
+    marginTop: "3%",
+  },
+  tasksmalltxtbottom : {
+    color: "#fff",
+    fontSize: 10,
+    fontWeight: "bold",
+    marginTop: 4,
+    marginLeft: 5,
+  },
+  tasksmalltxtadd : {
+    fontSize: 8,
+    color: "#D3D3D3",
+    marginLeft: "8%",
+
+  },
+  tasksmalltxtcircle : {
+    height: 6,
+    width: 6,
+    borderRadius: 1999,
+    marginTop: 4,
+    backgroundColor: "#fff",
+  },
+  tasksmalltxtline : {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  }
   calendardaysmall : {
     height: "30%",
     width: "100%",
@@ -843,5 +920,5 @@ const styles = StyleSheet.create({
   },
 
 
-  
+
 });
