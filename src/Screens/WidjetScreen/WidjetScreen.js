@@ -1,7 +1,4 @@
-
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Svg, Path } from 'react-native-svg';
 
@@ -205,13 +202,6 @@ export default function App( { navigation }) {
           </View>
           <Text style = { styles.tasksmalltxtadd }>4 more</Text>
         </View>
-        <View style = {styles.eventsmall}>
-            <View style = {styles.sttsmall}></View>
-            <View style = {styles.contentsmall}>
-              <Text style = {styles.namesmall}>Daily Standup</Text>
-              <Text style = {styles.timesmall}>10:00 AM - 11:00 AM</Text>
-            </View>
-          </View>
       </View>
 
       </View>
@@ -320,7 +310,7 @@ const styles = StyleSheet.create({
   calendar : {
     height: 100,
     width: "90%",
-    backgroundColor: "#ffffff7d",
+    backgroundColor: "#F0F0F0",
     borderRadius: 20,
     marginTop: 100,
     marginLeft: 20,
@@ -329,10 +319,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     paddingHorizontal: 10,
-    shadowColor: "#000000",
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.3,
     shadowRadius: 3,
+    elevation: 3,
   },
   calendarday : {
     height: 83,
@@ -391,7 +381,7 @@ const styles = StyleSheet.create({
   calendarbig : {
     height: 200,
     width: "90%",
-    backgroundColor: "#ffffff7d",
+    backgroundColor: '#F0F0F0',
     borderRadius: 20,
     marginTop: 20,
     marginLeft: 20,
@@ -403,6 +393,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.3,
     shadowRadius: 3,
+    elevation: 3,
   },
   topcalendar : {
     width: "100%",
@@ -558,7 +549,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   citycontainer : {
-    height: "50%",
+    height: "60%",
     width: "100%",
     display: "flex",
     flexDirection: "row",
@@ -831,7 +822,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-  }
+  },
   calendardaysmall : {
     height: "30%",
     width: "100%",
