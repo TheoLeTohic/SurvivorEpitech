@@ -16,7 +16,7 @@ export default class Navbar extends Component {
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("Profilsecond")} style = {styles.navbaritem}>
                     {this.props.index === 2 ? <Text style ={styles.selected}>Team</Text> : <Text style ={styles.unselected}>Team</Text>}
                     </TouchableOpacity>
-                    <TouchableOpacity style = {styles.navbaritemwithou}>
+                    <TouchableOpacity style = {styles.navbaritemwithou} onPress={() => this.props.navigation.navigate("ProfilThird")}>
                     {this.props.index === 3 ? <Text style ={styles.selected}>Extra</Text> : <Text style ={styles.unselected}>Extra</Text>}
                     </TouchableOpacity>
                 </View>

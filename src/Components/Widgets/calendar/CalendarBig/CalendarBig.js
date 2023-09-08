@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 class CalendarBig extends Component {
     render() {
         return (
-            <View style = {styles.calendar}>
+            <TouchableOpacity style = {styles.calendar} onLongPress={ () => console.warn('STARTED LONG PRESS') }>
             <View style = {styles.calendarday}>
               <Text style = {styles.daywithoutevent}>Mo</Text>
               <Text style = {styles.date}>1</Text>
@@ -35,7 +35,7 @@ class CalendarBig extends Component {
               <Text style = {styles.date}>7</Text>
               <View style = {styles.event}></View>
             </View>
-          </View>
+          </TouchableOpacity>
         )
     }
 }

@@ -27,8 +27,6 @@ export default function App( { navigation }) {
     });
 
     setCityWeather([...cityweather, aaa])
-    console.log("cityweather")
-    console.log(cityweather)
   }
 
   const [object, setObject] = useState([]);
@@ -65,7 +63,6 @@ export default function App( { navigation }) {
         objectlist.push(snapshot[obj]);
       }
       setObject(objectlist);
-      console.log(objectlist);
     } catch(e) {
       setObject("error");
     }

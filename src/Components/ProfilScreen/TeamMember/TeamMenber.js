@@ -7,7 +7,6 @@ export default class Navbar extends Component {
         return (
             <View style = {styles.card}>
                 <View style = {styles.left}>
-                    <Image source = {require("../../../../assets/Avatar.png")} resizeMode="cover" style = {styles.img}/>
                 </View>
                 <View style = {styles.right}>
                     <Text style = {styles.name}>{this.props.name}</Text>
