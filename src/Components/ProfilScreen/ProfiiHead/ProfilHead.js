@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Svg, Path, Use } from 'react-native-svg';
 
 export default class Navbar extends Component {
     render() {
@@ -12,13 +11,13 @@ export default class Navbar extends Component {
                 </View>
                 <View style = {styles.navbar}>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("Profil")} style = {styles.navbaritemother}>
-                        {this.props.index == 1 ? <Text style ={styles.selected}>Personal info</Text> : <Text style ={styles.unselected}>Personal info</Text>}
+                        {this.props.index === 1 ? <Text style ={styles.selected}>Personal info</Text> : <Text style ={styles.unselected}>Personal info</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("Profilsecond")} style = {styles.navbaritem}>
-                    {this.props.index == 2 ? <Text style ={styles.selected}>Team</Text> : <Text style ={styles.unselected}>Team</Text>}
+                    {this.props.index === 2 ? <Text style ={styles.selected}>Team</Text> : <Text style ={styles.unselected}>Team</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity style = {styles.navbaritemwithou}>
-                    {this.props.index == 3 ? <Text style ={styles.selected}>Extra</Text> : <Text style ={styles.unselected}>Extra</Text>}
+                    {this.props.index === 3 ? <Text style ={styles.selected}>Extra</Text> : <Text style ={styles.unselected}>Extra</Text>}
                     </TouchableOpacity>
                 </View>
             </View>
@@ -66,6 +65,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 15,
         color: "#6B6B6B",
+        marginTop: "5%",
     },
     navbar: {
         marginTop: "12%",
