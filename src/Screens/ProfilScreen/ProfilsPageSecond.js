@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
         height: 'auto',
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
         flexWrap: "wrap",
+        justifyContent: "space-between",
         marginTop: '2%',
     },
     middleline: {
@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
         height: 1,
         backgroundColor: 'grey',
         opacity: 0.3,
-        marginTop: '2%',
         marginBottom: '2%',
     },
 
