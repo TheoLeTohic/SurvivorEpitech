@@ -74,7 +74,7 @@ export default function App( { navigation }) {
   return (
     <View style={styles.container}>
       <View style = {styles.hellocontainer}>
-        <View style = {styles.picture}></View>
+        <Image source={require('../../../assets/avatar.png')} style = {styles.picture}></Image>
         <Text style = {styles.msg}>Hello, Julia</Text>
         <View style = {{marginLeft: "40%"}}>
         <Svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 30" fill="none">
@@ -99,20 +99,24 @@ export default function App( { navigation }) {
               <Text style = {styles.txtseaall}>See all</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style = {styles.filtercat} horizontal= {true}>
+          <ScrollView style = {styles.filtercat} horizontal= {true} showsHorizontalScrollIndicator={ false }>
             <TouchableOpacity style = {styles.filteritem}>
-              <View style= {styles.icon}></View>
+              <Image source={require('../../../assets/marketing-icon.png')} style = {styles.icon}></Image>
               <Text style = {styles.txtfilteritem}>Marketing</Text>
             </TouchableOpacity>
             <TouchableOpacity style = {styles.filteritem}>
-              <View style= {styles.icon}></View>
-              <Text style = {styles.txtfilteritem}>Marketing</Text>
+              <Image source={require('../../../assets/engineering-icon.png')} style = {styles.icon}></Image>
+              <Text style = {styles.txtfilteritem}>Engineering</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style = {styles.filteritem}>
+              <Image source={require('../../../assets/accounting-icon.png')} style = {styles.icon}></Image>
+              <Text style = {styles.txtfilteritem}>Accounting</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
       </View>
       <View style = {{flex: 1}}>
-      <ScrollView style = {styles.allcard}>
+      <ScrollView style = {styles.allcard} showsVerticalScrollIndicator={ false }>
       {datas.map((goal, index) => (
         index % 2 == 0 ? (
           (goal.isopen == false ? (
@@ -120,7 +124,7 @@ export default function App( { navigation }) {
         <View style = {styles.leftcard}></View>
         <View style = {styles.rightcard}>
           <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-          <Text style = {styles.jobtxt}>{goal.job}</Text>
+          <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
         </View>
       </TouchableOpacity>
           ) : (
@@ -129,7 +133,7 @@ export default function App( { navigation }) {
           <View style = {styles.leftcarddev}></View>
           <View style = {styles.rightcarddev}>
           <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-          <Text style = {styles.jobtxt}>undefine</Text>
+          <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
           </View>
         </View>
         <View style= {styles.bottomcard}>
@@ -144,7 +148,7 @@ export default function App( { navigation }) {
             <TouchableOpacity style = {styles.cardopo} onPress = {() => toggleOpen(index)}>
             <View style = {styles.rightcardopo}>
             <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
-          <Text style = {styles.jobtxtopo}>undefine</Text>
+          <Text style = {styles.jobtxtopo}>{"Frontend Developer"}</Text>
             </View>
             <View style = {styles.leftcardopo}></View>
           </TouchableOpacity>
@@ -154,7 +158,7 @@ export default function App( { navigation }) {
             <View style = {styles.leftcarddev}></View>
             <View style = {styles.rightcarddev}>
             <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-            <Text style = {styles.jobtxt}>undefine</Text>
+            <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
             </View>
           </View>
           <View style= {styles.bottomcard}>
@@ -209,7 +213,6 @@ const styles = StyleSheet.create({
 
 
   searchbarcontainer: {
-    marginLeft: "4%",
     width: "90%",
     height: 50,
     borderRadius: 50,
@@ -277,26 +280,25 @@ const styles = StyleSheet.create({
     opacity: 0.5
   },
   filtercat: {
-    width: "90%",
-    marginLeft: "-2%",
+    width: "100%",
+    marginLeft: "-1%",
     height: 100,
     display: "flex",
     flexDirection: "row",
 
   },
   filteritem: {
-    width: 200,
+    width: 170,
     height: "74%",
     borderRadius: 15,
-
     backgroundColor: "#F1F5F9",
-    display: "flex",
     alignItems: "center",
     justifyContent: "left",
     display: "flex",
     flexDirection: "row",
     borderColor: "#E5E7EB",
     borderWidth: 1,
+    marginRight: 10,
   },
   txtfilteritem: {
     marginLeft: "5%",
@@ -308,7 +310,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 50,
-    backgroundColor: "red",
     marginLeft: "5%",
   },
 
@@ -343,10 +344,12 @@ const styles = StyleSheet.create({
   },
   card: {
     marginVertical: "3%",
-    borderRadius: 20,
+    height: 105,
+    borderRadius: 10,
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "#fff",
     shadowColor: "#000000",
     shadowOffset: {width: -2, height: 4},
@@ -355,20 +358,26 @@ const styles = StyleSheet.create({
   },
   leftcard: {
     width: "21%",
-    borderRadius: 20,
+    borderRadius: 10,
     paddingVertical: "10%",
     height: "80%",
     marginVertical: 10,
     marginLeft: 10,
     backgroundColor: "red"
   },
+  rightcard: {
+    justifyContent: "flex-end",
+    display: "flex",
+    alignItems: "flex-end",
+    marginRight: "5%"
+  },
   nametxt: {
     marginLeft: "16%",
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: "600"
   },
   jobtxt: {
-    fontSize: 20,
+    fontSize: 16,
     color : "#78858F",
     marginLeft: "16%"
   },
@@ -385,6 +394,7 @@ const styles = StyleSheet.create({
     flexDirection: "colum",
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "#fff",
     shadowColor: "#000000",
     shadowOffset: {width: -2, height: 4},
@@ -451,11 +461,12 @@ const styles = StyleSheet.create({
 
   cardopo: {
     marginVertical: "3%",
-    borderRadius: 20,
+    height: 105,
+    borderRadius: 10,
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     backgroundColor: "#fff",
     shadowColor: "#000000",
     shadowOffset: {width: -2, height: 4},
@@ -464,7 +475,7 @@ const styles = StyleSheet.create({
   },
   leftcardopo: {
     width: "21%",
-    borderRadius: 20,
+    borderRadius: 10,
     paddingVertical: "10%",
     height: "80%",
     marginVertical: 10,
@@ -473,17 +484,15 @@ const styles = StyleSheet.create({
   },
   nametxtopo: {
     marginRight: "16%",
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: "600"
   },
   jobtxtopo: {
-    fontSize: 20,
+    fontSize: 16,
     color : "#78858F",
     marginRight: "16%"
   },
   rightcardopo: {
-    justifyContent: "flex-end",
-    display: "flex",
-    alignItems: "flex-end"
+    marginLeft: "5%",
   }
 });
