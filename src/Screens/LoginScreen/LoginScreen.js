@@ -2,6 +2,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App( { navigation }) {
   const [email, SetEmail] = useState("oliver.lewis@masurao.jp")
@@ -10,6 +11,7 @@ export default function App( { navigation }) {
 
   function login() {
     navigation.navigate("Home")
+    return
     fetch("https://masurao.fr/api/employees/login", {
       method: "POST",
       headers: {
@@ -31,6 +33,12 @@ export default function App( { navigation }) {
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+              start={{ x: 0.5, y: 1 }}
+              end={{ x: 0.5, y: 0 }}
+              colors={['rgba(0, 154, 123, 1)', 'rgba(0,0,0,1)']}
+              style={styles.background}
+            />
       <View style = {styles.titlecontainer}>
         <Text style = {styles.title}>Welcome{"\n"} Back</Text>
       </View>
@@ -60,6 +68,16 @@ export default function App( { navigation }) {
 }
 
 const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "100%",
+    width: "100%",
+    borderRadius: 20,
+    zIndex: 0,
+  },
   container: {
     flex: 1,
     backgroundColor: '#D7E5FF',

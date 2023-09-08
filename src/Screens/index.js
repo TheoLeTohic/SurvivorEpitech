@@ -1,3 +1,5 @@
 export { default as LoginScreen } from './LoginScreen/LoginScreen'
 export { default as HomeScreen } from './HomeScreen/HomeScreen'
 export { default as WidjetScreen } from './WidjetScreen/WidjetScreen'
+export { default as ProfilScreen } from './ProfilScreen/ProfilScreen'
+export {default as ProfilScreenSecond } from './ProfilScreen/ProfilsPageSecond'
