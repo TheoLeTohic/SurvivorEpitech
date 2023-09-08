@@ -13,7 +13,8 @@ class CalendarBig extends Component {
 }
     render () {
         return (
-            <View style = {styles.calendarbig}>
+          <TouchableOpacity style = {this.props.click == false ? styles.calendarbig : styles.calendarclick} onLongPress={ () => this.props.callback() }>
+              {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
             <View style = {styles.topcalendar}>
                 {this.day.map((item, index) => (
                   <View key={index} style = {[styles.calendarday, index == this.currentDayofWeek - 1 ? styles.today : null]}>
@@ -53,7 +54,7 @@ class CalendarBig extends Component {
                 </View>
              
              </View>
-          </View>
+          </TouchableOpacity>
         )
     }
 }
@@ -61,10 +62,38 @@ class CalendarBig extends Component {
 export default CalendarBig;
 
 const styles = StyleSheet.create({
+  remover : {
+    zIndex: 10,
+        height: 20,
+        width: 20,
+        borderRadius: 200,
+        backgroundColor: "orange",
+        position: "absolute",
+        opacity: 1,
+        top: -10,
+        left: -10,
+   },
     calendarbig : {
         height: 200,
         width: "90%",
         backgroundColor: '#F0F0F0',
+        borderRadius: 20,
+        marginTop: 20,
+        marginLeft: 20,
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column",
+        justifyContent: "space-around",
+        paddingHorizontal: 10,
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        elevation: 3,
+      },
+      calendarclick : {
+        height: 200,
+        width: "90%",
+        backgroundColor: 'red',
         borderRadius: 20,
         marginTop: 20,
         marginLeft: 20,

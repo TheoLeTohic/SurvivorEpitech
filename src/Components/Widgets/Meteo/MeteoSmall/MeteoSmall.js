@@ -5,14 +5,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default class Navbar extends Component {
     render() {
         return (
-            <View style = {styles.meteosmall}>
+          <TouchableOpacity style = {styles.meteosmall} onLongPress={ () => this.props.callback() }>
             <LinearGradient
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
               // Background Linear Gradient
               colors={['rgba(255,202,0,1)', 'rgba(255,80,0,1)']}
-              style={styles.backgroundsmallmeteo}
+              style = {this.props.click == false ? styles.background : styles.backgroundclick}
             />
+              {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
               <View style = {styles.topsmall}>
                 <View style = {styles.leftsmall}>
                   <Image source={require('../../../../../assets/Sun.png')} style = {styles.iconsmall}/>
@@ -36,12 +37,42 @@ export default class Navbar extends Component {
                   <View style = {styles.pointinactivesmall}></View>
 
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 }
 
 const styles = StyleSheet.create({
+  remover : {
+    zIndex: 10,
+        height: 20,
+        width: 20,
+        borderRadius: 200,
+        backgroundColor: "orange",
+        position: "absolute",
+        opacity: 1,
+        top: -10,
+        left: -10,
+   },
+      backgroundclick: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: 0,
+        width: "100%",
+        borderRadius: 20,
+      },
+      background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: 168,
+        width: "100%",
+        borderRadius: 20,
+      },
+      
     meteosmall : {
         marginTop: 20,
         marginLeft: "0.7%",
