@@ -7,6 +7,7 @@ export default class Navbar extends Component {
         return (
             <View style = {styles.card}>
                 <View style = {styles.left}>
+                    <Image source = {this.props.image} resizeMode="cover" style = {styles.img}/>
                 </View>
                 <View style = {styles.right}>
                     <Text style = {styles.name}>{this.props.name}</Text>
@@ -20,11 +21,8 @@ export default class Navbar extends Component {
 const styles = StyleSheet.create({
     card: {
         zIndex: 1,
-        width: "40%",
-        height: "27%",
+        width: "48%",
         backgroundColor: "#EAEAEA",
-        top: "20%",
-        left: "8%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",
@@ -34,40 +32,39 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 3,
         elevation: 3,
+        marginBottom: "5%",
+        paddingVertical: "2%",
     },
     left: {
-        width: "35%",
-        borderRadius: 20,
-        marginLeft: "5%",
-        height: "80%",
-        backgroundColor: "red",
+        width: "30%",
+        borderRadius: 10,
+        height: "90%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
+        marginLeft: "5%",
     },
     right: {
-        width: "60%",
-        height: "80%",
+        width: "50%",
         display: "flex",
-        marginTop: "5%",
-        flexDirection: "column",
-        alignItems: "flex-start",
+        paddingVertical: "7%",
+        justifyContent: "center",
     },
     name: {
-        marginTop: "20%",
-        marginLeft: "5%",
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: "bold",
     },
     job: {
-        fontSize: 11,
-        marginLeft: "5%",
+        fontSize: 9,
+        fontWeight: "bold",
         marginTop: "2%",
         color: "#E24545",
     },
     img: {
         width: "100%",
+        marginVertical: "20%",
         height: "100%",
+        borderRadius: 10,
     },
 });

@@ -1,8 +1,9 @@
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import {StyleSheet, View, ImageBackground, ScrollView} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { NavBar, ProfilHead, AdressBlock, InformationBlock, PhoneSvg } from '../../Components/index';
 import { getDatabase, ref, child, get } from "firebase/database";
 import firebase from '../../firebase/config';
+import {Screen} from "react-native-screens";
 
 export default function App( { navigation }) {
 
@@ -48,14 +49,17 @@ export default function App( { navigation }) {
             <ImageBackground source={require('../../../assets/background.png')} resizeMode='cover' style={{width: '100%', height: '100%'}}>
                 <View style = {styles.photo}></View>
                 <ProfilHead index = {1} navigation = {navigation}/>
-                <View style = {styles.pagecontainer}>
-                    <View style = {styles.body}>
-                    <AdressBlock alladdress = {object}/>
-                    <InformationBlock icon = {1} txt = {"Mobile"} value = {objectother.phone}/>
-                    <InformationBlock icon = {2} txt = {"Email"} value = {objectother.Email} />
+                    <View style = {styles.pagecontainer}>
+                        <ScrollView showsVerticalScrollIndicator={false} >
+                            <View style = {styles.body}>
+                                <AdressBlock alladdress = {object}/>
+                                <InformationBlock icon = {1} txt = {"Mobile"} value = {objectother.phone}/>
+                                <InformationBlock icon = {2} txt = {"Email"} value = {objectother.Email} />
+                            </View>
+                            <View style = {{height: 120}}/>
+                        </ScrollView>
                     </View>
-                </View>
-            <NavBar navigation={navigation} index = {5}/>
+                <NavBar navigation={navigation} index = {5}/>
             </ImageBackground>
         </View>
     );

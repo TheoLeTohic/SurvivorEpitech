@@ -10,3 +10,4 @@ export { default as InformationBlock } from './ProfilScreen/InformationBlock/Inf
 export { default as PhoneSvg } from './ProfilScreen/adressblock/svgComponent/phoneSvg'
 export { default as TeamMember } from './ProfilScreen/TeamMember/TeamMenber'
 export { default as AddWidget } from './Widgets/addWidjets/addWidget'
+export { default as ExtraBlock } from './ProfilScreen/ExtraBlock/ExtraBlock'
