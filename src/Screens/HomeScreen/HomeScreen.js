@@ -168,7 +168,6 @@ export default function App( { navigation }) {
             </View>
         </TouchableOpacity>
             ))
-            
         )
         ))}
         <View style = {{height: 100}}></View>

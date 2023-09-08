@@ -68,16 +68,6 @@ export default function App( { navigation }) {
 }
 
 const styles = StyleSheet.create({
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: "100%",
-    width: "100%",
-    borderRadius: 20,
-    zIndex: 0,
-  },
   container: {
     flex: 1,
     display: "flex",
@@ -108,13 +98,13 @@ const styles = StyleSheet.create({
   },
   middlecircle : {
     zIndex: 2,
-    height: "150%",
-    width: "300%",
-    borderRadius: 10000,
+    height: "100%",
+    width: "212%",
+    borderRadius: 2000,
     backgroundColor: '#183D3D',
     position: "absolute",
-    top: -930,
-    left: -350,
+    top: -530,
+    left: -184,
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.3,
     shadowRadius: 3,
@@ -136,7 +126,7 @@ const styles = StyleSheet.create({
   },
   titlecontainer: {
     zIndex: 10,
-    top: "17%",
+    top: "15%",
     left: "16.2%"
   },
   title :{

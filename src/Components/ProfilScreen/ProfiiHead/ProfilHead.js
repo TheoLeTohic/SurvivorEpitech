@@ -10,7 +10,7 @@ export default class Navbar extends Component {
                     <Text style = {styles.title}>Frontend Developer</Text>
                 </View>
                 <View style = {styles.navbar}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Profil")} style = {styles.navbaritemother}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")} style = {styles.navbaritemother}>
                         {this.props.index === 1 ? <Text style ={styles.selected}>Personal info</Text> : <Text style ={styles.unselected}>Personal info</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("Profilsecond")} style = {styles.navbaritem}>

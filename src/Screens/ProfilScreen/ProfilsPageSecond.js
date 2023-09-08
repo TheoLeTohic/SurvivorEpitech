@@ -1,4 +1,4 @@
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import {StyleSheet, View, ImageBackground, ScrollView} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { NavBar, ProfilHead, AdressBlock, InformationBlock, TeamMember } from '../../Components/index';
 
@@ -9,12 +9,20 @@ export default function App( { navigation }) {
                 <View style = {styles.photo}></View>
                 <ProfilHead index = {2} navigation = { navigation }/>
                 <View style = {styles.pagecontainer}>
-                    <View style = {styles.body}>
-                        <View style = {{width: '100%', height: '80%', display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
-                        <TeamMember name = { "Fermin Vergas" } job = { "VP of Engineering" }/>
-                        <TeamMember name = { "Fermin Vergas" } job = { "VP of Engineering" }/>
-                    </View>
-                    </View>
+                    <ScrollView showsVerticalScrollIndicator={false} >
+                        <View style = {styles.body}>
+                            <View style = {styles.topcards}>
+                                <TeamMember name = { "Fermin Vergas" } job = { "VP of Engineering" } image = { require("../../../assets/avatar.png") }/>
+                            </View>
+                            <View style = {styles.middleline}/>
+                            <View style = {styles.topcards}>
+                                <TeamMember name = { "Tobias Valdez" } job = { "Frontend Engineer" } image = { require("../../../assets/avatar2.png") }/>
+                                <TeamMember name = { "Lea Bowers" } job = { "Backend Engineer" } image = { require("../../../assets/avatar3.png") }/>
+                                <TeamMember name = { "Louise Mullen" } job = { "Q/A Tester" } image = { require("../../../assets/avatar4.png") }/>
+                            </View>
+                        </View>
+                        <View style = {{height: 100}}/>
+                    </ScrollView>
                 </View>
             <NavBar navigation={navigation} index = {5}/>
             </ImageBackground>
@@ -62,5 +70,23 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
     },
+    topcards: {
+        width: '83%',
+        height: 'auto',
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        marginTop: '2%',
+    },
+    middleline: {
+        width: '65%',
+        height: 1,
+        backgroundColor: 'grey',
+        opacity: 0.3,
+        marginTop: '2%',
+        marginBottom: '2%',
+    },
+
 
 });
