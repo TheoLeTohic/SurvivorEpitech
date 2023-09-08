@@ -5,7 +5,8 @@ import Svg, { Path } from "react-native-svg";
 class TaskSmall extends Component {
     render() {
         return (
-            <View style = { styles.tasksmall }>
+          <TouchableOpacity style = {this.props.click == false ? styles.tasksmall : styles.tasksmallclick} onLongPress={ () => this.props.callback() }>
+              {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
             <View style = { styles.tasksmalltop }>
               <Text style = { styles.tasksmalltxt }>Add Task</Text>
               <TouchableOpacity style = { styles.tasksmallplusbtn }>
@@ -25,7 +26,7 @@ class TaskSmall extends Component {
               }
               <Text style = { styles.tasksmalltxtadd }> more</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         );
     }
 
@@ -34,6 +35,24 @@ class TaskSmall extends Component {
 export default TaskSmall;
 
 const styles = StyleSheet.create({
+  remover : {
+    zIndex: 10,
+        height: 20,
+        width: 20,
+        borderRadius: 200,
+        backgroundColor: "orange",
+        position: "absolute",
+        opacity: 1,
+        top: -10,
+        left: -10,
+   },
+  tasksmallclick : {
+    height: 168,
+    width: "45%",
+    backgroundColor: "red",
+    borderRadius: 20,
+    marginTop: 20,
+  },
 
   calendarsmall : {
     height: 168,

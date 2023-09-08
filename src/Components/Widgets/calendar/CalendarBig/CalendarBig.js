@@ -5,7 +5,8 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 class CalendarBig extends Component {
     render() {
         return (
-            <TouchableOpacity style = {styles.calendar} onLongPress={ () => console.warn('STARTED LONG PRESS') }>
+            <TouchableOpacity style = {this.props.click == false ? styles.calendar : styles.calendarclick} onLongPress={ () => this.props.callback() }>
+              {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
             <View style = {styles.calendarday}>
               <Text style = {styles.daywithoutevent}>Mo</Text>
               <Text style = {styles.date}>1</Text>
@@ -43,6 +44,35 @@ class CalendarBig extends Component {
 export default CalendarBig;
 
 const styles = StyleSheet.create({
+   remover : {
+    zIndex: 10,
+        height: 20,
+        width: 20,
+        borderRadius: 200,
+        backgroundColor: "orange",
+        position: "absolute",
+        opacity: 1,
+        top: -10,
+        left: -10,
+   },
+
+    calendarclick : {
+      height: 100,
+        width: "90%",
+        backgroundColor: "red",
+        borderRadius: 20,
+        marginTop: 100,
+        marginLeft: 20,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        paddingHorizontal: 10,
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        elevation: 3,
+    },
     calendar : {
         height: 100,
         width: "90%",

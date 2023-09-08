@@ -70,6 +70,10 @@ export default function App( { navigation }) {
     }
   }
 
+  useEffect(() => {
+    funcsearch()
+  }, [search]);
+
 
   return (
     <View style={styles.container}>
@@ -145,7 +149,7 @@ export default function App( { navigation }) {
           ))
         ) : (
           (goal.isopen == false ? (
-            <TouchableOpacity style = {styles.cardopo} onPress = {() => toggleOpen(index)}>
+            <TouchableOpacity key={index} style = {styles.cardopo} onPress = {() => toggleOpen(index)}>
             <View style = {styles.rightcardopo}>
             <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
           <Text style = {styles.jobtxtopo}>{"Frontend Developer"}</Text>

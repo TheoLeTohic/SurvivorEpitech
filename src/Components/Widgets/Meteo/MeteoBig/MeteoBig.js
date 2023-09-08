@@ -5,13 +5,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default class MeteoBig extends Component {
     render () {
         return (
-            <View style = {styles.meteobig}>
+          <TouchableOpacity style = {styles.meteobig} onLongPress={ () => this.props.callback() }>
             <LinearGradient
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
               colors={['rgba(0,191,233,1)', 'rgba(6,44,47,0.6)']}
-              style={styles.background}
+              style = {this.props.click == false ? styles.background : styles.backgroundclick}
             />
+              {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
               <View style = {styles.left}>
                 <Image style = {styles.icon} source = {require('../../../../../assets/Sun.png')} resizeMethod="cover"/>
               </View>
@@ -20,11 +21,11 @@ export default class MeteoBig extends Component {
                 <View style = {styles.infocontainer}>
                   <View style = {styles.temp}>
                     <Text style = {styles.temptxt}>Partly Cloudy</Text>
-                    <Text style = {styles.tempnum}>23°</Text>
+                    <Text style = {styles.tempnum}>{this.props.cityweather && this.props.cityweather.main ? Math.round(this.props.cityweather.main.temp) : 0}°</Text>
                   </View>
                   <View style = {styles.humidity}>
                     <Text style = {styles.humiditytxt}>Humidity</Text>
-                    <Text style = {styles.humiditynum}>23%</Text>
+                    <Text style = {styles.humiditynum}>{this.props.cityweather && this.props.cityweather.main ? Math.round(this.props.cityweather.main.humidity) : 0}%</Text>
                   </View>
                 </View>
               </View>
@@ -33,14 +34,23 @@ export default class MeteoBig extends Component {
                 <View style = {styles.pointinactive}></View>
                 <View style = {styles.pointinactive}></View>
               </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 }
 
 const styles = StyleSheet.create({
-
-
+  remover : {
+    zIndex: 10,
+        height: 20,
+        width: 20,
+        borderRadius: 200,
+        backgroundColor: "orange",
+        position: "absolute",
+        opacity: 1,
+        top: -10,
+        left: -10,
+   },
   background: {
     position: 'absolute',
     left: 0,
@@ -50,6 +60,17 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 20,
   },
+  backgroundclick: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 0,
+    width: "0%",
+    borderRadius: 20,
+    opacity: 0.5,
+  },
+
   meteobig : {
     marginTop: 20,
     marginLeft: 20,
