@@ -24,7 +24,7 @@ export default function App( { navigation }) {
   }
 
   function remove(id) {
-    const tmp = allwidgets.filter((item) => item.index != id);
+    const tmp = allwidgets.filter((item) => item.index != id);  
     SetAllWidgets(tmp);
     console.log(tmp)
   }
@@ -97,7 +97,6 @@ export default function App( { navigation }) {
   }
 
   useEffect(() => {
-    console.log("useeffect")
     fetchWeather(0)
     fetchWeather(1)
     fetchWeather(2)
@@ -176,6 +175,7 @@ export default function App( { navigation }) {
         <View style = {{height: 200}}></View>
       </ScrollView>
       <AddWidget newwidget = {newwidget} open = {newopen} toopen = {othernewopen}></AddWidget>
+      <NavBar navigation = {navigation} open = {newopen} toopen = {othernewopen} index = {4}></NavBar>
     </GestureRecognizer>
   );
 }

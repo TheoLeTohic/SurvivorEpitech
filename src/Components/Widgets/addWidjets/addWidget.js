@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         backgroundColor: "orange",
         position: "absolute",
         opacity: 1,
-        top: "92%",
+        top: "85%",
         left: "85%",
     },
     menustyle : {

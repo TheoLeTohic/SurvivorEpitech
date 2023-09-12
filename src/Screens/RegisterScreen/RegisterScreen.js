@@ -1,7 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { firebase } from '../..//firebase/config'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
+import { useState } from 'react';
 
-export default function App() {
+
+export default function App({ navigation }) {
+    const auth = getAuth();
+    const db = getDatabase(firebase);
+    const [user, setUser] = useState("test");
+    const [email, setEmail] = useState("theoltc@gmail.com");
+    const [password, setPassword] = useState("Charlie.02");
+
+    function createAccount(idco) {
+        set(ref(db, 'users/' + user), {
+            name: user,
+            Email: email,
+            surname: user,
+            idConnect: idco,
+          });
+
+    }
+
+    function register() {
+        createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+            createAccount(userCredential.user.uid);
+            navigation.navigate('Home', { id: userCredential.user.uid});
+        })
+            .catch((error) => {
+                console.log(error);
+            }
+            )
+    }
     return (
         <View style={ styles.container }>
             <View style={ styles.titleContainer }>
@@ -11,12 +44,12 @@ export default function App() {
             <View style={ styles.circle2 } />
             <View style={ styles.form } >
                 <TextInput style={ styles.input } placeholder="Name" />
-                <TextInput style={ styles.input } placeholder="Your Email" />
-                <TextInput style={ styles.input } placeholder="Password" />
+                <TextInput style={ styles.input } placeholder="Your Email" value={email} onChange={(txt) => setEmail(txt)}/>
+                <TextInput style={ styles.input } placeholder="Password" value={password} onChange={(txt) => setPassword(txt)}/>
             </View>
             <View style={ styles.signup } >
                 <Text style={ styles.signupText }>Sign Up</Text>
-                <TouchableOpacity style={ styles.circle3 } />
+                <TouchableOpacity onPress={() => register()} style={ styles.circle3 } />
             </View>
             <View style={ styles.signin } >
                 <Text style={ styles.signinText }>Sign In</Text>

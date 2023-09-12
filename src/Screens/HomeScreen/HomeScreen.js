@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { useState, useEffect } from 'react';
-import { Svg, Path } from 'react-native-svg';
-
+import { data } from "../../data/peapool"
+import { Svg, Path, Use } from 'react-native-svg';
+import { getDatabase, ref, child, get } from "firebase/database";
 import Navbar from '../../Components/NavBar/Navbar';
+import firebase from '../../firebase/config';
 
 
-export default function App( { navigation }) {
+export default function App({ navigation, route }) {
+  const dbRef = ref(getDatabase(firebase));
   const [datas, setDatas] = useState([])
   const [all, setAll] = useState([])
   const [search, setSearch] = useState("")
@@ -29,8 +32,25 @@ export default function App( { navigation }) {
       })
   }
 
+  async function checkCompagny() {
+    try {
+      let snapshot = await get(child(dbRef, `users/${route.params.id}/cmp`));
+      snapshot = snapshot.val();
+      console.log(snapshot)
+      if (snapshot != null) {
+        getemploye()
+      }
+      else {
+        console.log("here")
+        navigation.navigate('Code', { id: route.params.id});
+      }
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
   useEffect(() => {
-    getemploye()
+    checkCompagny()
   }, []);
 
   useEffect(() => {
