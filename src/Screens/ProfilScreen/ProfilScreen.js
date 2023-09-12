@@ -3,12 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { NavBar, ProfilHead, AdressBlock, InformationBlock, PhoneSvg } from '../../Components/index';
 import { getDatabase, ref, child, get } from "firebase/database";
 import firebase from '../../firebase/config';
-import {Screen} from "react-native-screens";
 
 export default function App( { navigation }) {
 
   const [object, setObject] = useState([]);
-    const [objectother, setObjectother] = useState([]);
+  const [objectother, setObjectother] = useState([]);
   const dbRef = ref(getDatabase(firebase));
 
     async function getinfoindatabase() {

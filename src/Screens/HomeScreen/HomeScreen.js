@@ -1,10 +1,6 @@
-
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { useState, useEffect } from 'react';
-import { data } from "../../data/peapool"
-import { Svg, Path, Use } from 'react-native-svg';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import { Svg, Path } from 'react-native-svg';
 
 import Navbar from '../../Components/NavBar/Navbar';
 
@@ -57,7 +53,7 @@ export default function App( { navigation }) {
   }, [datas]);
   
   function funcsearch() {
-    if (search != "") {
+    if (search !== "") {
       let newdata = []
       for (let i = 0; i < datas.length; i++) {
         if (datas[i].name.toLowerCase().includes(search.toLowerCase()) || datas[i].surname.toLowerCase().includes(search.toLowerCase())) {
@@ -94,7 +90,7 @@ export default function App( { navigation }) {
       </View>
       <View style = {styles.filtercontainer}>
         <View style = {styles.searchbarcontainer}>
-          <TextInput style = {styles.searchbar} onSubmitEditing={() => funcsearch()} placeholder = "Search" onChangeText = {(text) => setSearch(text)}></TextInput>     
+          <TextInput style = {styles.searchbar} onSubmitEditing={() => funcsearch()} placeholder = "Search" onChangeText = {(text) => setSearch(text)}></TextInput>
         </View>
         <View style = {styles.filterchoose}>
           <View style = {styles.txtcontainer}>

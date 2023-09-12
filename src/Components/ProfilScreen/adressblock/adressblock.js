@@ -1,8 +1,47 @@
-import { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {Component, useState} from "react";
+import {Modal, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Touchable} from 'react-native';
 import { Svg, Path, Use } from 'react-native-svg';
+import { BlurView } from 'expo-blur';
+import {getDatabase, ref, push} from "firebase/database";
+import firebase from "../../../firebase/config";
 
 export default class adressblock extends Component {
+    state = {
+        modalVisible: true,
+        userAddress: "",
+        subAddress: "",
+    }
+
+    showModal = () => {
+        this.setState({ modalVisible: true });
+    }
+
+    hideModal = () => {
+        this.setState({ modalVisible: false, userAddress: "" });
+    }
+
+    handleAddressInput = (text) => {
+        this.setState({ userAddress: text });
+    }
+
+    handleSubAddressInput = (text) => {
+        this.setState({ subAddress: text });
+    }
+
+    saveAddress = () => {
+        this.hideModal();
+        const db = getDatabase(firebase);
+        const addressRef = ref(db, `users/Theo/address`);
+        push(addressRef, {
+            main: this.state.userAddress,
+            sub: this.state.subAddress,
+        });
+        this.props.alladdress.push({
+            main: this.state.userAddress,
+            sub: this.state.subAddress,
+        })
+    }
+
     render() {
         return (
             <View style = {styles.adressblock}>
@@ -14,16 +53,10 @@ export default class adressblock extends Component {
                     </Svg>
                         <Text style = {styles.adresstxt}>Address</Text>
                     </View>
-                    <View style = {styles.addnewbutton}>
-                    <Svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/Svg">
-                        <Path d="M7.8219 12.2837V5.83588" stroke="#639DE4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <Path d="M9.86182 9.05981H10.5508" stroke="#639DE4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <Path d="M5.09314 9.05981H7.69229" stroke="#639DE4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <Path d="M7.8219 12.2837V5.83588" stroke="#639DE4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <Path d="M2.36439 4.22394C1.51164 5.56993 1 7.24638 1 9.05984C1 13.5089 4.05622 17.1197 7.82193 17.1197C11.5876 17.1197 14.6439 13.5089 14.6439 9.05984C14.6439 4.61081 11.5876 1 7.82193 1C6.84639 1 5.91179 1.2418 5.07269 1.68509" stroke="#639DE4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </Svg>
-                    <Text style = {styles.addnewtxt}>Add new</Text>
-                    </View>
+                    <TouchableOpacity style = {styles.addnewbutton} onPress={this.showModal}>
+                        <Image source={require("../../../../assets/add_icon.png")} resizeMode="cover" style = {styles.icon}/>
+                        <Text style = {styles.addnewtxt}>Add new</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style = {styles.alladress}>
                     {this.props.alladdress.map((item, index) => {
@@ -41,8 +74,43 @@ export default class adressblock extends Component {
                             </View>
                         )})}
                 </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.modalVisible}
+                onRequestClose={this.hideModal}
+            >
+                <BlurView
+                    intensity={20}
+                    tint="dark"
+                    style={styles.modal}
+                >
+                    <View style = {styles.card}>
+                        <TextInput
+                            placeholder="City and Country..."
+                            onChangeText={this.handleAddressInput}
+                            value={this.state.userAddress}
+                            style = {styles.addressform}
+                        />
+                        <TextInput
+                            placeholder="Street Information..."
+                            onChangeText={this.handleSubAddressInput}
+                            value={this.state.subAddress}
+                            style = {styles.addressform}
+                        />
+                        <View style = {styles.buttoncontainer}>
+                            <TouchableOpacity style = {styles.button} title="Save" onPress={this.saveAddress} >
+                                <Text>Save</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style = {styles.button} title="Cancel" onPress={this.hideModal} >
+                                <Text>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </BlurView>
+            </Modal>
             </View>
-        );
+    );
 }
 }
 
@@ -140,5 +208,48 @@ const styles = StyleSheet.create({
         color: '#000000',
         opacity: 0.3,
     },
+    icon: {
+        width: 16,
+        height: 16,
+    },
+    modal: {
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    addressform: {
+        width: "80%",
+        borderRadius: 10,
+        padding: 15,
+        borderColor: "rgba(0, 0, 0, 0.1)",
+        borderWidth: 1,
+        marginBottom: 20,
+    },
+    card: {
+        width: "80%",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: "#EAEAEA",
+        borderRadius: 15,
+        paddingVertical: 20,
+    },
+    buttoncontainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: "80%",
+    },
+    button: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        width: "45%",
+        backgroundColor: "#56AF8D",
+        borderRadius: 10,
+    }
 
 })
