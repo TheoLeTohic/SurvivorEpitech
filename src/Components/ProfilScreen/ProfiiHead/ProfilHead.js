@@ -6,8 +6,8 @@ export default class Navbar extends Component {
         return (
             <View style = {styles.block}>
                 <View style = {styles.nameandtitle}>
-                    <Text style = {styles.name}>Frank Esteban</Text>
-                    <Text style = {styles.title}>Frontend Developer</Text>
+                    {this.props.my && this.props.my.name && this.props.my.surname ? <Text style = {styles.name}>{this.props.my.name} {this.props.my.surname}</Text> : null }
+                    {this.props.my && this.props.my.work ? <Text style = {styles.title}>{this.props.my.work}</Text> : null }
                 </View>
                 <View style = {styles.navbar}>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")} style = {styles.navbaritemother}>

@@ -3,14 +3,22 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 
 export default function App( { navigation }) {
-  const [email, SetEmail] = useState("oliver.lewis@masurao.jp")
-  const [password, SetPassword] = useState("password")
+  const [email, SetEmail] = useState("theoltc@gmail.com")
+  const [password, SetPassword] = useState("Charlie.02")
   const [token, SetToken] = useState("")
 
   function login() {
-    navigation.navigate("Home")
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+          navigation.navigate("Home", {id: userCredential.user.uid})
+      })
+      .catch((error) => {
+          console.log(error);
+      })
     return
     fetch("https://masurao.fr/api/employees/login", {
       method: "POST",
@@ -53,7 +61,7 @@ export default function App( { navigation }) {
         </TouchableOpacity>
       </View>
       <View style = {styles.buttoncontainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {navigation.navigate("Register")}}>
           <Text style = {styles.buttontxt}>Sign Up</Text>
         </TouchableOpacity>
         <TouchableOpacity>

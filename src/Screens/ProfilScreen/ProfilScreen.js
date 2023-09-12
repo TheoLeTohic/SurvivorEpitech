@@ -8,12 +8,29 @@ import {Screen} from "react-native-screens";
 export default function App( { navigation }) {
 
   const [object, setObject] = useState([]);
+  const [myinformation, setMyinformation] = useState();
     const [objectother, setObjectother] = useState([]);
   const dbRef = ref(getDatabase(firebase));
 
+
+  async function getemploye() {
+    await fetch("https://masurao.fr/api/employees/me", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "X-Group-Authorization": "UkPEzS4kSZu07iSS2d2l4OjA4PDfNiGy",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzQsImVtYWlsIjoib2xpdmVyLmxld2lzQG1hc3VyYW8uanAiLCJuYW1lIjoiT2xpdmVyIiwic3VybmFtZSI6Ikxld2lzIiwiZXhwIjoxNjk1ODI3MjQzfQ.-tSPtN90QZpMxWzO2e-VpQdIZmLwZoOa2i6zwTXNR5E"
+      },
+      })
+      .then((response) => response.json())
+      .then((responseData) => {
+        setMyinformation(responseData);
+      })
+  }
+
     async function getinfoindatabase() {
         try {
-          let snapshot = await get(child(dbRef, `users/Theo/address`));
+          let snapshot = await get(child(dbRef, `users/gyst5lXi27NwEGKjzLKVl6yDaOt1/address`));
           snapshot = snapshot.val();
           const tmp = Object.keys(snapshot);
           let objectlist = [];
@@ -29,7 +46,7 @@ export default function App( { navigation }) {
 
       async function getotherinfo() {
         try {
-          let snapshot = await get(child(dbRef, `users/Theo`));
+          let snapshot = await get(child(dbRef, `users/gyst5lXi27NwEGKjzLKVl6yDaOt1`));
           snapshot = snapshot.val();
           setObjectother(snapshot);
         } catch(e) {
@@ -39,16 +56,22 @@ export default function App( { navigation }) {
 
         useEffect(() => {
             getinfoindatabase()
+            getemploye()
             getotherinfo()
         }, []);
 
         useEffect(() => {
+          console.log(object)
         }, [object, objectother])
+
+        useEffect(() => {
+        }, [myinformation])
+  
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../../../assets/background.png')} resizeMode='cover' style={{width: '100%', height: '100%'}}>
                 <View style = {styles.photo}></View>
-                <ProfilHead index = {1} navigation = {navigation}/>
+                <ProfilHead index = {1} navigation = {navigation} my = {myinformation}/>
                     <View style = {styles.pagecontainer}>
                         <ScrollView showsVerticalScrollIndicator={false} >
                             <View style = {styles.body}>
