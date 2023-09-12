@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { NavBar, ProfilHead, AdressBlock, InformationBlock, PhoneSvg } from '../../Components/index';
 import { getDatabase, ref, child, get } from "firebase/database";
 import firebase from '../../firebase/config';
+import req from '../../data/Req.js'
 
 export default function App( { navigation }) {
 
