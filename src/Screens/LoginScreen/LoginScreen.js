@@ -1,6 +1,6 @@
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView,  TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
@@ -113,7 +113,7 @@ export default function App( { navigation }) {
       <View style = {styles.topcircle}></View>
       <View style = {styles.middlecircle}></View>
       <View style = {styles.bottomcontainer}></View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
