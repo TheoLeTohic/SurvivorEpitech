@@ -1,10 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { firebase } from '../../firebase/config'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, child, get, set } from "firebase/database";
+import {LinearGradient} from "expo-linear-gradient";
 
 
 export default function App({ navigation, route }) {
@@ -46,8 +51,15 @@ export default function App({ navigation, route }) {
             console.log(e)
           }
     }
+
     return (
-        <View style={ styles.container }>
+        <View style={styles.container}>
+            <LinearGradient
+                start={{ x: 0.5, y: 0 }}
+                end={{ x: 0.5, y: 1 }}
+                colors={['rgba(0, 0,0,0.7)', 'rgba(0, 154, 117, 1)']}
+                style={styles.background}
+            />
             <View style={ styles.titleContainer }>
                 <Text style={ styles.title }>Enter{"\n"}Company Code</Text>
             </View>
@@ -59,9 +71,11 @@ export default function App({ navigation, route }) {
                 <TextInput maxLength={1} style={ styles.input } onChangeText={txt => Setnb3(txt)} value={nb3}/>
                 <TextInput maxLength={1} style={ styles.input } onChangeText={txt => Setnb4(txt)} value={nb4}/>
             </View>
-            <TouchableOpacity onPress={() => submit()} style= {styles.buttonsubmit}>
-                <Text style = {styles.submittxt}>Submit</Text>
-            </TouchableOpacity>
+            <View style = { styles.buttonContainer }>
+                <TouchableOpacity onPress={() => submit()} style= {styles.buttonsubmit}>
+                    <Text style = {styles.submittxt}>Submit</Text>
+                </TouchableOpacity>
+            </View>
             <View style = {styles.createcontainer}>
                 <Text style = {styles.nottxt}>Not part of any Compagny ?</Text>
                 <TouchableOpacity onPress={() => navigation.navigate("Plan", {id: route.params.id})}><Text style = {styles.createtxt}>Create one</Text></TouchableOpacity>
@@ -77,13 +91,22 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
     },
+    background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: "100%",
+        width: "100%",
+        zIndex: 0,
+    },
     titleContainer: {
         marginTop: 100,
     },
     title: {
         zIndex: 1,
         color: '#FFF',
-        fontSize: 46,
+        fontSize: 34,
         fontStyle: 'normal',
         fontWeight: 'bold',
         left: '9.6%',
@@ -91,19 +114,19 @@ const styles = StyleSheet.create({
     },
     circle1: {
         position: 'absolute',
-        width: '186.666666667%',
-        height: '86.2068965517%',
+        width: 700,
+        height: 700,
         borderRadius: 700 / 2,
-        backgroundColor: '#367CFED9',
+        backgroundColor: '#183D3D',
         top: -414,
-        left: -284,
+        left: -250,
     },
     circle2: {
-        backgroundColor: '#B0CBFF',
+        backgroundColor: '#93B1A6',
         position: 'absolute',
-        width: '122.4%',
-        height: '49.01477%',
-        borderRadius: 459 / 2,
+        width: 450,
+        height: 450,
+        borderRadius: 450 / 2,
         top: 579,
         left: 154,
     },
@@ -124,11 +147,10 @@ const styles = StyleSheet.create({
     },
     input: {
         backgroundColor: '#FFF',
-        borderRadius: 15,
+        borderRadius: 10,
         paddingLeft: 30,
-        marginVertical: 10,
-        width: '20%',
-        height: '20%',
+        width: '22%',
+        height: '22%',
     },
     signup: {
         display: 'flex',
@@ -154,22 +176,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontStyle: 'normal',
     },
-    rectangle1: {
-        backgroundColor: '#367CFE',
-        width: 75,
-        height: 10,
-    },
     buttonsubmit: {
         backgroundColor: "#55BE96",
-        width: "85%",
-        height: "10%",
-        marginLeft: "7.5%",
-        borderRadius: 20,
+        height: "100%",
+        borderRadius: 10,
         alignItems: "center",
         justifyContent: "center",
     },
     submittxt: {
-        fontSize: 32,
+        fontSize: 20,
         fontWeight: "bold",
         color: "#fff",
     },
@@ -177,12 +192,13 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-around",
-        marginTop: "5%",
-        width: "100%",
+        justifyContent: "space-between",
+        marginLeft: "7.5%",
+        marginTop: "8%",
+        width: "83%",
     },
     createtxt: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "bold",
         color: "#fff",
     },
@@ -190,4 +206,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: "#D2D2D2",
     },
+    buttonContainer : {
+        display: "flex",
+        width: "83%",
+        height: "7%",
+        marginLeft: "7.5%",
+        marginTop: "10%",
+    }
 });

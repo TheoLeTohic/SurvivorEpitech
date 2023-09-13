@@ -33,7 +33,10 @@ export default class adressblock extends Component {
             return ;
         this.hideModal();
         const db = getDatabase(firebase);
-        const addressRef = ref(db, `users/${this.props.id}/address`);
+        const addressRef = ref(db, `users/Theo/address`);
+        if (this.state.userAddress === "" || this.state.subAddress === "") {
+            return
+        }
         push(addressRef, {
             main: this.state.userAddress,
             sub: this.state.subAddress,
@@ -88,24 +91,29 @@ export default class adressblock extends Component {
                     style={styles.modal}
                 >
                     <View style = {styles.card}>
+                        <Text style = {styles.cardtitle}>New Address</Text>
+                        <Text style = {styles.citytitle}>City and Country</Text>
                         <TextInput
-                            placeholder="City and Country..."
+                            placeholder="City, Country"
                             onChangeText={this.handleAddressInput}
                             value={this.state.userAddress}
                             style = {styles.addressform}
+                            placeholderTextColor={"rgba(0, 0, 0, 0.1)"}
                         />
+                        <Text style = {styles.citytitle}>Street Information</Text>
                         <TextInput
-                            placeholder="Street Information..."
+                            placeholder="Enter Information"
                             onChangeText={this.handleSubAddressInput}
                             value={this.state.subAddress}
                             style = {styles.addressform}
+                            placeholderTextColor={"rgba(0, 0, 0, 0.1)"}
                         />
                         <View style = {styles.buttoncontainer}>
-                            <TouchableOpacity style = {styles.button} title="Save" onPress={this.saveAddress} >
-                                <Text>Save</Text>
+                            <TouchableOpacity style = {styles.cancelbutton} title="Cancel" onPress={this.hideModal} >
+                                <Text style = {{color: "#000000"}}>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style = {styles.button} title="Cancel" onPress={this.hideModal} >
-                                <Text>Cancel</Text>
+                            <TouchableOpacity style = {styles.savebutton} title="Save" onPress={this.saveAddress} >
+                                <Text style = {{color: "#fff", fontWeight: "400"}}>Save</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -223,8 +231,8 @@ const styles = StyleSheet.create({
     },
     addressform: {
         width: "80%",
-        borderRadius: 10,
-        padding: 15,
+        borderRadius: 5,
+        padding: 10,
         borderColor: "rgba(0, 0, 0, 0.1)",
         borderWidth: 1,
         marginBottom: 20,
@@ -244,14 +252,40 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: "80%",
     },
-    button: {
+    savebutton: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 10,
         width: "45%",
-        backgroundColor: "#56AF8D",
-        borderRadius: 10,
-    }
+        backgroundColor: "#2FDB73",
+        borderWidth: 1,
+        borderColor: "rgba(0, 0, 0, 0.1)",
+        borderRadius: 5,
+    },
+    cancelbutton: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        width: "45%",
+        backgroundColor: "#EAEAEA",
+        borderWidth: 1,
+        borderColor: "rgba(0, 0, 0, 0.1)",
+        borderRadius: 5,
+    },
+    cardtitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        width: "80%",
+        marginBottom: 30,
+    },
+    citytitle: {
+        fontSize: 14,
+        color: "#636363",
+        fontWeight: '400',
+        width: "80%",
+        marginBottom: 10,
+    },
 
 })

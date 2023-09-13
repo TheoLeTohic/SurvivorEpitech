@@ -1,6 +1,6 @@
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView,  TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
@@ -59,15 +59,38 @@ export default function App( { navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
-        colors={['rgba(0, 0,0,0.7)', 'rgba(0, 154, 117, 1)']}
-        style={styles.background}
-        />
-      <View style = {styles.titlecontainer}>
-        <Text style = {styles.title}>Welcome{"\n"} Back</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <LinearGradient
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+          colors={['rgba(0, 0,0,0.7)', 'rgba(0, 154, 117, 1)']}
+          style={styles.background}
+          />
+        <View style = {styles.titlecontainer}>
+          <Text style = {styles.title}>Welcome{"\n"} Back</Text>
+        </View>
+        <View style = {styles.form}>
+          <TextInput style = {styles.txtinput} value={email} placeholder='Your Email' onChange={(txt) => SetEmail(txt)}/>
+          <TextInput style = {styles.txtinput} value={password} placeholder='Password' onChange={(txt) => SetPassword(txt)}/>
+        </View>
+        <View style = {styles.arrowcontainer}>
+          <Text style = {styles.signinText}>Sign in</Text>
+          <TouchableOpacity onPress={() => login()}>
+            <View style = {styles.arrow}></View>
+          </TouchableOpacity>
+        </View>
+        <View style = {styles.buttoncontainer}>
+          <TouchableOpacity onPress={() => {navigation.navigate("Register")}}>
+            <Text style = {styles.buttontxt}>Sign Up</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style = {styles.buttontxt}>Forgot Passwords</Text>
+          </TouchableOpacity>
+        </View>
+        <View style = {styles.topcircle}></View>
+        <View style = {styles.middlecircle}></View>
+        <View style = {styles.bottomcontainer}></View>
       </View>
       <View style = {styles.form}>
         <TextInput style = {styles.txtinput} value={email} placeholder='Your Email' onChangeText={(txt) => SetEmail(txt)}/>

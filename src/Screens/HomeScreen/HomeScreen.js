@@ -5,6 +5,8 @@ import { Svg, Path, Use } from 'react-native-svg';
 import { getDatabase, ref, child, get } from "firebase/database";
 import Navbar from '../../Components/NavBar/Navbar';
 import firebase from '../../firebase/config';
+import req from '../../data/Req.js'
+import { Buffer } from 'buffer';
 
 
 export default function App({ navigation, route }) {
@@ -12,24 +14,54 @@ export default function App({ navigation, route }) {
   const [datas, setDatas] = useState([])
   const [all, setAll] = useState([])
   const [search, setSearch] = useState("")
+  const [employeesPicture, setEmployeesPicture] = useState(new Map());
+  const bearer_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzQsImVtYWlsIjoib2xpdmVyLmxld2lzQG1hc3VyYW8uanAiLCJuYW1lIjoiT2xpdmVyIiwic3VybmFtZSI6Ikxld2lzIiwiZXhwIjoxNjk1ODI3MjQzfQ.-tSPtN90QZpMxWzO2e-VpQdIZmLwZoOa2i6zwTXNR5E"
 
   async function getemploye() {
-    await fetch("https://masurao.fr/api/employees", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "X-Group-Authorization": "UkPEzS4kSZu07iSS2d2l4OjA4PDfNiGy",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzQsImVtYWlsIjoib2xpdmVyLmxld2lzQG1hc3VyYW8uanAiLCJuYW1lIjoiT2xpdmVyIiwic3VybmFtZSI6Ikxld2lzIiwiZXhwIjoxNjk1ODI3MjQzfQ.-tSPtN90QZpMxWzO2e-VpQdIZmLwZoOa2i6zwTXNR5E"
-      },
-      })
-      .then((response) => response.json())
-      .then((responseData) => {
-        for (let i = 0; i < responseData.length; i++) {
-          responseData[i].isopen = false
-        }
-        setDatas(responseData)
-        setAll(responseData)
-      })
+    await req.doReq(bearer_token, "https://masurao.fr/api/employees").then((res) => res.json()).then((responseData) => {
+      for (let i = 0; i < responseData.length; i++) {
+        responseData[i].isopen = false
+      }
+      setDatas(responseData)
+      setAll(responseData)
+    })
+  }
+
+  async function transformPicture(picture) {
+    const arrayBuffer = await picture.arrayBuffer();
+    const base64 = Buffer.from(arrayBuffer).toString('base64');
+    return Promise.resolve('data:image/png;base64,' + base64);
+  }
+  
+  useEffect(() => {
+    async function getPicture() {
+      for (let i = 0; i < datas.length; i++) {
+        const image = await req.doReq(bearer_token, `https://masurao.fr/api/employees/${datas[i].id}/image`);
+        const transformedImage = await transformPicture(image);
+        setEmployeesPicture(prevState => new Map(prevState).set(datas[i].id, transformedImage));
+      }
+    }
+
+    if (datas.length > 0) {
+      getPicture();
+    }
+  },[datas])
+
+  async function checkCompagny() {
+    try {
+      let snapshot = await get(child(dbRef, `users/${route.params.id}/cmp`));
+      snapshot = snapshot.val();
+      console.log(snapshot)
+      if (snapshot != null) {
+        getemploye()
+      }
+      else {
+        console.log("here")
+        navigation.navigate('Code', { id: route.params.id});
+      }
+    } catch(e) {
+      console.log(e)
+    }
   }
 
   useEffect(() => {
@@ -123,16 +155,22 @@ export default function App({ navigation, route }) {
         index % 2 == 0 ? (
           (goal.isopen == false ? (
           <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.card}>
-        <View style = {styles.leftcard}></View>
-        <View style = {styles.rightcard}>
-          <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-          <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
-        </View>
-      </TouchableOpacity>
+            {!employeesPicture.has(goal.id) && <View style = {styles.leftcard}></View>}
+            {employeesPicture.has(goal.id) && (
+              <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcard} />
+            )}
+            <View style = {styles.rightcard}>
+              <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
+              <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
+            </View>
+          </TouchableOpacity>
           ) : (
             <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
         <View style= {styles.topcard}>
-          <View style = {styles.leftcarddev}></View>
+          {!employeesPicture.has(goal.id) && <View style = {styles.leftcarddev}></View>}
+            {employeesPicture.has(goal.id) && (
+              <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcarddev} />
+          )}
           <View style = {styles.rightcarddev}>
           <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
           <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
@@ -148,16 +186,24 @@ export default function App({ navigation, route }) {
         ) : (
           (goal.isopen == false ? (
             <TouchableOpacity key={index} style = {styles.cardopo} onPress = {() => toggleOpen(index)}>
-            <View style = {styles.rightcardopo}>
-            <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
-          <Text style = {styles.jobtxtopo}>{"Frontend Developer"}</Text>
-            </View>
-            <View style = {styles.leftcardopo}></View>
-          </TouchableOpacity>
+              <View style = {styles.rightcardopo}>
+                
+                <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
+                <Text style = {styles.jobtxtopo}>{"Frontend Developer"}</Text>
+              </View>
+              {!employeesPicture.has(goal.id) && <View style = {styles.leftcardopo}></View>}
+                {/* {employeesPicture.has(goal.id) && <Text>Hey</Text>} */}
+                {employeesPicture.has(goal.id) && (
+                  <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcardopo} />
+                )}
+            </TouchableOpacity>
             ) : (
               <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
           <View style= {styles.topcard}>
-            <View style = {styles.leftcarddev}></View>
+            {!employeesPicture.has(goal.id) && <View style = {styles.leftcarddev}></View>}
+              {employeesPicture.has(goal.id) && (
+                <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcarddev} />
+            )}
             <View style = {styles.rightcarddev}>
             <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
             <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
@@ -190,8 +236,6 @@ const styles = StyleSheet.create({
   img: {
     borderRadius: 50,
   },
-
-
 
   hellocontainer: {
     width: "100%",
