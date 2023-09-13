@@ -4,7 +4,7 @@ import { NavBar, ProfilHead, AdressBlock, InformationBlock, PhoneSvg } from '../
 import { getDatabase, ref, child, get } from "firebase/database";
 import firebase from '../../firebase/config';
 
-export default function App( { navigation }) {
+export default function App( { navigation, route }) {
 
   const [object, setObject] = useState([]);
   const [myinformation, setMyinformation] = useState();
@@ -74,14 +74,14 @@ export default function App( { navigation }) {
                     <View style = {styles.pagecontainer}>
                         <ScrollView showsVerticalScrollIndicator={false} >
                             <View style = {styles.body}>
-                                <AdressBlock alladdress = {object}/>
+                                <AdressBlock alladdress = {object} id = {route.params.id} code = {route.params.code}/>
                                 <InformationBlock icon = {1} txt = {"Mobile"} value = {objectother.phone}/>
                                 <InformationBlock icon = {2} txt = {"Email"} value = {objectother.Email} />
                             </View>
                             <View style = {{height: 120}}/>
                         </ScrollView>
                     </View>
-                <NavBar navigation={navigation} index = {5}/>
+                <NavBar navigation={navigation} index = {5} id = {route.params.id} code = {route.params.code}/>
             </ImageBackground>
         </View>
     );

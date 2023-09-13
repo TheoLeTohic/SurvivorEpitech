@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { NavBar, ProfilHead, TeamMember, ExtraBlock } from '../../Components/index';
 import {Path, Svg} from "react-native-svg";
 
-export default function App( { navigation }) {
+export default function App( { navigation, route }) {
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../../../assets/background.png')} resizeMode='cover' style={{width: '100%', height: '100%'}}>
@@ -11,13 +11,13 @@ export default function App( { navigation }) {
                 <ProfilHead index = {3} navigation = { navigation }/>
                 <View style = {styles.pagecontainer}>
                     <View style = {styles.body}>
-                        <ExtraBlock value = { "34" } desc = { "years old" } title = { "Age" } icon = {require("../../../assets/calendar.png")}/>
-                        <ExtraBlock value = { "34" } desc = { "years old" } title = { "Age" } icon = {require("../../../assets/calendar.png")}/>
-                        <ExtraBlock value = { "34" } desc = { "years old" } title = { "Age" } icon = {require("../../../assets/calendar.png")}/>
-                        <ExtraBlock value = { "34" } desc = { "years old" } title = { "Age" } icon = {require("../../../assets/calendar.png")}/>
+                        <ExtraBlock value = { "34" } desc = { "years old" } title = { "Age" } icon = {require("../../../assets/Calendar.png")}/>
+                        <ExtraBlock value = { "34" } desc = { "years old" } title = { "Age" } icon = {require("../../../assets/Calendar.png")}/>
+                        <ExtraBlock value = { "34" } desc = { "years old" } title = { "Age" } icon = {require("../../../assets/Calendar.png")}/>
+                        <ExtraBlock value = { "34" } desc = { "years old" } title = { "Age" } icon = {require("../../../assets/Calendar.png")}/>
                     </View>
                 </View>
-            <NavBar navigation={navigation} index = {5}/>
+            <NavBar navigation={navigation} index = {5} id = {route.params.id} code = {route.params.code}/>
             </ImageBackground>
         </View>
     );

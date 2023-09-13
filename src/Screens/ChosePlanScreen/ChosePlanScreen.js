@@ -3,12 +3,14 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import { set } from 'firebase/database';
+import { firebase } from '../../firebase/config'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, child, get, set } from "firebase/database";
 
-export default function App( { navigation }) {
+export default function App( { navigation, route }) {
   const [number, setNumber] = useState(1)
+  const [state, setState] = useState("")
 
   function onSwipe(gestureName, gestureState) {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
@@ -31,12 +33,44 @@ export default function App( { navigation }) {
         break;
     }
   }
-
-    const config = {
+  const config = {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
-    };
+  };
+  function setCompagnytouser(nbr) {
+      console.log(nbr)
+      console.log(route.params.id)
+      set(ref(getDatabase(firebase), 'users/' + route.params.id + '/cmp'), {
+          compagny: nbr,
+      });
+  }
 
+  function createCompagny() {
+    set(ref(getDatabase(firebase), 'factory/' + state), {
+        compagny: state,
+        type: 1,
+        maxmembers: 10,
+        members: 1,
+        autorizewidgets: {autorizewidgets: "Calendar,Meteo,Task"},
+        memberList: {"0": {id: route.params.id, name: "Theo", role: "admin"}},
+    });
+    setCompagnytouser(state)
+    navigation.navigate("Payment", {id: route.params.id, code: state})
+  }
+
+  function generateRandomNumber () {
+    // Generate a random number between 1000 and 9999
+    const min = 1000;
+    const max = 9999;
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    setState(randomNumber);
+  };
+
+  useEffect(() => {
+    generateRandomNumber();
+  }
+  , []);
 
   return (
     <View style={styles.container}>
@@ -75,7 +109,7 @@ export default function App( { navigation }) {
         : null}
       </View>
       </GestureRecognizer>
-      <TouchableOpacity onPress={() => navigation.navigate("Payment")} style = {styles.buttonsubmit}>
+      <TouchableOpacity onPress={() => createCompagny()} style = {styles.buttonsubmit}>
         <Text style = {styles.buttonsubmittext}>Confirm</Text>
       </TouchableOpacity>
       <View style = {styles.topcircle}></View>

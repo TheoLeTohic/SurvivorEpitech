@@ -2,7 +2,7 @@ import {StyleSheet, View, ImageBackground, ScrollView} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { NavBar, ProfilHead, AdressBlock, InformationBlock, TeamMember } from '../../Components/index';
 
-export default function App( { navigation }) {
+export default function App( { navigation, route }) {
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../../../assets/background.png')} resizeMode='cover' style={{width: '100%', height: '100%'}}>
@@ -24,7 +24,7 @@ export default function App( { navigation }) {
                         <View style = {{height: 100}}/>
                     </ScrollView>
                 </View>
-            <NavBar navigation={navigation} index = {5}/>
+            <NavBar navigation={navigation} index = {5} id = {route.params.id} code = {route.params.code}/>
             </ImageBackground>
         </View>
     );

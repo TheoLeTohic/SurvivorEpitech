@@ -11,7 +11,7 @@ export default function App({ navigation, route }) {
     const [date, setDate] = useState("")
     const [cvv, setCvv] = useState("")
     const [name, setName] = useState("")
-    const [cardFace, setCardFace] = useState(2)
+    const [cardFace, setCardFace] = useState(1)
 
     function cardFlip(nbr) {
         if (nbr == cardFace)
@@ -114,7 +114,7 @@ export default function App({ navigation, route }) {
                 </View>
                 </View>
             </View>
-            <TouchableOpacity style= {styles.buttonsubmit}>
+            <TouchableOpacity style= {styles.buttonsubmit} onPress={() => navigation.navigate("Home", {id: route.params.id, code: route.params.code})}>
                 <Text style = {styles.submittxt}>Confirm Payment</Text>
             </TouchableOpacity>
         </View>

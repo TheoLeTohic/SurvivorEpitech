@@ -29,9 +29,11 @@ export default class adressblock extends Component {
     }
 
     saveAddress = () => {
+        if (this.state.userAddress == "" || this.state.subAddress == "")
+            return ;
         this.hideModal();
         const db = getDatabase(firebase);
-        const addressRef = ref(db, `users/Theo/address`);
+        const addressRef = ref(db, `users/${this.props.id}/address`);
         push(addressRef, {
             main: this.state.userAddress,
             sub: this.state.subAddress,

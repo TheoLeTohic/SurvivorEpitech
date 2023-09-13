@@ -1,20 +1,39 @@
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import { getDatabase, ref, child, get, set } from "firebase/database";
+import firebase from '../../firebase/config';
 
 export default function App( { navigation }) {
+  const dbRef = ref(getDatabase());
   const [email, SetEmail] = useState("theoltc@gmail.com")
   const [password, SetPassword] = useState("Charlie.02")
   const [token, SetToken] = useState("")
+
+
+  async function getcompagnyWidgets(id) {
+    try {
+      let snapshot = await get(child(dbRef, `users/${id}/cmp`));
+      snapshot = snapshot.val();
+      if (snapshot != null) {
+        navigation.navigate("Home", {id: id, code: snapshot.compagny})
+      }
+      else {
+        navigation.navigate('Code', { id: id});
+      }
+    } catch(e) {
+        console.log(e)
+    }
+}
 
   function login() {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-          navigation.navigate("Home", {id: userCredential.user.uid})
+          getcompagnyWidgets(userCredential.user.uid)
       })
       .catch((error) => {
           console.log(error);
@@ -51,8 +70,8 @@ export default function App( { navigation }) {
         <Text style = {styles.title}>Welcome{"\n"} Back</Text>
       </View>
       <View style = {styles.form}>
-        <TextInput style = {styles.txtinput} value={email} placeholder='Your Email' onChange={(txt) => SetEmail(txt)}/>
-        <TextInput style = {styles.txtinput} value={password} placeholder='Password' onChange={(txt) => SetPassword(txt)}/>
+        <TextInput style = {styles.txtinput} value={email} placeholder='Your Email' onChangeText={(txt) => SetEmail(txt)}/>
+        <TextInput style = {styles.txtinput} value={password} placeholder='Password' onChangeText={(txt) => SetPassword(txt)}/>
       </View>
       <View style = {styles.arrowcontainer}>
         <Text style = {styles.signinText}>Sign in</Text>
@@ -134,17 +153,17 @@ const styles = StyleSheet.create({
   },
   titlecontainer: {
     zIndex: 10,
-    top: "15%",
-    left: "16.2%"
+    marginTop: "35%",
+    marginLeft: "17.2%",
   },
-  title :{
+  title : {
     fontSize: 50,
     color: "#fff",
     fontWeight: "bold",
   },
   form :{
     marginLeft: "10%",
-    marginTop: '75%',
+    marginTop: '30%',
     zIndex: 11,
   },
   txtinput: {

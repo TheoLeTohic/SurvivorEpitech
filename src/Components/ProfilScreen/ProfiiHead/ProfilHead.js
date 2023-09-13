@@ -10,13 +10,13 @@ export default class Navbar extends Component {
                     {this.props.my && this.props.my.work ? <Text style = {styles.title}>{this.props.my.work}</Text> : null }
                 </View>
                 <View style = {styles.navbar}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")} style = {styles.navbaritemother}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile", {id: this.props.id, code: this.props.code})} style = {styles.navbaritemother}>
                         {this.props.index === 1 ? <Text style ={styles.selected}>Personal info</Text> : <Text style ={styles.unselected}>Personal info</Text>}
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Profilsecond")} style = {styles.navbaritem}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Profilsecond", {id: this.props.id, code: this.props.code})} style = {styles.navbaritem}>
                     {this.props.index === 2 ? <Text style ={styles.selected}>Team</Text> : <Text style ={styles.unselected}>Team</Text>}
                     </TouchableOpacity>
-                    <TouchableOpacity style = {styles.navbaritemwithou} onPress={() => this.props.navigation.navigate("ProfilThird")}>
+                    <TouchableOpacity style = {styles.navbaritemwithou} onPress={() => this.props.navigation.navigate("ProfilThird", {id: this.props.id, code: this.props.code})}>
                     {this.props.index === 3 ? <Text style ={styles.selected}>Extra</Text> : <Text style ={styles.unselected}>Extra</Text>}
                     </TouchableOpacity>
                 </View>

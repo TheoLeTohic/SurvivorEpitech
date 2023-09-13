@@ -11,3 +11,7 @@ export { default as PhoneSvg } from './ProfilScreen/adressblock/svgComponent/pho
 export { default as TeamMember } from './ProfilScreen/TeamMember/TeamMenber'
 export { default as AddWidget } from './Widgets/addWidjets/addWidget'
 export { default as ExtraBlock } from './ProfilScreen/ExtraBlock/ExtraBlock'
+export { default as NewEmployeesBlock } from './AdminScreen/NewEmployeesBlock/NewEmployeesBlock'
+export { default as TotalEmployees } from './AdminScreen/TotalEmployees/TotalEmployees'
+export { default as CompagnyCode } from './AdminScreen/COmpagnyCode/CompagnyCode'
+export { default as EmployeesList } from './AdminScreen/EmployeesList/EmployeesList'

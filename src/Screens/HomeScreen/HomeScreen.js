@@ -32,27 +32,9 @@ export default function App({ navigation, route }) {
       })
   }
 
-  async function checkCompagny() {
-    try {
-      let snapshot = await get(child(dbRef, `users/${route.params.id}/cmp`));
-      snapshot = snapshot.val();
-      console.log(snapshot)
-      if (snapshot != null) {
-        getemploye()
-      }
-      else {
-        console.log("here")
-        navigation.navigate('Code', { id: route.params.id});
-      }
-    } catch(e) {
-      console.log(e)
-    }
-  }
-
   useEffect(() => {
-    checkCompagny()
+    getemploye()
   }, []);
-
   useEffect(() => {
   }, [datas]);
 
@@ -193,7 +175,7 @@ export default function App({ navigation, route }) {
         <View style = {{height: 100}}></View>
       </ScrollView>
       </View>
-      <Navbar navigation={navigation} index = {1}/>
+      <Navbar navigation={navigation} index = {1} id = {route.params.id} code = {route.params.code}/>
     </View>
   );
 }
