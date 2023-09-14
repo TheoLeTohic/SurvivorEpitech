@@ -14,7 +14,7 @@ export default function App({ navigation }) {
     const auth = getAuth();
     const db = getDatabase(firebase);
     const [user, setUser] = useState("test");
-    const [email, setEmail] = useState("theoltc@gmail.com");
+    const [email, setEmail] = useState("testmail@gmail.com");
     const [password, setPassword] = useState("Charlie.02");
     const [name, setName] = useState("test");
     const [surname, setSurname] = useState("test");

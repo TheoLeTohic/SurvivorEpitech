@@ -37,9 +37,8 @@ export default function App( { navigation, route }) {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
   };
+
   function setCompagnytouser(nbr) {
-      console.log(nbr)
-      console.log(route.params.id)
       set(ref(getDatabase(firebase), 'users/' + route.params.id + '/cmp'), {
           compagny: nbr,
       });

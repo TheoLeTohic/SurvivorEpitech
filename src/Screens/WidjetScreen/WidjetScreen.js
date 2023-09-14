@@ -4,7 +4,6 @@ import { NavBar, MeteoSmall, TaskSmall, CalendarSmall, CalendarBig, MeteoBig, Ad
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 import * as Location from "expo-location";
-import { WidgetComponent } from "../../Components/Widgets/WidgetComponent";
 import MapView, { Marker } from "react-native-maps";
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
@@ -14,11 +13,12 @@ export default function App( { navigation, route }) {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
   const [city, setCity] = useState(["Barcelona", "Paris", "London"])
-  const [cityWeather, setCityWeather] = useState([])
+  const [cityweather, setCityWeather] = useState([])
+  const [weather, Setweather] = useState()
   const [cityIndex, setCityIndex] = useState(1)
   const [temp, setTemp] = useState(false)
-  const [newOpen, setNewOpen] = useState(false)
-  const [authorizeWidgets, setAuthorizeWidgets] = useState([])
+  const [newopen, setNewopen] = useState(false)
+  const [autorizewidgets, setAutorizewidgets] = useState([])
 
   function push() {
     setTemp(!temp)
@@ -34,9 +34,9 @@ export default function App( { navigation, route }) {
         objectlist.push(snapshot[obj]);
       }
       objectlist = objectlist[0].split(",");
-      setAuthorizeWidgets(objectlist);
+      setAutorizewidgets(objectlist);
     } catch(e) {
-      setAuthorizeWidgets("error");
+      setAutorizewidgets("error");
     }
   }
   
@@ -46,20 +46,20 @@ export default function App( { navigation, route }) {
   }, [])
 
   useEffect(() => {
-    if (authorizeWidgets.length > 0 && allwidgets.length > 0) {
+    if (autorizewidgets.length > 0 && allwidgets.length > 0) {
       const tmp = [];
       for (const widget of allwidgets) {
-        if (authorizeWidgets.includes(widget.name)) {
+        if (autorizewidgets.includes(widget.name)) {
           tmp.push(widget);
         }
       }
       SetAllWidgets(tmp);
     }
-  }, [authorizeWidgets, allwidgets])
+  }, [autorizewidgets, allwidgets])
 
 
   function remove(id) {
-    const tmp = allwidgets.filter((item) => item.index !== id);
+    const tmp = allwidgets.filter((item) => item.index != id);  
     SetAllWidgets(tmp);
     try {
       set(child(dbRef, `users/${route.params.id}/widgets/${id}`), null);
@@ -68,8 +68,8 @@ export default function App( { navigation, route }) {
     }
   }
 
-  function otherNewOpen() {
-    setNewOpen(newOpen)
+  function othernewopen() {
+    setNewopen(!newopen)
   }
 
   const [object, setObject] = useState([]);
@@ -81,13 +81,13 @@ export default function App( { navigation, route }) {
       let snapshot = await get(child(dbRef, `users/${route.params.id}/widgets`));
       snapshot = snapshot.val();
       const tmp = Object.keys(snapshot);
-      let objectList = [];
+      let objectlist = [];
       for (const obj of tmp) {
-        objectList.push(snapshot[obj]);
+        objectlist.push(snapshot[obj]);
       }
-      SetAllWidgets(objectList);
+      SetAllWidgets(objectlist);
     } catch(e) {
-        SetAllWidgets("error");
+      SetAllWidgets("error");
     }
   }
 
@@ -116,7 +116,11 @@ export default function App( { navigation, route }) {
     const tmp = [...allwidgets];
     tmp.push({name: activity, type: type, index: allwidgets.length})
     try {
+      if (type == "small") {
+        set(child(dbRef, `users/${route.params.id}/widgets/${allwidgets.length}`), {name: "duo", type: type, index: allwidgets.length, content: {0: {name: activity, type: type, index: "0"}}});
+      } else {
       set(child(dbRef, `users/${route.params.id}/widgets/${allwidgets.length}`), {name: activity, type: type, index: allwidgets.length});
+      }
     } catch(e) {
       console.log(e);
     }
@@ -128,11 +132,11 @@ export default function App( { navigation, route }) {
       let snapshot = await get(child(dbRef, `users/gyst5lXi27NwEGKjzLKVl6yDaOt1/todo`));
       snapshot = snapshot.val();
       const tmp = Object.keys(snapshot);
-      let objectList = [];
+      let objectlist = [];
       for (const obj of tmp) {
-        objectList.push(snapshot[obj]);
+        objectlist.push(snapshot[obj]);
       }
-      setObject(objectList);
+      setObject(objectlist);
     } catch(e) {
       setObject("error");
     }
@@ -162,7 +166,7 @@ export default function App( { navigation, route }) {
   }, [])
 
   useEffect(() => {
-  }, [cityWeather])
+  }, [cityweather])
 
   useEffect(() => {
   }, [cityIndex])
@@ -182,18 +186,22 @@ export default function App( { navigation, route }) {
       {allwidgets.map((item, index) => (
         console.log(item.name),
         <View key={index} style = {styles.test}>
-          {item.name == "Calendar" && item.type == "small" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
-          {item.name == "Meteo" && item.type == "small" ? <MeteoBig city = {city} cityWeather = {cityWeather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
-          {item.name == "Calendar" && item.type == "big" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+          {item.name == "Calendar" && item.type == "big" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+          {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
+          {item.name == "Calendar" && item.type == "small" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
 
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
-                items.name == "Meteo" ? <MeteoSmall city = {city} cityWeather = {cityWeather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : null
+                console.log(items.name),
+                items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : console.log("no"),
+                items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null,
+                items.name == "Task" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null
               ))}
             </View> : null}
         </View>
         ))}
         <View style = {styles.orga}>
+        <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove}/>
         <View style = {{height: 168, width: "45%", borderRadius: 20, marginTop: 20}}>
         <MapView style={styles.map} initialRegion={initialRegion}>
           {currentLocation && (
@@ -208,17 +216,17 @@ export default function App( { navigation, route }) {
         </MapView>
         </View>
         </View>
-        <View style = {{height: 200}}></View>
+        <View style = {{height: 300}}></View>
       </ScrollView>
-      <AddWidget newwidget = {newwidget} open = {newOpen} toopen = {otherNewOpen}></AddWidget>
-      <NavBar navigation = {navigation} open = {newOpen} toopen = {otherNewOpen} index = {4} id = {route.params.id} code = {route.params.code} me = {route.params.me}></NavBar>
+      <AddWidget newwidget = {newwidget} open = {newopen} toopen = {othernewopen}></AddWidget>
+      <NavBar navigation = {navigation} open = {newopen} toopen = {othernewopen} index = {4} id = {route.params.id} code = {route.params.code} me = {route.params.me}></NavBar>
     </GestureRecognizer>
   );
 }
 
 const styles = StyleSheet.create({
 
-  orga : { 
+  orga : {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",

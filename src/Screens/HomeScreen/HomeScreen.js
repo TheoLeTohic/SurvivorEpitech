@@ -57,6 +57,8 @@ export default function App({ navigation, route }) {
   }
 
   useEffect(() => {
+    if (datas == undefined)
+      setDatas([])
     if (datas.length > 0) {
       console.log(datas.length)
       console.log(datas.filter((data) => data.cmp.compagny == route.params.code).length)
@@ -132,10 +134,7 @@ export default function App({ navigation, route }) {
         index % 2 == 0 ? (
           (goal.isopen == false ? (
           <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.card}>
-            {!employeesPicture.has(goal.id) && <View style = {styles.leftcard}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>}
-            {employeesPicture.has(goal.id) && (
-              <Image source={{ url: "https://random.imagecdn.app/150/150" }} style={styles.leftcard} />
-            )}
+            <View style = {styles.leftcard}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>
             <View style = {styles.rightcard}>
               <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
               <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
