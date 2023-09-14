@@ -37,6 +37,27 @@ export default function App( { navigation, route }) {
         setPrevmonth(11);
     const [prevMonthmaxday, setPrevMonthmaxday] = useState(new Date(year, prevmonth + 1, 0).getDate());
 
+    function onSwipe(gestureName, gestureState) {
+        const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+        switch (gestureName) {  
+          case SWIPE_UP:
+            console.log("up");
+            break;
+          case SWIPE_DOWN:
+            console.log("down");
+            break;
+          case SWIPE_LEFT:
+            break;
+          case SWIPE_RIGHT:
+            navigation.goBack();
+            break;
+        }
+      }
+
+      const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+      };
     draw = () => {
         let days = [];
         let week = [];
@@ -133,6 +154,10 @@ export default function App( { navigation, route }) {
     }, [displaydayEvents]);
 
   return (
+    <GestureRecognizer
+    onSwipe={(direction, state) => onSwipe(direction, state)}
+    config={config}
+    style={{flex: 1}}>
     <View style={styles.container}>
         <View style={styles.calendar}>
             <View style={styles.topcontainer}>
@@ -240,6 +265,7 @@ export default function App( { navigation, route }) {
             </BlurView>
         </Modal>
     </View>
+    </GestureRecognizer>
   );
 }
 
