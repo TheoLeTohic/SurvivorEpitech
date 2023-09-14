@@ -9,7 +9,7 @@ import { Path, Svg } from 'react-native-svg';
 
 export default function App( { navigation }) {
   const dbRef = ref(getDatabase());
-  const [email, SetEmail] = useState("Theoltc@gmail.com")
+  const [email, SetEmail] = useState("testmail@gmail.com")
   const [password, SetPassword] = useState("Charlie.02")
   const [token, SetToken] = useState("")
 
@@ -53,8 +53,8 @@ export default function App( { navigation }) {
           <Text style = {styles.title}>Welcome{"\n"} Back</Text>
       </View>
       <View style = {styles.form}>
-          <TextInput style = {styles.txtinput} value={email} placeholder='Your Email' onChange={(txt) => SetEmail(txt)}/>
-          <TextInput style = {styles.txtinput} secureTextEntry={true} value={password} placeholder='Password' onChange={(txt) => SetPassword(txt)}/>
+          <TextInput style = {styles.txtinput} value={email} placeholder='Your Email' onChangeText={(txt) => SetEmail(txt)}/>
+          <TextInput style = {styles.txtinput} secureTextEntry={true} value={password} placeholder='Password' onChangeText={(txt) => SetPassword(txt)}/>
         </View>
         <View style = {styles.arrowcontainer}>
           <Text style = {styles.signinText}>Sign in</Text>

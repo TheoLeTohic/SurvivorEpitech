@@ -123,7 +123,11 @@ export default function App( { navigation, route }) {
     const tmp = [...allwidgets];
     tmp.push({name: activity, type: type, index: allwidgets.length})
     try {
+      if (type == "small") {
+        set(child(dbRef, `users/${route.params.id}/widgets/${allwidgets.length}`), {name: "duo", type: type, index: allwidgets.length, content: {0: {name: activity, type: type, index: "0"}}});
+      } else {
       set(child(dbRef, `users/${route.params.id}/widgets/${allwidgets.length}`), {name: activity, type: type, index: allwidgets.length});
+      }
     } catch(e) {
       console.log(e);
     }
@@ -200,18 +204,22 @@ export default function App( { navigation, route }) {
       {allwidgets.map((item, index) => (
         console.log(item.name),
         <View key={index} style = {styles.test}>
-          {item.name == "Calendar" && item.type == "small" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
-          {item.name == "Meteo" && item.type == "small" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
-          {item.name == "Calendar" && item.type == "big" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+          {item.name == "Calendar" && item.type == "big" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+          {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
+          {item.name == "Calendar" && item.type == "small" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
 
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
-                items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : null
+                console.log(items.name),
+                items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : console.log("no"),
+                items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null,
+                items.name == "Task" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null
               ))}
             </View> : null}
         </View>
         ))}
         <View style = {styles.orga}>
+        <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove}/>
         <View style = {{height: 168, width: "45%", borderRadius: 20, marginTop: 20}}>
         <MapView style={styles.map} initialRegion={initialRegion}>
           {currentLocation && (
@@ -226,7 +234,7 @@ export default function App( { navigation, route }) {
         </MapView>
         </View>
         </View>
-        <View style = {{height: 200}}></View>
+        <View style = {{height: 300}}></View>
       </ScrollView>
       <AddWidget newwidget = {newwidget} open = {newopen} toopen = {othernewopen}></AddWidget>
       <NavBar navigation = {navigation} open = {newopen} toopen = {othernewopen} index = {4} id = {route.params.id} code = {route.params.code} me = {route.params.me}></NavBar>
@@ -236,7 +244,7 @@ export default function App( { navigation, route }) {
 
 const styles = StyleSheet.create({
 
-  orga : { 
+  orga : {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",

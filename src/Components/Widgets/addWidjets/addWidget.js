@@ -24,12 +24,12 @@ class CalendarBig extends Component {
             <>
             {this.props.open == false ? <TouchableOpacity onPress={() => this.props.toopen()} style = {styles.roundstyle}></TouchableOpacity> : (
             <TouchableOpacity onPress={() => this.props.toopen()} style = {styles.screen}>
-                <View style={styles.menustyle}>
+                <TouchableOpacity onPress={() => this.setActivity("")} style={styles.menustyle}>
                 {this.state.activity == "" ? (
                         <>
                         <TouchableOpacity onPress={() => this.setActivity("Meteo")} style = {styles.activity}></TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.setActivity("calendar")} style = {styles.activity}></TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.setActivity("task")} style = {styles.activity}></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setActivity("Calendar")} style = {styles.activity}></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setActivity("Task")} style = {styles.activity}></TouchableOpacity>
                         </>
                     ) : (
                         <>
@@ -38,7 +38,7 @@ class CalendarBig extends Component {
                         <TouchableOpacity onPress={() => this.props.newwidget(this.state.activity, "big")} style = {styles.type}></TouchableOpacity>
                         </>
                     )}
-                    </View>
+                    </TouchableOpacity>
                 </TouchableOpacity>
             )}
             </>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center",
         opacity: 1,
-        top: "47%",
+        top: "30%",
         left: "25%",
     },
     activity : {

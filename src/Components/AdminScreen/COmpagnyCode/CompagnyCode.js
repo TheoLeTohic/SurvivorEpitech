@@ -5,7 +5,17 @@ import { BlurView } from 'expo-blur';
 import {getDatabase, ref, push} from "firebase/database";
 import firebase from "../../../firebase/config";
 
-export default class NewEmployees extends Component {
+export default class CompagnyCode extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            code: "",
+            modalVisible: false,
+        }
+    }
+    setCode = (newCode) => {
+        this.setState({ code: newCode });
+    }
     render() {
         return (
             <View style = {styles.container}>

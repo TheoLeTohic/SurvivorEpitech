@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity, Image, Modal, TextInput} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import {BlurView} from "expo-blur";
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 
 
