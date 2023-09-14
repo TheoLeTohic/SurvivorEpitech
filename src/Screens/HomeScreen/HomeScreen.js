@@ -18,13 +18,18 @@ export default function App({ navigation, route }) {
   const bearer_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzQsImVtYWlsIjoib2xpdmVyLmxld2lzQG1hc3VyYW8uanAiLCJuYW1lIjoiT2xpdmVyIiwic3VybmFtZSI6Ikxld2lzIiwiZXhwIjoxNjk1ODI3MjQzfQ.-tSPtN90QZpMxWzO2e-VpQdIZmLwZoOa2i6zwTXNR5E"
 
   async function getemploye() {
-    await req.doReq(bearer_token, "https://masurao.fr/api/employees").then((res) => res.json()).then((responseData) => {
-      for (let i = 0; i < responseData.length; i++) {
-        responseData[i].isopen = false
+    try {
+      let snapshot = await get(child(dbRef, `users`));
+      snapshot = snapshot.val();
+      const employees = Object.values(snapshot);
+      for (let i = 0; i < employees.length; i++) {
+        employees[i].isopen = false;
       }
-      setDatas(responseData)
-      setAll(responseData)
-    })
+        setDatas(employees)
+        setAll(employees)
+    } catch(e) {
+        console.log(e)
+    }
   }
 
   async function transformPicture(picture) {
@@ -32,26 +37,10 @@ export default function App({ navigation, route }) {
     const base64 = Buffer.from(arrayBuffer).toString('base64');
     return Promise.resolve('data:image/png;base64,' + base64);
   }
-  
-  useEffect(() => {
-    async function getPicture() {
-      for (let i = 0; i < datas.length; i++) {
-        const image = await req.doReq(bearer_token, `https://masurao.fr/api/employees/${datas[i].id}/image`);
-        const transformedImage = await transformPicture(image);
-        setEmployeesPicture(prevState => new Map(prevState).set(datas[i].id, transformedImage));
-      }
-    }
-
-    if (datas.length > 0) {
-      getPicture();
-    }
-  },[datas])
 
   useEffect(() => {
     getemploye()
   }, []);
-  useEffect(() => {
-  }, [datas]);
 
   function toggleOpen(index) {
     if (datas[index].isopen != true) {
@@ -68,6 +57,10 @@ export default function App({ navigation, route }) {
   }
 
   useEffect(() => {
+    if (datas.length > 0) {
+      console.log(datas.length)
+      console.log(datas.filter((data) => data.cmp.compagny == route.params.code).length)
+    } 
   }, [datas]);
   
   function funcsearch() {
@@ -141,7 +134,7 @@ export default function App({ navigation, route }) {
           <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.card}>
             {!employeesPicture.has(goal.id) && <View style = {styles.leftcard}></View>}
             {employeesPicture.has(goal.id) && (
-              <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcard} />
+              <Image source={{ url: "https://random.imagecdn.app/150/150" }} style={styles.leftcard} />
             )}
             <View style = {styles.rightcard}>
               <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
