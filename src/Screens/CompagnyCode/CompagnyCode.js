@@ -7,40 +7,56 @@ import {
     View,
 } from 'react-native';
 import { firebase } from '../../firebase/config'
-import { getAuth } from "firebase/auth";
-import { useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import {LinearGradient} from "expo-linear-gradient";
 
 
 export default function App({ navigation, route }) {
-    const auth = getAuth();
-    const dbRef = ref(getDatabase(firebase));
+  const dbRef = ref(getDatabase(firebase));
 
-    const [nb1, Setnb1] = useState("2")
-    const [nb2, Setnb2] = useState("3")
-    const [nb3, Setnb3] = useState("3")
-    const [nb4, Setnb4] = useState("2")
-    const [code, SetCode] = useState("")
+    const [nb1, Setnb1] = React.useState("2")
+    const [nb2, Setnb2] = React.useState("3")
+    const [nb3, Setnb3] = React.useState("3")
+    const [nb4, Setnb4] = React.useState("2")
+    const [code, SetCode] = React.useState("")
 
 
     function setCompagnytouser(nbr) {
-        console.log(nbr)
-        console.log(route.params.id)
         set(ref(getDatabase(firebase), 'users/' + route.params.id + '/cmp'), {
             compagny: nbr,
         });
+        set(ref(getDatabase(firebase), 'users/' + route.params.id + '/role'), {
+            role: "member",
+        });
+    }
+
+
+    async function setCompagnyMemberplus1(snapshot) {
+            const temp = snapshot
+            console.log("temp", temp)
+            console.log(snapshot.members)
+            set(ref(getDatabase(firebase), 'factory/' + code), {
+                compagny: snapshot.compagny,
+                members: snapshot.members + 1,
+                memmberList: snapshot.memmberList,
+                maxmembers: snapshot.maxmembers,
+                type: snapshot.type,
+            });
     }
 
     async function submit() {
         SetCode(nb1 + nb2 + nb3 + nb4)
         console.log(code)
         try {
-            let snapshot = await get(child(dbRef, `factory/${code}`));
-            snapshot = snapshot.val();
+            let actualcode = nb1 + nb2 + nb3 + nb4
+            console.log(actualcode)
+            let snapshot = await get(child(dbRef, `factory/${actualcode}`));
+            console.log("snap", snapshot)
             if (snapshot != null) {
                 setCompagnytouser(nb1 + nb2 + nb3 + nb4)
-                navigation.navigate("Home", {id: route.params.id})
+                setCompagnyMemberplus1(snapshot)
+                navigation.navigate("Home", {id: route.params.id, name: route.params.name, me: route.params.me, code: nb1 + nb2 + nb3 + nb4})
             } else {
                 Setnb1("")
                 Setnb2("")
@@ -48,7 +64,6 @@ export default function App({ navigation, route }) {
                 Setnb4("")
                 SetCode("")
             }
-            console.log(snapshot)
           } catch(e) {
             console.log(e)
           }
@@ -68,10 +83,10 @@ export default function App({ navigation, route }) {
             <View style={ styles.circle1 } />
             <View style={ styles.circle2 } />
             <View style={ styles.form } >
-                <TextInput maxLength={1} style={ styles.input } value = {nb1} onChange={(txt) => Setnb1(txt)}/>
-                <TextInput maxLength={1} style={ styles.input } value = {nb2} onChange={(txt) => Setnb2(txt)}/>
-                <TextInput maxLength={1} style={ styles.input } value = {nb3} onChange={(txt) => Setnb3(txt)}/>
-                <TextInput maxLength={1} style={ styles.input } value = {nb4} onChange={(txt) => Setnb4(txt)}/>
+                <TextInput maxLength={1} style={ styles.input } onChangeText={txt => Setnb1(txt)} value={nb1}/>
+                <TextInput maxLength={1} style={ styles.input } onChangeText={txt => Setnb2(txt)} value={nb2}/>
+                <TextInput maxLength={1} style={ styles.input } onChangeText={txt => Setnb3(txt)} value={nb3}/>
+                <TextInput maxLength={1} style={ styles.input } onChangeText={txt => Setnb4(txt)} value={nb4}/>
             </View>
             <View style = { styles.buttonContainer }>
                 <TouchableOpacity onPress={() => submit()} style= {styles.buttonsubmit}>
@@ -79,9 +94,9 @@ export default function App({ navigation, route }) {
                 </TouchableOpacity>
             </View>
             <View style = {styles.createcontainer}>
-                <Text style = {styles.nottxt}>Not part of any Company ?</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("Plan")}><Text style = {styles.createtxt}>Create one</Text></TouchableOpacity>
-            </View>
+                <Text style = {styles.nottxt}>Not part of any Compagny ?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Plan", {id: route.params.id, me: route.params.me})}><Text style = {styles.createtxt}>Create one</Text></TouchableOpacity>
+                </View>
         </View>
     );
 }

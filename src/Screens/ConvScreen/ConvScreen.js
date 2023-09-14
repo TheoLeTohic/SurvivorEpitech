@@ -18,8 +18,8 @@ export default function App({ navigation, route }) {
     const [send, setSend] = useState('');
     const [valeurs, setValeurs] = useState([]);
     const dbRef = ref(getDatabase(firebase));
-    const user = "xXb9CSGPI6cmEhCmZCyFdvfLZ7U2";
-    const me = "gyst5lXi27NwEGKjzLKVl6yDaOt1";
+    const user = "MHwrNMh6iRflD3Rqme7Chuq38Jn2";
+    const me = "OBfyDI5SKvbYm7Grbvu8nB9HhlM2";
     const name = strSort([user, me]);
     const namea = name[0] + name[1];
 
@@ -91,9 +91,9 @@ export default function App({ navigation, route }) {
     }, []);
  
     useEffect(() => {
-
-    }, [object, object2]);
-
+        if (object != null) {
+        }
+    }, [object]);
     return (
         <View style={styles.container}>
             <View style={styles.header}>

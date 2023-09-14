@@ -1,4 +1,4 @@
-import { LoginScreen, HomeScreen, WidjetScreen, ProfilScreen, ProfilScreenSecond, ProfilScreenThird, RegisterScreen, CompagnyCode, ChosePlanScreen, PaymentScreen, TwitterPage, ConvPage } from './src/Screens'
+import { LoginScreen, HomeScreen, WidjetScreen, ProfilScreen, ProfilScreenSecond, ProfilScreenThird, RegisterScreen, CompagnyCode, ChosePlanScreen, PaymentScreen, TwitterPage, AdminPage, MapScreen, ConvScreen, ForgetpasswordScreen, FeedScreen, CalendarScreen } from './src/Screens'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -18,7 +18,12 @@ export default function App() {
       <Stack.Screen name="Plan" component={ ChosePlanScreen } />
       <Stack.Screen name="Payment" component={ PaymentScreen } />
       <Stack.Screen name="Twitter" component={ TwitterPage } />
-      <Stack.Screen name="Conv" component={ ConvPage } />
+      <Stack.Screen name="Admin" component={ AdminPage } />
+      <Stack.Screen name="Map" component={ MapScreen } />
+      <Stack.Screen name="Forget" component={ ForgetpasswordScreen } />
+      <Stack.Screen name="Feed" component={ FeedScreen } />
+      <Stack.Screen name="Conv" component={ ConvScreen } />
+      <Stack.Screen name="Calendar" component={ CalendarScreen } />
       </Stack.Navigator>
     </NavigationContainer>
   );

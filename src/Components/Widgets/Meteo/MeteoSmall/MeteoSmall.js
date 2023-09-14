@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default class Navbar extends Component {
     render() {
+        const { API_KEY } = "66ef064fdc6a4c1bb88142620231309"
         return (
           <TouchableOpacity style = {styles.meteosmall} onLongPress={ () => this.props.callback() }>
             <LinearGradient
@@ -16,7 +17,6 @@ export default class Navbar extends Component {
               {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
               <View style = {styles.topsmall}>
                 <View style = {styles.leftsmall}>
-                  <Image source={require('../../../../../assets/Sun.png')} style = {styles.iconsmall}/>
                 </View>
                 <View style = {styles.rightsmall}>
                   <View style={styles.tempnumcontainersmall}>
