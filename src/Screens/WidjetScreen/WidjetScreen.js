@@ -187,7 +187,7 @@ export default function App( { navigation, route }) {
         console.log(item.name),
         <View key={index} style = {styles.test}>
           {item.name == "Calendar" && item.type == "big" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
-          {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
+          {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
           {item.name == "Calendar" && item.type == "small" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
 
           {item.name == "duo" ? <View style = {styles.orga}>
