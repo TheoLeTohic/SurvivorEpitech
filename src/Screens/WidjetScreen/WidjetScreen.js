@@ -7,8 +7,6 @@ import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
-
-
 export default function App( { navigation, route }) {
   const api = "5e5ba64ce2bba79dba8420c77f1ced3c"
   const compagny = route.params.code
@@ -168,27 +166,16 @@ export default function App( { navigation, route }) {
     getinfoindatabase()
   }, [])
 
-  //useEffect(() => {
-  //}, [temp])
-
   useEffect(() => {
   }, [cityweather])
 
   useEffect(() => {
   }, [cityIndex])
 
-  //useEffect(() => {
-  //}, [object])
-
   useEffect(() => {
     console.log("useeffect")
     console.log(allwidgets)
   }, [allwidgets])
-
-  //setTimeout(function callback(){
-   // setCityIndex((cityIndex + 1) % city.length)
-//},3000);
-
 
 
   return (
