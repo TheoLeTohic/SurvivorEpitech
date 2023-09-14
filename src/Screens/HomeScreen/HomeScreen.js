@@ -14,7 +14,6 @@ export default function App({ navigation, route }) {
   const [datas, setDatas] = useState([])
   const [all, setAll] = useState([])
   const [search, setSearch] = useState("")
-  const [employeesPicture, setEmployeesPicture] = useState(new Map());
   const bearer_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzQsImVtYWlsIjoib2xpdmVyLmxld2lzQG1hc3VyYW8uanAiLCJuYW1lIjoiT2xpdmVyIiwic3VybmFtZSI6Ikxld2lzIiwiZXhwIjoxNjk1ODI3MjQzfQ.-tSPtN90QZpMxWzO2e-VpQdIZmLwZoOa2i6zwTXNR5E"
 
   async function getemploye() {
@@ -143,10 +142,6 @@ export default function App({ navigation, route }) {
           ) : (
             <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
         <View style= {styles.topcard}>
-          {!employeesPicture.has(goal.id) && <View style = {styles.leftcarddev}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>}
-            {employeesPicture.has(goal.id) && (
-              <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcarddev} />
-          )}
           <View style = {styles.rightcarddev}>
           <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
           <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
@@ -167,19 +162,10 @@ export default function App({ navigation, route }) {
                 <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
                 <Text style = {styles.jobtxtopo}>{"Frontend Developer"}</Text>
               </View>
-              {!employeesPicture.has(goal.id) && <View style = {styles.leftcardopo}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>}
-                {/* {employeesPicture.has(goal.id) && <Text>Hey</Text>} */}
-                {employeesPicture.has(goal.id) && (
-                  <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcardopo} />
-                )}
             </TouchableOpacity>
             ) : (
               <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
           <View style= {styles.topcard}>
-            {!employeesPicture.has(goal.id) && <View style = {styles.leftcarddev}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>}
-              {employeesPicture.has(goal.id) && (
-                <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcarddev} />
-            )}
             <View style = {styles.rightcarddev}>
             <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
             <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
