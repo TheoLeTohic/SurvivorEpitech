@@ -26,6 +26,23 @@ export default function App({ navigation, route }) {
         set(ref(getDatabase(firebase), 'users/' + route.params.id + '/cmp'), {
             compagny: nbr,
         });
+        set(ref(getDatabase(firebase), 'users/' + route.params.id + '/role'), {
+            role: "member",
+        });
+    }
+
+
+    async function setCompagnyMemberplus1(snapshot) {
+            const temp = snapshot
+            console.log("temp", temp)
+            console.log(snapshot.members)
+            set(ref(getDatabase(firebase), 'factory/' + code), {
+                compagny: snapshot.compagny,
+                members: snapshot.members + 1,
+                memmberList: snapshot.memmberList,
+                maxmembers: snapshot.maxmembers,
+                type: snapshot.type,
+            });
     }
 
     async function submit() {
@@ -35,11 +52,11 @@ export default function App({ navigation, route }) {
             let actualcode = nb1 + nb2 + nb3 + nb4
             console.log(actualcode)
             let snapshot = await get(child(dbRef, `factory/${actualcode}`));
-            snapshot = snapshot.val();
             console.log("snap", snapshot)
             if (snapshot != null) {
                 setCompagnytouser(nb1 + nb2 + nb3 + nb4)
-                navigation.navigate("Home", {id: route.params.id})
+                setCompagnyMemberplus1(snapshot)
+                navigation.navigate("Home", {id: route.params.id, name: route.params.name, me: route.params.me, code: nb1 + nb2 + nb3 + nb4})
             } else {
                 Setnb1("")
                 Setnb2("")
@@ -78,7 +95,7 @@ export default function App({ navigation, route }) {
             </View>
             <View style = {styles.createcontainer}>
                 <Text style = {styles.nottxt}>Not part of any Compagny ?</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("Plan", {id: route.params.id})}><Text style = {styles.createtxt}>Create one</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Plan", {id: route.params.id, me: route.params.me})}><Text style = {styles.createtxt}>Create one</Text></TouchableOpacity>
                 </View>
         </View>
     );

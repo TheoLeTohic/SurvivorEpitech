@@ -47,23 +47,6 @@ export default function App({ navigation, route }) {
     }
   },[datas])
 
-  async function checkCompagny() {
-    try {
-      let snapshot = await get(child(dbRef, `users/${route.params.id}/cmp`));
-      snapshot = snapshot.val();
-      console.log(snapshot)
-      if (snapshot != null) {
-        getemploye()
-      }
-      else {
-        console.log("here")
-        navigation.navigate('Code', { id: route.params.id});
-      }
-    } catch(e) {
-      console.log(e)
-    }
-  }
-
   useEffect(() => {
     getemploye()
   }, []);
@@ -76,6 +59,7 @@ export default function App({ navigation, route }) {
         datas[i].isopen = false;
       }
     }
+
     setDatas((prevDatas) => {
       const newDatas = [...prevDatas];
       newDatas[index].isopen = !newDatas[index].isopen;
@@ -109,7 +93,7 @@ export default function App({ navigation, route }) {
     <View style={styles.container}>
       <View style = {styles.hellocontainer}>
         <Image source={require('../../../assets/avatar.png')} style = {styles.picture}></Image>
-        <Text style = {styles.msg}>Hello, Julia</Text>
+        <Text style = {styles.msg}>Hello, {route.params.me.name}</Text>
         <View style = {{marginLeft: "40%"}}>
         <Svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 30" fill="none">
 <Path d="M21.0233 14.75V11.1375C21.0233 7.01245 17.8733 3.63745 14.0233 3.63745C10.1617 3.63745 7.02334 6.99995 7.02334 11.1375V14.75C7.02334 15.5125 6.72001 16.675 6.35834 17.325L5.01668 19.7125C4.18834 21.1875 4.76001 22.825 6.27668 23.375C11.305 25.175 16.73 25.175 21.7583 23.375C23.17 22.875 23.7883 21.0875 23.0183 19.7125" stroke="#171717" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
@@ -221,7 +205,7 @@ export default function App({ navigation, route }) {
         <View style = {{height: 100}}></View>
       </ScrollView>
       </View>
-      <Navbar navigation={navigation} index = {1} id = {route.params.id} code = {route.params.code}/>
+      <Navbar navigation={navigation} index = {1} id = {route.params.id} code = {route.params.code} me = {route.params.me}/>
     </View>
   );
 }
@@ -450,7 +434,8 @@ const styles = StyleSheet.create({
     width: 70,
     borderRadius: 1990,
     height: 70,
-    backgroundColor: "red"
+    backgroundColor: "red",
+    marginLeft: "5%",
   },
   nametxtdev: {
     marginLeft: "5%",

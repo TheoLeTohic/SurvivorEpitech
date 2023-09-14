@@ -43,6 +43,9 @@ export default function App( { navigation, route }) {
       set(ref(getDatabase(firebase), 'users/' + route.params.id + '/cmp'), {
           compagny: nbr,
       });
+      set(ref(getDatabase(firebase), 'users/' + route.params.id + '/role'), {
+        role: "admin",
+    });
   }
 
   function createCompagny() {
@@ -55,7 +58,7 @@ export default function App( { navigation, route }) {
         memberList: {"0": {id: route.params.id, name: "Theo", role: "admin"}},
     });
     setCompagnytouser(state)
-    navigation.navigate("Payment", {id: route.params.id, code: state})
+    navigation.navigate("Payment", {id: route.params.id, code: state, me: route.params.me})
   }
 
   function generateRandomNumber () {

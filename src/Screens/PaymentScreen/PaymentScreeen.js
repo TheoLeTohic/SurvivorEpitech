@@ -114,7 +114,7 @@ export default function App({ navigation, route }) {
                 </View>
                 </View>
             </View>
-            <TouchableOpacity style= {styles.buttonsubmit} onPress={() => navigation.navigate("Home", {id: route.params.id, code: route.params.code})}>
+            <TouchableOpacity style= {styles.buttonsubmit} onPress={() => navigation.navigate("Home", {id: route.params.id, code: route.params.code, me: route.params.me})}>
                 <Text style = {styles.submittxt}>Confirm Payment</Text>
             </TouchableOpacity>
         </View>

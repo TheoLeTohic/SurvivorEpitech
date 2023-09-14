@@ -11,11 +11,11 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 export default function App( { navigation, route }) {
   const api = "5e5ba64ce2bba79dba8420c77f1ced3c"
-  const compagny = "2332"
+  const compagny = route.params.code
+  console.log(compagny)
 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
-
   const [city, setCity] = useState(["Barcelona", "Paris", "London"])
   const [cityweather, setCityWeather] = useState([])
   const [weather, Setweather] = useState()
@@ -34,6 +34,8 @@ export default function App( { navigation, route }) {
     try {
       let snapshot = await get(child(dbRef, `factory/${compagny}/autorizewidgets`));
       snapshot = snapshot.val();
+      console.log("snapshot")
+      console.log(snapshot)
       const tmp = Object.keys(snapshot);
       let objectlist = [];
       for (const obj of tmp) {
@@ -102,7 +104,7 @@ export default function App( { navigation, route }) {
 
   async function getwidgets() {
     try {
-      let snapshot = await get(child(dbRef, `users/gyst5lXi27NwEGKjzLKVl6yDaOt1/widgets`));
+      let snapshot = await get(child(dbRef, `users/${route.params.id}/widgets`));
       snapshot = snapshot.val();
       const tmp = Object.keys(snapshot);
       let objectlist = [];
@@ -210,15 +212,17 @@ export default function App( { navigation, route }) {
     style={{flex: 1}}>
       <ScrollView style = {styles.allwidgets}>
       {allwidgets.map((item, index) => (
+        console.log(item.name),
         <View key={index} style = {styles.test}>
           {item.name == "Calendar" && item.type == "small" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index}/> : null}
           {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index}/> : null}
-          <View style = {styles.orga}>
-            {item.name == "Task" && item.type == "small" ? <TaskSmall task = {object} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : null}
-            {item.name == "Meteo" && item.type == "small" ? <MeteoSmall city = {city} cityweather = {cityweather} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : null}
-          </View>
           {item.name == "Calendar" && item.type == "big" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index}/> : null}
 
+          {item.name == "duo" ? <View style = {styles.orga}>
+              {item.content.map((items, indexs) => (
+                items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : null
+              ))}
+            </View> : null}
         </View>
         ))}
         <View style = {styles.orga}>
@@ -239,7 +243,7 @@ export default function App( { navigation, route }) {
         <View style = {{height: 200}}></View>
       </ScrollView>
       <AddWidget newwidget = {newwidget} open = {newopen} toopen = {othernewopen}></AddWidget>
-      <NavBar navigation = {navigation} open = {newopen} toopen = {othernewopen} index = {4} id = {route.params.id} code = {route.params.code}></NavBar>
+      <NavBar navigation = {navigation} open = {newopen} toopen = {othernewopen} index = {4} id = {route.params.id} code = {route.params.code} me = {route.params.me}></NavBar>
     </GestureRecognizer>
   );
 }
@@ -257,9 +261,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   allwidgets : {
+    marginTop: "20%",
     paddingTop: 10,
-    width: "100%",
-    height: "100%",
+    height: "80%",
   },
   map: {
     width: "100%",

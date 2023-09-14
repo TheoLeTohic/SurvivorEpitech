@@ -7,16 +7,19 @@ import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 
 export default function App( { navigation, route }) {
-    const companycode = "2332";
+    const companycode = route.params.code;
     const [autorizewidgets, setAutorizewidgets] = useState([]);
-    const [allwidgets, setAllwidgets] = useState(["Calendar", "Meteo", "Task"]);
+    const [allwidgets, setAllwidgets] = useState(["Calendar", "Meteo", "Task", "Maps"]);
     const [memberlist, setMemberlist] = useState([]);
     const dbRef = ref(getDatabase());
+    const [data, setData] = useState([]);
 
     async function getcompagnyWidgets() {
         try {
-          let snapshot = await get(child(dbRef, `factory/${companycode}/autorizewidgets`));
+          let snapshot = await get(child(dbRef, `factory/${companycode}`));
           snapshot = snapshot.val();
+          setData(snapshot);
+          snapshot = snapshot.autorizewidgets;
           const tmp = Object.keys(snapshot);
           let objectlist = [];
           for (const obj of tmp) {
@@ -99,18 +102,19 @@ export default function App( { navigation, route }) {
             const tmp2 = [...allwidgets];
             tmp2.push(name);
             setAllwidgets(tmp2);
-        }
+    }
 
     useEffect(() => {
         getMemberList()
         getcompagnyWidgets()
     }, [])
 
+    console.log("test", route.params.code)
   return (
     <View style={styles.container}>
         <View style = {styles.hellocontainer}>
         <Image source={require('../../../assets/avatar.png')} style = {styles.picture}></Image>
-        <Text style = {styles.msg}>Welcome, Julia</Text>
+        <Text style = {styles.msg}>Welcome, {route.params.me.name}</Text>
         <View style = {{marginLeft: "40%"}}>
         <Svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 30" fill="none">
 <Path d="M21.0233 14.75V11.1375C21.0233 7.01245 17.8733 3.63745 14.0233 3.63745C10.1617 3.63745 7.02334 6.99995 7.02334 11.1375V14.75C7.02334 15.5125 6.72001 16.675 6.35834 17.325L5.01668 19.7125C4.18834 21.1875 4.76001 22.825 6.27668 23.375C11.305 25.175 16.73 25.175 21.7583 23.375C23.17 22.875 23.7883 21.0875 23.0183 19.7125" stroke="#171717" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
@@ -121,10 +125,10 @@ export default function App( { navigation, route }) {
         
         </View>
         <View style = {{width: "100%", height: "19.9%", display: "flex", flexDirection: "row", alignItems: "center",}}>
-        <NewEmployeesBlock/>
-        <TotalEmployees/>
+        <NewEmployeesBlock data = {data.members}/>
+        <TotalEmployees data = {data.members} max = {data.maxmembers}/>
         </View>
-        <CompagnyCode code = {companycode}/>
+        <CompagnyCode code = {route.params.code}/>
         <EmployeesList member = {memberlist}/>
         <View style = {styles.containere}>
                 <View style = {styles.topcontainer}>
@@ -132,6 +136,7 @@ export default function App( { navigation, route }) {
                     <TextInput style = {styles.searchbar} placeholder = "Search user..."/>
                 </View>
                 {autorizewidgets.map((item, index) => (
+                    item == "duo" ? null :
                     <View style = {styles.card}>
                     <View style = {styles.picture}><Image source={require('../../../assets/' + "Calendar" + '.png')} resizeMode='cover' style = {styles.imglittle}></Image></View>
                     <Text style = {styles.name}>{item}</Text>
@@ -152,7 +157,7 @@ export default function App( { navigation, route }) {
                 </View>
                 ))}                
             </View>
-        <NavBar navigation={navigation} index = {3} id = {route.params.id} code = {route.params.code}/>
+        <NavBar navigation={navigation} index = {3} id = {route.params.id} code = {route.params.code} me = {route.params.me}/>
     </View>
   );
 }

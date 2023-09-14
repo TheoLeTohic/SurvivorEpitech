@@ -18,9 +18,9 @@ export default class NewEmployees extends Component {
                     <Text style = {{fontSize: 12, fontWeight: "bold", color: "#171717", marginLeft: "8.4%"}}>Total Employees</Text>
                 </View>
                 <View style = {styles.bottomcontainer}>
-                    <Text style = {{fontSize: 36, fontWeight: "bold", color: "#171717"}}><Text style = {{color: "#B4B4B4"}}>26 </Text>/ 50</Text>
+                    <Text style = {{fontSize: 36, fontWeight: "bold", color: "#171717"}}><Text style = {{color: "#B4B4B4"}}>{this.props.data} </Text>/ {this.props.max}</Text>
                     <View style = {styles.display}>
-                        <View style = {styles.complete}></View>
+                        <View style = {[styles.complete, {width: ((this.props.data / this.props.max) * 100) + "%"}]}></View>
                     </View>
                 </View>
             </View>
@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     complete: {
-        width: "60%",
         height: "100%",
         backgroundColor: "#C6D7F0",
         borderRadius: 5,

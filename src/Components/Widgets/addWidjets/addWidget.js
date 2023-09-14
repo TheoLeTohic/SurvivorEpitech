@@ -1,11 +1,23 @@
 import { Component } from "react";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { set } from "firebase/database";
 
 
 class CalendarBig extends Component {
     constructor(props) {
         super(props);
-        this.activity = ""
+        this.state = {
+            activity : ""
+        }
+    }
+    setActivity = (newActivity) => {
+        this.setState({ activity: newActivity });
+    }
+
+    sendActivity = (size) => {
+        this.props.newwidget(this.state.activity, size);
+        setActivity("");
     }
     render() {
         return (
@@ -13,17 +25,17 @@ class CalendarBig extends Component {
             {this.props.open == false ? <TouchableOpacity onPress={() => this.props.toopen()} style = {styles.roundstyle}></TouchableOpacity> : (
             <TouchableOpacity onPress={() => this.props.toopen()} style = {styles.screen}>
                 <View style={styles.menustyle}>
-                    {this.activity == "" ? (
+                {this.state.activity == "" ? (
                         <>
-                        <TouchableOpacity onPress={() => this.activity = "Meteo"} style = {styles.activity}></TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.activity = "calendar"} style = {styles.activity}></TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.activity = "task"} style = {styles.activity}></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setActivity("Meteo")} style = {styles.activity}></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setActivity("calendar")} style = {styles.activity}></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setActivity("task")} style = {styles.activity}></TouchableOpacity>
                         </>
                     ) : (
                         <>
-                        <TouchableOpacity onPress={() => this.props.newwidget(this.activity, "small")} style = {styles.type}></TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.props.newwidget(this.activity, "medium")} style = {styles.type}></TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.props.newwidget(this.activity, "big")} style = {styles.type}></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.props.newwidget(this.state.activity, "small")} style = {styles.type}></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.props.newwidget(this.state.activity, "medium")} style = {styles.type}></TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.props.newwidget(this.state.activity, "big")} style = {styles.type}></TouchableOpacity>
                         </>
                     )}
                     </View>

@@ -14,7 +14,7 @@ export default class NewEmployees extends Component {
                     <Text style = {{fontSize: 12, fontWeight: "bold", color: "#171717", marginLeft: "8.4%"}}>New Employees</Text>
                 </View>
                 <View style = {styles.bottomcontainer}>
-                    <Text style = {{fontSize: 36, fontWeight: "bold", color: "#171717"}}>+ 24</Text>
+                    <Text style = {{fontSize: 36, fontWeight: "bold", color: "#171717"}}>+ {this.props.data}</Text>
                     <View style = {{display: "flex", flexDirection: "row", alignItems: "center", marginTop: "6.2%", marginLeft: "2.4%"}}>
                     <Svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/Svg">
 <Path d="M7.33333 0H0.666667C0.266667 0 0 0.266667 0 0.666667C0 1.06667 0.266667 1.33333 0.666667 1.33333H5.73333L0.2 6.86667C-0.0666665 7.13333 -0.0666665 7.53333 0.2 7.8C0.466667 8.06667 0.866667 8.06667 1.13333 7.8L6.66667 2.26667V7.33333C6.66667 7.73333 6.93333 8 7.33333 8C7.73333 8 8 7.73333 8 7.33333V0.666667C8 0.266667 7.73333 0 7.33333 0Z" fill="#04D000"/>

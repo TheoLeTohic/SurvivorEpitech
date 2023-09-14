@@ -6,20 +6,22 @@ import { LinearGradient } from 'expo-linear-gradient';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
+import { Path, Svg } from 'react-native-svg';
 
 export default function App( { navigation }) {
   const dbRef = ref(getDatabase());
-  const [email, SetEmail] = useState("theoltc@gmail.com")
+  const [email, SetEmail] = useState("Theoltc@gmail.com")
   const [password, SetPassword] = useState("Charlie.02")
   const [token, SetToken] = useState("")
 
 
   async function getcompagnyWidgets(id) {
     try {
-      let snapshot = await get(child(dbRef, `users/${id}/cmp`));
+      let snapshot = await get(child(dbRef, `users/${id}`));
       snapshot = snapshot.val();
+      console.log(snapshot)
       if (snapshot != null) {
-        navigation.navigate("Home", {id: id, code: snapshot.compagny})
+        navigation.navigate("Home", {id: id, code: snapshot.cmp.compagny, me: snapshot})
       }
       else {
         navigation.navigate('Code', { id: id});
@@ -38,28 +40,9 @@ export default function App( { navigation }) {
       .catch((error) => {
           console.log(error);
       })
-    return
-    fetch("https://masurao.fr/api/employees/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "X-Group-Authorization": "UkPEzS4kSZu07iSS2d2l4OjA4PDfNiGy",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      }),
-      })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(responseData)
-        SetToken(JSON.stringify(responseData.access_token))
-      })
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <LinearGradient
           start={{ x: 0.5, y: 0 }}
@@ -69,51 +52,31 @@ export default function App( { navigation }) {
           />
         <View style = {styles.titlecontainer}>
           <Text style = {styles.title}>Welcome{"\n"} Back</Text>
-        </View>
-        <View style = {styles.form}>
+      </View>
+      <View style = {styles.form}>
           <TextInput style = {styles.txtinput} value={email} placeholder='Your Email' onChange={(txt) => SetEmail(txt)}/>
-          <TextInput style = {styles.txtinput} value={password} placeholder='Password' onChange={(txt) => SetPassword(txt)}/>
+          <TextInput style = {styles.txtinput} secureTextEntry={true} value={password} placeholder='Password' onChange={(txt) => SetPassword(txt)}/>
         </View>
         <View style = {styles.arrowcontainer}>
           <Text style = {styles.signinText}>Sign in</Text>
           <TouchableOpacity onPress={() => login()}>
-            <View style = {styles.arrow}></View>
+            <View style = {styles.arrow}><Svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<Path d="M23.8535 7.64649L16.3535 0.146496C16.1582 -0.048832 15.8418 -0.048832 15.6465 0.146496C15.4512 0.341824 15.4512 0.65823 15.6465 0.853511L22.293 7.50001H0.500015C0.22364 7.50001 0 7.72365 0 8.00002C0 8.2764 0.22364 8.50004 0.500015 8.50004H22.293L15.6465 15.1465C15.4512 15.3418 15.4512 15.6582 15.6465 15.8535C15.7441 15.9511 15.8721 16 16 16C16.1279 16 16.2559 15.9511 16.3536 15.8535L23.8535 8.3535C24.0488 8.15822 24.0488 7.84182 23.8535 7.64649Z" fill="white"/>
+</Svg></View>
           </TouchableOpacity>
         </View>
         <View style = {styles.buttoncontainer}>
           <TouchableOpacity onPress={() => {navigation.navigate("Register")}}>
             <Text style = {styles.buttontxt}>Sign Up</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {navigation.navigate("Forget")}}>
             <Text style = {styles.buttontxt}>Forgot Passwords</Text>
           </TouchableOpacity>
         </View>
-        <View style = {styles.topcircle}></View>
-        <View style = {styles.middlecircle}></View>
-        <View style = {styles.bottomcontainer}></View>
-      </View>
-      <View style = {styles.form}>
-        <TextInput style = {styles.txtinput} value={email} placeholder='Your Email' onChangeText={(txt) => SetEmail(txt)}/>
-        <TextInput style = {styles.txtinput} value={password} placeholder='Password' onChangeText={(txt) => SetPassword(txt)}/>
-      </View>
-      <View style = {styles.arrowcontainer}>
-        <Text style = {styles.signinText}>Sign in</Text>
-        <TouchableOpacity onPress={() => login()}>
-          <View style = {styles.arrow}></View>
-        </TouchableOpacity>
-      </View>
-      <View style = {styles.buttoncontainer}>
-        <TouchableOpacity onPress={() => {navigation.navigate("Register")}}>
-          <Text style = {styles.buttontxt}>Sign Up</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style = {styles.buttontxt}>Forgot Passwords</Text>
-        </TouchableOpacity>
-      </View>
       <View style = {styles.topcircle}></View>
       <View style = {styles.middlecircle}></View>
       <View style = {styles.bottomcontainer}></View>
-    </TouchableWithoutFeedback>
+      </View>
   );
 }
 
@@ -176,7 +139,7 @@ const styles = StyleSheet.create({
   },
   titlecontainer: {
     zIndex: 10,
-    marginTop: "35%",
+    marginTop: "50%",
     marginLeft: "17.2%",
   },
   title : {
@@ -224,6 +187,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 20,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttoncontainer : {
     display: "flex",

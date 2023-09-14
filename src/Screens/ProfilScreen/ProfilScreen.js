@@ -40,8 +40,12 @@ export default function App( { navigation, route }) {
 
   async function getinfoindatabase() {
       try {
-        let snapshot = await get(child(dbRef, `users/gyst5lXi27NwEGKjzLKVl6yDaOt1/address`));
+        let snapshot = await get(child(dbRef, `users/${route.params.id}/address`));
         snapshot = snapshot.val();
+        if (snapshot == null) {
+          setObject([]);
+          return ;
+        }
         const tmp = Object.keys(snapshot);
         let objectlist = [];
         for (const obj of tmp) {
@@ -56,7 +60,7 @@ export default function App( { navigation, route }) {
 
   async function getotherinfo() {
     try {
-      let snapshot = await get(child(dbRef, `users/gyst5lXi27NwEGKjzLKVl6yDaOt1`));
+      let snapshot = await get(child(dbRef, `users/${route.params.id}`));
       snapshot = snapshot.val();
       setObjectother(snapshot);
     } catch(e) {
@@ -83,7 +87,7 @@ export default function App( { navigation, route }) {
                 <View style = {styles.photo}></View>
                 {pp == null && <View style = {styles.photo}></View>}
                 {pp != null && <Image source={{ uri: pp }} style={styles.photo} />}
-                <ProfilHead index = {1} navigation = {navigation} my = {myinformation}/>
+                <ProfilHead index = {1} navigation = {navigation} my = {myinformation} id = {route.params.id} code = {route.params.code} me = {route.params.me}/>
                     <View style = {styles.pagecontainer}>
                         <ScrollView showsVerticalScrollIndicator={false} >
                             <View style = {styles.body}>
@@ -94,7 +98,7 @@ export default function App( { navigation, route }) {
                             <View style = {{height: 120}}/>
                         </ScrollView>
                     </View>
-                <NavBar navigation={navigation} index = {5} id = {route.params.id} code = {route.params.code}/>
+                <NavBar navigation={navigation} index = {5} id = {route.params.id} code = {route.params.code} me = {route.params.me}/>
             </ImageBackground>
         </View>
     );

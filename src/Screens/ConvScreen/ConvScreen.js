@@ -11,6 +11,7 @@ export default function App({ navigation, route }) {
     return a.sort(function(x,y) {
       return x.toString().localeCompare(y.toString());
     });
+
   }
     const [object, setObject] = useState([]);
     const [object2, setObject2] = useState([]);
@@ -18,8 +19,8 @@ export default function App({ navigation, route }) {
     const [send, setSend] = useState('');
     const [valeurs, setValeurs] = useState([]);
     const dbRef = ref(getDatabase(firebase));
-    const user = "xXb9CSGPI6cmEhCmZCyFdvfLZ7U2";
-    const me = "gyst5lXi27NwEGKjzLKVl6yDaOt1";
+    const user = "MHwrNMh6iRflD3Rqme7Chuq38Jn2";
+    const me = "OBfyDI5SKvbYm7Grbvu8nB9HhlM2";
     const name = strSort([user, me]);
     const namea = name[0] + name[1];
 
@@ -37,7 +38,6 @@ export default function App({ navigation, route }) {
       } catch(e) {
         setObject("error");
       }
-
       try {
         let snapshot2 = await get(child(dbRef, `conversation/${namea}`));
         snapshot2 = snapshot2.val();
@@ -45,53 +45,57 @@ export default function App({ navigation, route }) {
         let objectlist2 = [];
         for (const obj of tmp2) {
             objectlist2.push(snapshot2[obj]);
-            }
+        }
         setObject2(objectlist2);
       } catch(e) {
         setObject2("error");
       }
     }
-
+    
     function createConversation()
     {
       const db = getDatabase(firebase);
-            const dbname = user.id + me.id;
-            set(ref(db, 'conversation/' + namea), {
-                user1: me.username,
-                user2: user.username,
-                user1id: me.id,
-                user2id: user.id,
-                messages: []
-            });
+        const dbname = user.id + me.id;
+        set(ref(db, 'conversation/' + namea), {
+            user1: me.username,
+            user2: user.username,
+            user1id: me.id,
+            user2id: user.id,
+            messages: []
+        });
     }
 
     function sendMessage()
     {
-      const db = getDatabase(firebase);
-      const newMessage = {
-        sender: me,
-        message: send,
-        date: Date.now()
-      }
-      const lastname = newMessage.sender + newMessage.date;
-      set(ref(db, 'conversation/' + namea + '/' + lastname), {
-        sender: newMessage.sender,
-        message: newMessage.message,
-        date: newMessage.date
-      });
-      setSend('');
-      const tmp = [...object]      
-    tmp.push(newMessage);
-    setObject(tmp);
+        if (send == '')
+            return
+        const db = getDatabase(firebase);
+        const newMessage = {
+            sender: me,
+            message: send,
+            date: Date.now()
+        }
+        const lastname = newMessage.sender + newMessage.date;
+        set(ref(db, 'conversation/' + namea + '/' + lastname), {
+            sender: newMessage.sender,
+            message: newMessage.message,
+            date: newMessage.date
+        });
+        setSend('');
+        const tmp = [...object]      
+        tmp.push(newMessage);
+        setObject(tmp);
     }
 
     useEffect(() => {
         getinfoindatabase()
     }, []);
-
+ 
     useEffect(() => {
-    }, [object, object2]);
-  
+        if (object != null) {
+        }
+            
+    }, [object]);
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -106,7 +110,7 @@ export default function App({ navigation, route }) {
                 </TouchableOpacity>
                 <View style = {styles.avatar}></View>
                 <View style = {styles.nameandStatus}>
-                  <Text style = {styles.name}>{user.username}</Text>
+                  <Text style = {styles.name}>{user.username}Dr.Elsa Jones</Text>
                   <Text style = {styles.status}>online</Text>
                 </View>
             </View>
@@ -117,7 +121,7 @@ export default function App({ navigation, route }) {
                         <View style = {styles.mt}>
                             <Text style = {styles.mymessage}>{item.message}</Text>
                         </View>
-                    </View>   
+                    </View>
                     :
                     <View key={index}>
                         <View style = {styles.ht}>
@@ -128,97 +132,104 @@ export default function App({ navigation, route }) {
             </ScrollView>
             <View style = {styles.sender}>
               <TextInput
-                  style={{ height: 40, width: "70%", backgroundColor: "#F3F6F6", marginRight: 10, marginLeft: 10, borderRadius: 10}}
-                  placeholder="Message"
+                  style={{ height: 40, width: "80%", backgroundColor: "#F3F6F6", marginRight: 10, marginLeft: 10, borderRadius: 10}}
+                  placeholder="  Send Message"
                   onChangeText={text => setSend(text)}
-                  defaultValue={send}
-              />
-              <TouchableOpacity
-                  onPress={() => sendMessage()}>
-                  <Text>Send</Text>
-              </TouchableOpacity>
+                  defaultValue={send}>
+                </TextInput>
+                <TouchableOpacity style={{marginLeft: 8, marginTop: 4, width: 40, height: 40, backgroundColor: '#69DCB0', borderRadius: 50}}
+                    onPress={() => sendMessage()}>
+                    <Icon style={{marginLeft: 2, marginTop: 6}}
+                        name='arrow-up'
+                        type='font-awesome'
+                        color='white'
+                    />
+                </TouchableOpacity>
             </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-  messinfo: {
-    flex: 1,
-    flexDirection: 'column',
-    width: '100%',
-    backgroundColor: '#fff',
-    padding: 10
-  },
-  nameandStatus: {
-    marginLeft: 20
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  status: {
-    fontSize: 15,
-    color: 'grey'
-  },
+
+    messinfo: {
+        flex: 1,
+        flexDirection: 'column',
+        width: '100%',
+        backgroundColor: '#fff',
+        padding: 10
+    },
+    nameandStatus: {
+        marginLeft: 15
+    },
+    name: {
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
+    status: {
+        fontSize: 15,
+        color: 'grey'
+    },
     avatar: {
-      width: 50,
-      height: 50,
-      borderRadius: 50,
-      backgroundColor: 'grey',
-      marginLeft: 40
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        backgroundColor: 'grey',
+        marginLeft: 28
     },
     header: {
         marginTop: 30,
+        marginLeft: -5,
         flex: 1,
         flexDirection: 'row',
         width: '100%',
         backgroundColor: '#fff',
         padding: 10
     },
+    //here
     mt: {
-      marginTop: 10,
-      backgroundColor: '#69DCB0',
-      width: '55%',
-      marginLeft: "42%",
-      borderBottomLeftRadius: 25,
-      borderTopLeftRadius: 25,
-      borderTopRightRadius: 25,
+        marginTop: 10,
+        backgroundColor: '#69DCB0',
+        width: '55%',
+        marginLeft: "42%",
+        borderBottomLeftRadius: 25,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
         borderBottomRightRadius: 5,
     },
     ht: {
-      marginTop: 10,
-      backgroundColor: '#E4E4E4',
-      width: '55%',
-      marginRight: "42%",
-      marginLeft: "3%",
-      borderBottomRightRadius: 25,
-      borderTopRightRadius: 25,
-      borderBottomLeftRadius: 5,
-      borderTopStartRadius: 25,
+        marginTop: 10,
+        backgroundColor: '#E4E4E4',
+        width: '55%',
+        marginRight: "42%",
+        marginLeft: "3%",
+        borderBottomRightRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomLeftRadius: 5,
+        borderTopStartRadius: 25,
     },
     mymessage: {
-      color: 'white',
-      padding: 6,
-      margin: 10,
-      textAlign: 'right'
+        color: 'white',
+        padding: 6,
+        margin: 10,
+        textAlign: 'right'
     },
     himmessage: {
-      color: 'black',
-      padding: 10,
-      margin: 10,
-      textAlign: 'left'
+        color: 'black',
+        padding: 10,
+        margin: 10,
+        textAlign: 'left'
     },
     container: {
         flex: 1,
         backgroundColor: '#fff',
     },
     sender: {
-      flex: 1,
-      flexDirection: 'row',
-      backgroundColor: 'white',
-      alignItems: 'center',
-      padding: 10,
-      marginBottom: 10
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        padding: 10,
+        marginBottom: 10
     },
 });
