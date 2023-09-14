@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default class Navbar extends Component {
     render() {
+        const { API_KEY } = "66ef064fdc6a4c1bb88142620231309"
         return (
           <TouchableOpacity style = {styles.meteosmall} onLongPress={ () => this.props.callback() }>
             <LinearGradient
