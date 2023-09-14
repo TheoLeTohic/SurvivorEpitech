@@ -4,15 +4,55 @@ import { Svg, Circle } from "react-native-svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import Swiper from "react-native-swiper"
+import { getDatabase, ref, child, get, set } from "firebase/database";
+import firebase from '../../firebase/config';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
-export default function App( { navigation }) {
-    const [cities, setCities] = useState(['Barcelona']);
+export default function App( { navigation, route }) {
+    const [cities, setCities] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isScrolling, setIsScrolling] = useState(false);
+    const dbRef = ref(getDatabase());
+    async function getotherinfo() {
+        try {
+          let snapshot = await get(child(dbRef, `users/1KP7mTG8SNOV4sbvxDYhMSA1iGB3/meteocities`));
+          snapshot = snapshot.val();
+          if (snapshot == null || snapshot == "" || snapshot == undefined || snapshot == "error" || snapshot == "null" || snapshot == "undefined" || snapshot == " ") {
+            setCities(["Barcelona"]);
+            return ;
+          }
+          setCities(snapshot.split(","));
+        } catch(e) {
+            setCities(["Barcelona"])
+        }
+    }
 
+    async function setcities()
+    {
+        console.log("setcities");
+        console.log(cities);
+        try {
+            await set(ref(getDatabase(firebase), `users/1KP7mTG8SNOV4sbvxDYhMSA1iGB3/meteocities`), cities.join(","));
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        getotherinfo();
+    }
+    , []);
+
+    useEffect(() => {
+        if (cities == undefined)
+            setCities(["Barcelona"]);
+        if (cities.length > 1) 
+            setcities();
+    }
+    , [cities]);
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('Widjet')} style={styles.leftbutton}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.leftbutton}>
                 <Image source={require('../../../assets/return.png')} resizeMode="cover" style={styles.arrowbutton}/>
             </TouchableOpacity>
             <Swiper
@@ -20,9 +60,9 @@ export default function App( { navigation }) {
                 loop={false}
                 showsPagination={true}
                 key={"test"}
-                scrollEnabled={!isScrolling}
-            >
-                {cities.map((city) => (
+                scrollEnabled={!isScrolling}>
+                
+                {cities && cities.map((city) => (
                     <CityWeather city={city} cities={cities} setIsScrolling={setIsScrolling}/>
                 ))}
             </Swiper>

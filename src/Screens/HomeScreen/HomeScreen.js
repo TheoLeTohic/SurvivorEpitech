@@ -6,7 +6,7 @@ import { getDatabase, ref, child, get } from "firebase/database";
 import Navbar from '../../Components/NavBar/Navbar';
 import firebase from '../../firebase/config';
 import req from '../../data/Req.js'
-import { Buffer } from 'buffer';
+import { Buffer, kMaxLength } from 'buffer';
 
 
 export default function App({ navigation, route }) {
@@ -132,7 +132,7 @@ export default function App({ navigation, route }) {
         index % 2 == 0 ? (
           (goal.isopen == false ? (
           <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.card}>
-            {!employeesPicture.has(goal.id) && <View style = {styles.leftcard}></View>}
+            {!employeesPicture.has(goal.id) && <View style = {styles.leftcard}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>}
             {employeesPicture.has(goal.id) && (
               <Image source={{ url: "https://random.imagecdn.app/150/150" }} style={styles.leftcard} />
             )}
@@ -144,7 +144,7 @@ export default function App({ navigation, route }) {
           ) : (
             <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
         <View style= {styles.topcard}>
-          {!employeesPicture.has(goal.id) && <View style = {styles.leftcarddev}></View>}
+          {!employeesPicture.has(goal.id) && <View style = {styles.leftcarddev}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>}
             {employeesPicture.has(goal.id) && (
               <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcarddev} />
           )}
@@ -168,7 +168,7 @@ export default function App({ navigation, route }) {
                 <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
                 <Text style = {styles.jobtxtopo}>{"Frontend Developer"}</Text>
               </View>
-              {!employeesPicture.has(goal.id) && <View style = {styles.leftcardopo}></View>}
+              {!employeesPicture.has(goal.id) && <View style = {styles.leftcardopo}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>}
                 {/* {employeesPicture.has(goal.id) && <Text>Hey</Text>} */}
                 {employeesPicture.has(goal.id) && (
                   <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcardopo} />
@@ -177,7 +177,7 @@ export default function App({ navigation, route }) {
             ) : (
               <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
           <View style= {styles.topcard}>
-            {!employeesPicture.has(goal.id) && <View style = {styles.leftcarddev}></View>}
+            {!employeesPicture.has(goal.id) && <View style = {styles.leftcarddev}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>}
               {employeesPicture.has(goal.id) && (
                 <Image source={{ uri: employeesPicture.get(goal.id) }} style={styles.leftcarddev} />
             )}
@@ -381,11 +381,13 @@ const styles = StyleSheet.create({
   leftcard: {
     width: "21%",
     borderRadius: 10,
-    paddingVertical: "10%",
     height: "80%",
     marginVertical: 10,
     marginLeft: 10,
-    backgroundColor: "red"
+    backgroundColor: "#367CFE",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   rightcard: {
     justifyContent: "flex-end",
@@ -427,8 +429,11 @@ const styles = StyleSheet.create({
     width: 70,
     borderRadius: 1990,
     height: 70,
-    backgroundColor: "red",
+    backgroundColor: "#367CFE",
     marginLeft: "5%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   nametxtdev: {
     marginLeft: "5%",
@@ -499,11 +504,13 @@ const styles = StyleSheet.create({
   leftcardopo: {
     width: "21%",
     borderRadius: 10,
-    paddingVertical: "10%",
     height: "80%",
     marginVertical: 10,
     marginRight: 10,
-    backgroundColor: "red"
+    backgroundColor: "#367CFE",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   nametxtopo: {
     marginRight: "16%",
@@ -517,5 +524,10 @@ const styles = StyleSheet.create({
   },
   rightcardopo: {
     marginLeft: "5%",
-  }
+  },
+  ppletter: {
+    fontSize: 49,
+    fontWeight: "bold",
+    color: "#fff",
+  },
 });
