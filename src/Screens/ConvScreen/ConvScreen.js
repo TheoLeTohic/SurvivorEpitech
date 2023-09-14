@@ -11,7 +11,6 @@ export default function App({ navigation, route }) {
     return a.sort(function(x,y) {
       return x.toString().localeCompare(y.toString());
     });
-
   }
     const [object, setObject] = useState([]);
     const [object2, setObject2] = useState([]);
@@ -94,7 +93,6 @@ export default function App({ navigation, route }) {
     useEffect(() => {
         if (object != null) {
         }
-            
     }, [object]);
     return (
         <View style={styles.container}>
