@@ -4,23 +4,21 @@ import { NavBar, MeteoSmall, TaskSmall, CalendarSmall, CalendarBig, MeteoBig, Ad
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 import * as Location from "expo-location";
+import { WidgetComponent } from "../../Components/Widgets/WidgetComponent";
 import MapView, { Marker } from "react-native-maps";
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 export default function App( { navigation, route }) {
-  const api = "5e5ba64ce2bba79dba8420c77f1ced3c"
   const compagny = route.params.code
-  console.log(compagny)
 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
   const [city, setCity] = useState(["Barcelona", "Paris", "London"])
-  const [cityweather, setCityWeather] = useState([])
-  const [weather, Setweather] = useState()
+  const [cityWeather, setCityWeather] = useState([])
   const [cityIndex, setCityIndex] = useState(1)
   const [temp, setTemp] = useState(false)
-  const [newopen, setNewopen] = useState(false)
-  const [autorizewidgets, setAutorizewidgets] = useState([])
+  const [newOpen, setNewOpen] = useState(false)
+  const [authorizeWidgets, setAuthorizeWidgets] = useState([])
 
   function push() {
     setTemp(!temp)
@@ -30,17 +28,15 @@ export default function App( { navigation, route }) {
     try {
       let snapshot = await get(child(dbRef, `factory/${compagny}/autorizewidgets`));
       snapshot = snapshot.val();
-      console.log("snapshot")
-      console.log(snapshot)
       const tmp = Object.keys(snapshot);
       let objectlist = [];
       for (const obj of tmp) {
         objectlist.push(snapshot[obj]);
       }
       objectlist = objectlist[0].split(",");
-      setAutorizewidgets(objectlist);
+      setAuthorizeWidgets(objectlist);
     } catch(e) {
-      setAutorizewidgets("error");
+      setAuthorizeWidgets("error");
     }
   }
   
@@ -50,20 +46,20 @@ export default function App( { navigation, route }) {
   }, [])
 
   useEffect(() => {
-    if (autorizewidgets.length > 0 && allwidgets.length > 0) {
+    if (authorizeWidgets.length > 0 && allwidgets.length > 0) {
       const tmp = [];
       for (const widget of allwidgets) {
-        if (autorizewidgets.includes(widget.name)) {
+        if (authorizeWidgets.includes(widget.name)) {
           tmp.push(widget);
         }
       }
       SetAllWidgets(tmp);
     }
-  }, [autorizewidgets, allwidgets])
+  }, [authorizeWidgets, allwidgets])
 
 
   function remove(id) {
-    const tmp = allwidgets.filter((item) => item.index != id);  
+    const tmp = allwidgets.filter((item) => item.index !== id);
     SetAllWidgets(tmp);
     try {
       set(child(dbRef, `users/${route.params.id}/widgets/${id}`), null);
@@ -72,8 +68,8 @@ export default function App( { navigation, route }) {
     }
   }
 
-  function othernewopen() {
-    setNewopen(!newopen)
+  function otherNewOpen() {
+    setNewOpen(newOpen)
   }
 
   const [object, setObject] = useState([]);
@@ -85,13 +81,13 @@ export default function App( { navigation, route }) {
       let snapshot = await get(child(dbRef, `users/${route.params.id}/widgets`));
       snapshot = snapshot.val();
       const tmp = Object.keys(snapshot);
-      let objectlist = [];
+      let objectList = [];
       for (const obj of tmp) {
-        objectlist.push(snapshot[obj]);
+        objectList.push(snapshot[obj]);
       }
-      SetAllWidgets(objectlist);
+      SetAllWidgets(objectList);
     } catch(e) {
-      SetAllWidgets("error");
+        SetAllWidgets("error");
     }
   }
 
@@ -117,7 +113,6 @@ export default function App( { navigation, route }) {
   };
 
   function newwidget(activity, type) {
-    console.log("newwidget")
     const tmp = [...allwidgets];
     tmp.push({name: activity, type: type, index: allwidgets.length})
     try {
@@ -133,11 +128,11 @@ export default function App( { navigation, route }) {
       let snapshot = await get(child(dbRef, `users/gyst5lXi27NwEGKjzLKVl6yDaOt1/todo`));
       snapshot = snapshot.val();
       const tmp = Object.keys(snapshot);
-      let objectlist = [];
+      let objectList = [];
       for (const obj of tmp) {
-        objectlist.push(snapshot[obj]);
+        objectList.push(snapshot[obj]);
       }
-      setObject(objectlist);
+      setObject(objectList);
     } catch(e) {
       setObject("error");
     }
@@ -167,7 +162,7 @@ export default function App( { navigation, route }) {
   }, [])
 
   useEffect(() => {
-  }, [cityweather])
+  }, [cityWeather])
 
   useEffect(() => {
   }, [cityIndex])
@@ -188,12 +183,12 @@ export default function App( { navigation, route }) {
         console.log(item.name),
         <View key={index} style = {styles.test}>
           {item.name == "Calendar" && item.type == "small" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
-          {item.name == "Meteo" && item.type == "small" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
+          {item.name == "Meteo" && item.type == "small" ? <MeteoBig city = {city} cityWeather = {cityWeather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
           {item.name == "Calendar" && item.type == "big" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
 
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
-                items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : null
+                items.name == "Meteo" ? <MeteoSmall city = {city} cityWeather = {cityWeather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : null
               ))}
             </View> : null}
         </View>
@@ -215,8 +210,8 @@ export default function App( { navigation, route }) {
         </View>
         <View style = {{height: 200}}></View>
       </ScrollView>
-      <AddWidget newwidget = {newwidget} open = {newopen} toopen = {othernewopen}></AddWidget>
-      <NavBar navigation = {navigation} open = {newopen} toopen = {othernewopen} index = {4} id = {route.params.id} code = {route.params.code} me = {route.params.me}></NavBar>
+      <AddWidget newwidget = {newwidget} open = {newOpen} toopen = {otherNewOpen}></AddWidget>
+      <NavBar navigation = {navigation} open = {newOpen} toopen = {otherNewOpen} index = {4} id = {route.params.id} code = {route.params.code} me = {route.params.me}></NavBar>
     </GestureRecognizer>
   );
 }
