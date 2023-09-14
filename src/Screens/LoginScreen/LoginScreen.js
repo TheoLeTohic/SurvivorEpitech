@@ -1,4 +1,3 @@
-
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity,  TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useState, useEffect } from 'react';
@@ -18,24 +17,6 @@ export default function App( { navigation }) {
       })
       .catch((error) => {
           console.log(error);
-      })
-    return
-    fetch("https://masurao.fr/api/employees/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "X-Group-Authorization": "UkPEzS4kSZu07iSS2d2l4OjA4PDfNiGy",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      }),
-      })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(responseData)
-        SetToken(JSON.stringify(responseData.access_token))
       })
   }
 
