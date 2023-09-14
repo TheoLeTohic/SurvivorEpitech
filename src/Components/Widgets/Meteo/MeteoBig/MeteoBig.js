@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default class MeteoBig extends Component {
     render () {
         return (
-          <TouchableOpacity style = {styles.meteobig} onLongPress={ () => this.props.callback() }>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate("Weather", {id: this.props.me})} style = {styles.meteobig} onLongPress={ () => this.props.callback() }>
             <LinearGradient
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}

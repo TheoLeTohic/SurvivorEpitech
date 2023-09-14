@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { NavBar, MeteoSmall, TaskSmall, CalendarSmall, CalendarBig, MeteoBig, AddWidget } from '../../Components/index';
-import { getDatabase, ref, child, get } from "firebase/database";
+import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
@@ -28,8 +28,6 @@ export default function App( { navigation, route }) {
     setTemp(!temp)
   }
 
-
-
   async function getcompagnyWidgets() {
     try {
       let snapshot = await get(child(dbRef, `factory/${compagny}/autorizewidgets`));
@@ -48,7 +46,6 @@ export default function App( { navigation, route }) {
     }
   }
   
-
   useEffect(() => {
     getwidgets()
     getcompagnyWidgets()
@@ -58,40 +55,23 @@ export default function App( { navigation, route }) {
     if (autorizewidgets.length > 0 && allwidgets.length > 0) {
       const tmp = [];
       for (const widget of allwidgets) {
-        console.log(widget.name)
-        console.log(autorizewidgets)
-        console.log(autorizewidgets.includes(widget.name))
         if (autorizewidgets.includes(widget.name)) {
           tmp.push(widget);
         }
       }
-      console.log("tmp")
-      console.log(tmp)
       SetAllWidgets(tmp);
     }
-    console.log("useeffect")
-    console.log(allwidgets)
   }, [autorizewidgets, allwidgets])
 
 
   function remove(id) {
     const tmp = allwidgets.filter((item) => item.index != id);  
     SetAllWidgets(tmp);
-    //put all the widgets in the database
-  }
-
-  const fetchWeather = (index) => {
-    let aaa = weather
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city[index]}&appid=97738c75467adb40204f72417c447761&units=metric&lang=fr`)
-    .then((response) => response.json())
-    .then((json) => {
-      aaa.push(json)
-      setCityWeather(aaa)
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
+    try {
+      set(child(dbRef, `users/${route.params.id}/widgets/${id}`), null);
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   function othernewopen() {
@@ -139,8 +119,14 @@ export default function App( { navigation, route }) {
   };
 
   function newwidget(activity, type) {
-    const tmp = allwidgets;
+    console.log("newwidget")
+    const tmp = [...allwidgets];
     tmp.push({name: activity, type: type, index: allwidgets.length})
+    try {
+      set(child(dbRef, `users/${route.params.id}/widgets/${allwidgets.length}`), {name: activity, type: type, index: allwidgets.length});
+    } catch(e) {
+      console.log(e);
+    }
     SetAllWidgets(tmp);
   }
 
@@ -194,10 +180,10 @@ export default function App( { navigation, route }) {
   //useEffect(() => {
   //}, [object])
 
-  //useEffect(() => {
-    //console.log("useeffect")
-    //console.log(allwidgets)
-  //}, [allwidgets])
+  useEffect(() => {
+    console.log("useeffect")
+    console.log(allwidgets)
+  }, [allwidgets])
 
   //setTimeout(function callback(){
    // setCityIndex((cityIndex + 1) % city.length)
@@ -215,7 +201,7 @@ export default function App( { navigation, route }) {
         console.log(item.name),
         <View key={index} style = {styles.test}>
           {item.name == "Calendar" && item.type == "small" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
-          {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+          {item.name == "Meteo" && item.type == "small" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
           {item.name == "Calendar" && item.type == "big" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
 
           {item.name == "duo" ? <View style = {styles.orga}>
