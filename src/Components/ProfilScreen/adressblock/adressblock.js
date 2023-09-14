@@ -7,7 +7,7 @@ import firebase from "../../../firebase/config";
 
 export default class adressblock extends Component {
     state = {
-        modalVisible: true,
+        modalVisible: false,
         userAddress: "",
         subAddress: "",
     }

@@ -1,12 +1,11 @@
 import {StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, Modal, TextInput} from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Svg, Circle } from "react-native-svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
+import { WeatherApi } from '../../data/WeatherApi';
 import Swiper from "react-native-swiper"
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 export default function App( { navigation, route }) {
     const [cities, setCities] = useState([]);
@@ -17,7 +16,7 @@ export default function App( { navigation, route }) {
         try {
           let snapshot = await get(child(dbRef, `users/1KP7mTG8SNOV4sbvxDYhMSA1iGB3/meteocities`));
           snapshot = snapshot.val();
-          if (snapshot == null || snapshot == "" || snapshot == undefined || snapshot == "error" || snapshot == "null" || snapshot == "undefined" || snapshot == " ") {
+          if (snapshot == null || snapshot === "" || snapshot === undefined || snapshot === "error" || snapshot === "null" || snapshot === "undefined" || snapshot === " ") {
             setCities(["Barcelona"]);
             return ;
           }
@@ -44,7 +43,7 @@ export default function App( { navigation, route }) {
     , []);
 
     useEffect(() => {
-        if (cities == undefined)
+        if (cities === undefined)
             setCities(["Barcelona"]);
         if (cities.length > 1) 
             setcities();
@@ -52,7 +51,7 @@ export default function App( { navigation, route }) {
     , [cities]);
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.leftbutton}>
+            <TouchableOpacity onPress={() => navigation.navigate('Widjet')} style={styles.leftbutton}>
                 <Image source={require('../../../assets/return.png')} resizeMode="cover" style={styles.arrowbutton}/>
             </TouchableOpacity>
             <Swiper
@@ -61,7 +60,6 @@ export default function App( { navigation, route }) {
                 showsPagination={true}
                 key={"test"}
                 scrollEnabled={!isScrolling}>
-                
                 {cities && cities.map((city) => (
                     <CityWeather city={city} cities={cities} setIsScrolling={setIsScrolling}/>
                 ))}
@@ -96,21 +94,17 @@ function CityWeather({ city, cities, setIsScrolling }) {
     const fetchWeatherData = async () => {
         const API_KEY = "66ef064fdc6a4c1bb88142620231309"
         try {
-            let cityDataResponse = await fetch(`http://api.weatherapi.com/v1/search.json?key=${API_KEY}&q=${city}`);
-            let cityData = await cityDataResponse.json();
+            let cityData = await WeatherApi.fetchCityData(city);
 
             if (!cityData || cityData.length === 0) return;
 
             const lat = cityData[0].lat;
             const lon = cityData[0].lon;
 
-            let [forecastResponse, currentWeatherResponse] = await Promise.all([
-                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,rain,showers,snowfall,cloudcover,windspeed_10m&forecast_days=1`),
-                fetch(`http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`)
+            let [forecastData, currentWeatherData] = await Promise.all([
+                WeatherApi.fetchForecastData(lat, lon),
+                WeatherApi.fetchWeatherData(city)
             ]);
-
-            let forecastData = await forecastResponse.json();
-            let currentWeatherData = await currentWeatherResponse.json();
 
             setForecastData(forecastData);
             setWeatherData(currentWeatherData);

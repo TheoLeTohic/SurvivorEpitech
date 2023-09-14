@@ -1,20 +1,18 @@
 import { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default class Navbar extends Component {
+export default class WeatherSmall extends Component {
     render() {
-        const { API_KEY } = "66ef064fdc6a4c1bb88142620231309"
         return (
           <TouchableOpacity style = {styles.meteosmall} onLongPress={ () => this.props.callback() }>
             <LinearGradient
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
-              // Background Linear Gradient
               colors={['rgba(255,202,0,1)', 'rgba(255,80,0,1)']}
-              style = {this.props.click == false ? styles.background : styles.backgroundclick}
+              style = {this.props.click === false ? styles.background : styles.backgroundclick}
             />
-              {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
+              {this.props.click === true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
               <View style = {styles.topsmall}>
                 <View style = {styles.leftsmall}>
                 </View>
