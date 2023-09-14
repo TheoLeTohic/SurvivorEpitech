@@ -3,7 +3,7 @@ async function doReq(bearer_token, link) {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + bearer_token,
-            "X-Group-Authorization": "UkPEzS4kSZu07iSS2d2l4OjA4PDfNiGy",
+            "X-Group-Authorization": "e452c9368889cc9454b1c9faf77b44e9",
             'Accept': 'application/json, application/xml, text/plain, text/html, image/png',
         }
     })
