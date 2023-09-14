@@ -14,7 +14,6 @@ export default class MeteoBig extends Component {
             />
               {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
               <View style = {styles.left}>
-                <Image style = {styles.icon} source = {require('../../../../../assets/Sun.png')} resizeMethod="cover"/>
               </View>
               <View style = {styles.right}>
                 <View style={styles.citycontainer}><Text style = {styles.city}>{this.props.city[0]}</Text></View>

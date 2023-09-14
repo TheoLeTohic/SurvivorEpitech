@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 class CalendarBig extends Component {
     render() {
         return (
-            <TouchableOpacity style = {this.props.click == false ? styles.calendar : styles.calendarclick} onLongPress={ () => this.props.callback() }>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate("Calendar")} style = {this.props.click == false ? styles.calendar : styles.calendarclick} onLongPress={ () => this.props.callback() }>
               {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
             <View style = {styles.calendarday}>
               <Text style = {styles.daywithoutevent}>Mo</Text>

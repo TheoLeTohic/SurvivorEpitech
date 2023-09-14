@@ -7,7 +7,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown : false}}>
-      <Stack.Screen name="Calendar" component={ CalendarScreen } />
       <Stack.Screen name="Login" component={ LoginScreen } />
       <Stack.Screen name="Register" component={ RegisterScreen } />
       <Stack.Screen name="Home" component={ HomeScreen } />
@@ -24,6 +23,7 @@ export default function App() {
       <Stack.Screen name="Forget" component={ ForgetpasswordScreen } />
       <Stack.Screen name="Feed" component={ FeedScreen } />
       <Stack.Screen name="Conv" component={ ConvScreen } />
+      <Stack.Screen name="Calendar" component={ CalendarScreen } />
       </Stack.Navigator>
     </NavigationContainer>
   );

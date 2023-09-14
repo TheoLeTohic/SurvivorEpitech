@@ -17,7 +17,6 @@ export default class Navbar extends Component {
               {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
               <View style = {styles.topsmall}>
                 <View style = {styles.leftsmall}>
-                  <Image source={require('../../../../../assets/Sun.png')} style = {styles.iconsmall}/>
                 </View>
                 <View style = {styles.rightsmall}>
                   <View style={styles.tempnumcontainersmall}>
