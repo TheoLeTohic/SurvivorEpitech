@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     icon: {
         width: "60%",
         height: "60%",
+        tintColor: '#e74a4a',
     },
     backicon: {
         display: 'flex',

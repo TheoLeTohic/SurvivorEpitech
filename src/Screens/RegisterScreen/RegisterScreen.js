@@ -24,11 +24,15 @@ export default function App({ navigation }) {
     function createAccount(idco) {
         set(ref(db, 'users/' + idco), {
             name: name,
-            Email: email,
+            email: {
+                email: email,
+            },
             surname: surname,
             idConnect: idco,
             job: Job,
-            phone: "    ",
+            phone: {
+                phone: "",
+            },
             widgets: {
                 0: {
                     name: "Calendar",

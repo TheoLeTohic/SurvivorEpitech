@@ -95,8 +95,8 @@ export default function App( { navigation, route }) {
                         <ScrollView showsVerticalScrollIndicator={false} >
                             <View style = {styles.body}>
                                 <AdressBlock alladdress = {object} id = {route.params.id} code = {route.params.code} isEditMode={isEditMode}/>
-                                <InformationBlock id = {route.params.id} icon = {1} txt = {"Phone"} value = {objectother.phone ? objectother.phone.phone : ""} isEditMode={isEditMode}/>
-                                <InformationBlock id = {route.params.id} icon = {2} txt = {"Email"} value = {objectother.email ? objectother.email.email : ""} isEditMode={isEditMode}/>
+                                <InformationBlock id = {route.params.id} icon = {1} txt = {"Phone"} value = {objectother.phone ? objectother.phone.phone : "+34 352 162 363"} isEditMode={isEditMode}/>
+                                <InformationBlock id = {route.params.id} icon = {2} txt = {"Email"} value = {objectother.email ? objectother.email.email : "test@gmail.com"} isEditMode={isEditMode}/>
                             </View>
                             <View style = {{height: 120}}/>
                         </ScrollView>

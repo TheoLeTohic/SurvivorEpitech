@@ -218,7 +218,9 @@ export default function App( { navigation, route }) {
                     return (
                         <View style={{flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center"}}>
                             {week}
-                        </View>)})}
+                        </View>
+                    )
+                })}
             </View>
         </View>
         {events.map((event, index) => {
