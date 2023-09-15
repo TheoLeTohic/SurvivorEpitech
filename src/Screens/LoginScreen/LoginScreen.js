@@ -9,7 +9,7 @@ import { Path, Svg } from 'react-native-svg';
 
 export default function App( { navigation }) {
   const dbRef = ref(getDatabase());
-  const [email, SetEmail] = useState("testmail@gmail.com")
+  const [email, SetEmail] = useState("Theo@gmail.com")
   const [password, SetPassword] = useState("Charlie.02")
   const [token, SetToken] = useState("")
 

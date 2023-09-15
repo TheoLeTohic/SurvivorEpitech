@@ -38,6 +38,9 @@ export default function App({ navigation, route }) {
   }
 
   useEffect(() => {
+    if (route.params.me.cmp.status == false) {
+      navigation.navigate("Waiting", {id: route.params.id, code: route.params.code, me: route.params.me})
+    }
     getemploye()
   }, []);
 
@@ -142,6 +145,7 @@ export default function App({ navigation, route }) {
           ) : (
             <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
         <View style= {styles.topcard}>
+        <View style = {styles.leftcard}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>
           <View style = {styles.rightcarddev}>
           <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
           <Text style = {styles.jobtxt}>{goal.job}</Text>

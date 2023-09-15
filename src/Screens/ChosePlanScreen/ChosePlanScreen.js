@@ -54,6 +54,7 @@ export default function App( { navigation, route }) {
   function setCompagnytouser(nbr) {
       set(ref(getDatabase(firebase), 'users/' + route.params.id + '/cmp'), {
           compagny: nbr,
+          status: true,
       });
       set(ref(getDatabase(firebase), 'users/' + route.params.id + '/role'), {
         role: "admin",

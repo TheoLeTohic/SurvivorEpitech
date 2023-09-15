@@ -19,6 +19,7 @@ export default function App( { navigation, route }) {
   const [temp, setTemp] = useState(false)
   const [newopen, setNewopen] = useState(false)
   const [autorizewidgets, setAutorizewidgets] = useState([])
+  const [events, setEvents] = useState([])
 
   function push() {
     setTemp(!temp)
@@ -133,7 +134,7 @@ export default function App( { navigation, route }) {
 
   async function getinfoindatabase() {
     try {
-      let snapshot = await get(child(dbRef, `users/gyst5lXi27NwEGKjzLKVl6yDaOt1/todo`));
+      let snapshot = await get(child(dbRef, `users/${route.params.id}/todo`));
       snapshot = snapshot.val();
       const tmp = Object.keys(snapshot);
       let objectlist = [];
@@ -181,6 +182,34 @@ export default function App( { navigation, route }) {
   }, [allwidgets])
 
 
+  async function getevents() {
+    try {
+      let snapshot = await get(child(dbRef, `users/${route.params.id}/event`));
+      snapshot = snapshot.val();
+      const events = [];
+        for (const key in snapshot) {   
+            events.push(snapshot[key]);
+        }
+      if (snapshot == null || snapshot === "" || snapshot === undefined || snapshot === "error" || snapshot === "null" || snapshot === "undefined" || snapshot === " ") {
+        setEvents([]);
+        return ;
+      }
+      setEvents(events);
+    } catch(e) {
+        setEvents([])
+    }
+}
+
+useEffect(() => {
+    getevents();
+}
+, []);
+
+useEffect(() => {
+  console.log("events", events)
+}, [events]);
+
+
   return (
     <GestureRecognizer
     onSwipe={(direction, state) => onSwipe(direction, state)}
@@ -192,15 +221,15 @@ export default function App( { navigation, route }) {
         <View key={index} style = {styles.test}>
           {item.name == "Calendar" && item.type == "big" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
           {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
-          {item.name == "Calendar" && item.type == "small" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+          {item.name == "Calendar" && item.type == "small" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation} event = {events} me = {route.params.id}/> : null}
 
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
-                console.log(items.name),
+                console.log("item", items),
                 <>
-                {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : console.log("no")}
-                {items.name == "Task" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index}/> : console.log("no")}
-                {items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index}/> : console.log("no")}
+                {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : console.log("no")}
+                {items.name == "Tasks" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} task = {object} navigation = {navigation} me = {route.params.id}/> : console.log("no")}
+                {items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : console.log("no")}
                 </>
               ))}
             </View> : null}

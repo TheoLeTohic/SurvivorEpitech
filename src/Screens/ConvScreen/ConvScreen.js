@@ -13,14 +13,12 @@ export default function App({ navigation, route }) {
     });
   }
     const [object, setObject] = useState([]);
-    const [object2, setObject2] = useState([]);
-    const [message, setMessage] = useState([]);
     const [send, setSend] = useState('');
-    const [valeurs, setValeurs] = useState([]);
     const dbRef = ref(getDatabase(firebase));
-    const user = "MHwrNMh6iRflD3Rqme7Chuq38Jn2";
-    const me = "OBfyDI5SKvbYm7Grbvu8nB9HhlM2";
-    const name = strSort([user, me]);
+    const user = route.params.other;
+    const me = route.params.id;
+    const name = strSort([user.idConnect, me]);
+    console.log(user);
     const namea = name[0] + name[1];
 
     async function getinfoindatabase()
@@ -28,6 +26,11 @@ export default function App({ navigation, route }) {
       try {
         let snapshot = await get(child(dbRef, `conversation/${namea}`));
         snapshot = snapshot.val();
+        if (snapshot == null) {
+          createConversation();
+          setObject([]);
+            return;
+        }
         const tmp = Object.keys(snapshot);
         let objectlist = [];
         for (const obj of tmp) {
@@ -35,19 +38,7 @@ export default function App({ navigation, route }) {
         }
         setObject(objectlist);
       } catch(e) {
-        setObject("error");
-      }
-      try {
-        let snapshot2 = await get(child(dbRef, `conversation/${namea}`));
-        snapshot2 = snapshot2.val();
-        const tmp2 = Object.keys(snapshot2);
-        let objectlist2 = [];
-        for (const obj of tmp2) {
-            objectlist2.push(snapshot2[obj]);
-        }
-        setObject2(objectlist2);
-      } catch(e) {
-        setObject2("error");
+        setObject([]);
       }
     }
     
@@ -56,10 +47,8 @@ export default function App({ navigation, route }) {
       const db = getDatabase(firebase);
         const dbname = user.id + me.id;
         set(ref(db, 'conversation/' + namea), {
-            user1: me.username,
-            user2: user.username,
-            user1id: me.id,
-            user2id: user.id,
+            user1: id,
+            user2: other,
             messages: []
         });
     }
@@ -80,6 +69,22 @@ export default function App({ navigation, route }) {
             message: newMessage.message,
             date: newMessage.date
         });
+
+        //put in feed
+
+        set(ref(db, 'users/' + me + '/feed/' + user.idConnect ), {
+            idConnect: user.idConnect,
+            lastmessage: newMessage.message,
+            read: true,
+            name: route.params.other.name + " " + route.params.other.surname,
+        });
+
+        set(ref(db, 'users/' + user.idConnect + '/feed/' + me ), {
+            idConnect: me,
+            lastmessage: newMessage.message,
+            read: false,
+            name: user.name + " " + user.surname,
+        });
         setSend('');
         const tmp = [...object]      
         tmp.push(newMessage);
@@ -99,7 +104,7 @@ export default function App({ navigation, route }) {
             <View style={styles.header}>
                 <TouchableOpacity
                     style={{marginLeft: 10, marginTop: 10}}
-                    onPress={() => navigation.navigate('HomeScreen')}>
+                    onPress={() => navigation.navigate('Feed', { id: route.params.id, code: route.params.code, me: route.params.me })}>
                     <Icon
                         name='arrow-left'
                         type='font-awesome'
@@ -108,8 +113,7 @@ export default function App({ navigation, route }) {
                 </TouchableOpacity>
                 <View style = {styles.avatar}></View>
                 <View style = {styles.nameandStatus}>
-                  <Text style = {styles.name}>{user.username}Dr.Elsa Jones</Text>
-                  <Text style = {styles.status}>online</Text>
+                  <Text style = {styles.name}>{user.name}</Text>
                 </View>
             </View>
             <ScrollView style = {{height: "70%", marginTop: 20}}>

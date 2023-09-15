@@ -9,11 +9,11 @@ class CalendarBig extends Component {
     this.day = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
     this.currentDayofWeek= new Date().getDay();
     this.actualday = this.currentDay - this.currentDayofWeek + 1
-    console.log(this.actualday)
+    console.log(this.props.event)
 }
     render () {
         return (
-          <TouchableOpacity onPress={() => this.props.navigation.navigate("Calendar")} style = {this.props.click == false ? styles.calendarbig : styles.calendarclick} onLongPress={ () => this.props.callback() }>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate("Calendar", {id: this.props.me})} style = {this.props.click == false ? styles.calendarbig : styles.calendarclick} onLongPress={ () => this.props.callback() }>
               {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
             <View style = {styles.topcalendar}>
                 {this.day.map((item, index) => (
@@ -24,6 +24,7 @@ class CalendarBig extends Component {
                   </View>
                 ))}
               </View>
+              {this.props.event.map((item, index) => (
               <View style = {styles.bottomcalendar}>
                 <View style = {[styles.eventday, styles.blueevent]}>
                   <View style = {styles.stt}></View>
@@ -32,28 +33,9 @@ class CalendarBig extends Component {
                     <Text style = {styles.hour}>10:00 AM</Text>
                     <Text style = {styles.minute}>11:00 AM</Text>
                   </View>
-                
-                </View>
-                <View style = {[styles.eventday, styles.eventorange]}>
-                  <View style = {styles.sttorange}></View>
-                  <Text style = {styles.nameorange}>Daily Standup</Text>
-                  <View style = {styles.time}>
-                    <Text style = {styles.hourorange}>10:00 AM</Text>
-                    <Text style = {styles.minuteorange}>11:00 AM</Text>
-                  </View>
-                
-                </View>
-                <View style = {[styles.eventday, styles.eventgreen]}>
-                  <View style = {styles.sttgreen}></View>
-                  <Text style = {styles.namegreen}>Daily Standup</Text>
-                  <View style = {styles.time}>
-                    <Text style = {styles.hourgreen}>10:00 AM</Text>
-                    <Text style = {styles.minutegreen}>11:00 AM</Text>
-                  </View>
-                
-                </View>
-             
+                </View> 
              </View>
+              ))}
           </TouchableOpacity>
         )
     }
@@ -238,7 +220,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#000",
         marginTop: 7,
-        marginLeft: "37%",
+        marginLeft: "23%",
       },
       event : {
         height: 6,
