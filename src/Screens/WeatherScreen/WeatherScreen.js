@@ -7,7 +7,7 @@ import Swiper from "react-native-swiper"
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 
-export default function App( { navigation, route }) {
+export default function App( { navigation }) {
     const [cities, setCities] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isScrolling, setIsScrolling] = useState(false);

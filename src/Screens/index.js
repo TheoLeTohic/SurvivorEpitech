@@ -16,3 +16,4 @@ export {default as ForgetpasswordScreen } from './ForgetPasswordScreen/ForgetPas
 export {default as FeedScreen } from './FeedScreen/FeedScreen'
 export {default as CalendarScreen } from './CalendarScreen/CalendarScreen'
 export {default as WeatherScreen } from './WeatherScreen/WeatherScreen'
+export {default as TestScreen } from './TestScreen'

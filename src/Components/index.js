@@ -15,3 +15,4 @@ export { default as NewEmployeesBlock } from './AdminScreen/NewEmployeesBlock/Ne
 export { default as TotalEmployees } from './AdminScreen/TotalEmployees/TotalEmployees'
 export { default as CompagnyCode } from './AdminScreen/COmpagnyCode/CompagnyCode'
 export { default as EmployeesList } from './AdminScreen/EmployeesList/EmployeesList'
+export { default as RecipeSmall } from './Widgets/Recipee/RecipeSmall'

@@ -8,9 +8,7 @@ import MapView, { Marker } from "react-native-maps";
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 export default function App( { navigation, route }) {
-  const api = "5e5ba64ce2bba79dba8420c77f1ced3c"
   const compagny = route.params.code
-  console.log(compagny)
 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
@@ -30,8 +28,6 @@ export default function App( { navigation, route }) {
     try {
       let snapshot = await get(child(dbRef, `factory/${compagny}/autorizewidgets`));
       snapshot = snapshot.val();
-      console.log("snapshot")
-      console.log(snapshot)
       const tmp = Object.keys(snapshot);
       let objectlist = [];
       for (const obj of tmp) {
@@ -117,7 +113,6 @@ export default function App( { navigation, route }) {
   };
 
   function newwidget(activity, type) {
-    console.log("newwidget")
     const tmp = [...allwidgets];
     if (type == "big") {
     tmp.push({name: activity, type: type, index: allwidgets.length})
@@ -196,7 +191,7 @@ export default function App( { navigation, route }) {
         console.log(item.name),
         <View key={index} style = {styles.test}>
           {item.name == "Calendar" && item.type == "big" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
-          {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp}remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
+          {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
           {item.name == "Calendar" && item.type == "small" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
 
           {item.name == "duo" ? <View style = {styles.orga}>
