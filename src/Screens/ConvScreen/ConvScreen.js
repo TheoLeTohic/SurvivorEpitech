@@ -36,7 +36,9 @@ export default function App({ navigation, route }) {
         for (const obj of tmp) {
           objectlist.push(snapshot[obj]);
         }
-        setObject(objectlist);
+        const tmp2 = [...objectlist];
+        tmp.sort((a, b) => a.date - b.date);
+        setObject(tmp);
       } catch(e) {
         setObject([]);
       }
@@ -97,6 +99,7 @@ export default function App({ navigation, route }) {
  
     useEffect(() => {
         if (object != null) {
+            // order by date
         }
     }, [object]);
     return (
