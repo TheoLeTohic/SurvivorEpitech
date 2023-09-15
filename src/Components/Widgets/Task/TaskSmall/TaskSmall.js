@@ -1,11 +1,11 @@
 import { Component } from "react";
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import Svg, { Path } from "react-native-svg";
 
 class TaskSmall extends Component {
     render() {
         return (
-          <TouchableOpacity style = {this.props.click == false ? styles.tasksmall : styles.tasksmallclick} onLongPress={ () => this.props.callback() }>
+          <TouchableOpacity style = {this.props.click == false ? styles.tasksmall : styles.tasksmallclick} onPress={() => this.props.navigation.navigate("ToDo", {list :this.props.task, id: this.props.me})} onLongPress={ () => this.props.callback() }>
               {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
             <View style = { styles.tasksmalltop }>
               <Text style = { styles.tasksmalltxt }>Add Task</Text>
@@ -16,7 +16,7 @@ class TaskSmall extends Component {
                 </Svg>
               </TouchableOpacity>
             </View>
-            <View style = { styles.tasksmallbottom }>
+            <ScrollView style = { styles.tasksmallbottom }>
               {this.props.task.map((item, index) => (
                 <View key={index} style = { styles.tasksmalltxtline }>
                   <View style = { styles.tasksmalltxtcircle }/>
@@ -25,7 +25,7 @@ class TaskSmall extends Component {
               ))
               }
               <Text style = { styles.tasksmalltxtadd }> more</Text>
-            </View>
+            </ScrollView>
           </TouchableOpacity>
         );
     }
@@ -96,8 +96,6 @@ const styles = StyleSheet.create({
   },
   tasksmallbottom : {
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
     marginLeft: "9.52%",
     marginRight: "9.52%",
     marginTop: "3%",

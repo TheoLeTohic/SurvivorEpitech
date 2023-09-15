@@ -38,7 +38,7 @@ export default function App( { navigation, route }) {
 
     async function getotherinfo() {
         try {
-          let snapshot = await get(child(dbRef, `users/1KP7mTG8SNOV4sbvxDYhMSA1iGB3/events`));
+          let snapshot = await get(child(dbRef, `users/${route.params.id}/event`));
           snapshot = snapshot.val();
           const events = [];
             for (const key in snapshot) {   
@@ -60,6 +60,7 @@ export default function App( { navigation, route }) {
     , []);
 
     useEffect(() => {
+        console.log(events);
         if (events.length > 0)
             setcities();
     }, [events]);
@@ -67,8 +68,14 @@ export default function App( { navigation, route }) {
     async function setcities(d)
     {
         try {
-            for (let i = 0; i < events.length; i++)
-                await set(ref(getDatabase(firebase), `users/1KP7mTG8SNOV4sbvxDYhMSA1iGB3/event/${i}`), events[i]);
+            for (let i = 0; i < events.length; i++) {
+                if (events[i].minend == undefined)
+                    events[i].minend = 0;
+                if (events[i].minstart == undefined)
+                    events[i].minstart = 0;
+                console.log(events[i]);
+                await set(ref(getDatabase(firebase), `users/${route.params.id}/event/${i}`), events[i]);
+            }
         } catch(e) {
             console.log(e);
         }

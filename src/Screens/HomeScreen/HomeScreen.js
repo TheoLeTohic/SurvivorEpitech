@@ -38,6 +38,9 @@ export default function App({ navigation, route }) {
   }
 
   useEffect(() => {
+    if (route.params.me.cmp.status == false) {
+      navigation.navigate("Waiting", {id: route.params.id, code: route.params.code, me: route.params.me})
+    }
     getemploye()
   }, []);
 
@@ -86,7 +89,7 @@ export default function App({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style = {styles.hellocontainer}>
-        <Image source={require('../../../assets/avatar.png')} style = {styles.picture}></Image>
+            <View style = {styles.picture}><Text style = {styles.ppletter}>{route.params.me.surname[0]}</Text></View>
         <Text style = {styles.msg}>Hello, {route.params.me.name}</Text>
         <View style = {{marginLeft: "40%"}}>
         <Svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 30" fill="none">
@@ -142,6 +145,7 @@ export default function App({ navigation, route }) {
           ) : (
             <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
         <View style= {styles.topcard}>
+        <View style = {styles.leftcarddev}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>
           <View style = {styles.rightcarddev}>
           <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
           <Text style = {styles.jobtxt}>{goal.job}</Text>
@@ -162,10 +166,12 @@ export default function App({ navigation, route }) {
                 <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
                 <Text style = {styles.jobtxtopo}>{goal.job}</Text>
               </View>
+            <View style = {styles.leftcardopo}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>
             </TouchableOpacity>
             ) : (
               <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.carddev}>
           <View style= {styles.topcard}>
+          <View style = {styles.leftcarddev}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>
             <View style = {styles.rightcarddev}>
             <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
             <Text style = {styles.jobtxt}>{goal.job}</Text>
@@ -210,7 +216,10 @@ const styles = StyleSheet.create({
     width: 45,
     height: 45,
     borderRadius: 50,
-    backgroundColor: "red",
+    backgroundColor: "#367CFE",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     marginLeft: "4%",
   },
 

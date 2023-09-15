@@ -1,47 +1,85 @@
-import {StyleSheet, View, ImageBackground, ScrollView, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, ImageBackground, ScrollView, TouchableOpacity, Image} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { NavBar, ProfilHead, AdressBlock, InformationBlock, TeamMember } from '../../Components/index';
 import req from '../../data/Req.js'
 import * as ImagePicker from 'expo-image-picker'
 import firebase from '../../firebase/config'
 import { Alert } from 'react-native';
-import 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { getDatabase, set } from "firebase/database";
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 
 export default function App( { navigation, route }) {
     const [myinformation, setMyinformation] = useState();
-    const [pp, setPp] = useState(null);
+    const [pp, setPp] = useState([]);
     const [image, setImage] = useState(null)
     const [uploading, setUploading] = useState(false) 
+    const [display, setDisplay] = useState(0)
     const bearer_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzQsImVtYWlsIjoib2xpdmVyLmxld2lzQG1hc3VyYW8uanAiLCJuYW1lIjoiT2xpdmVyIiwic3VybmFtZSI6Ikxld2lzIiwiZXhwIjoxNjk1ODI3MjQzfQ.-tSPtN90QZpMxWzO2e-VpQdIZmLwZoOa2i6zwTXNR5E"
+
+
+    function onSwipe(gestureName, gestureState) {
+        const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+        switch (gestureName) {  
+          case SWIPE_UP:
+            console.log("up");
+            break;
+          case SWIPE_DOWN:
+            console.log("down");
+            break;
+          case SWIPE_LEFT:
+            setDisplay (display + 1)
+            break;
+          case SWIPE_RIGHT:
+            setDisplay (display - 1)
+            break;
+        }
+      }
+
+      const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+      };
+
+    async function getpp() {
+        try {
+            for (let i = 1; i < 100; i++) {
+                const storageRef = ref(getStorage(), 'images/' + route.params.id + '/' + i +'.png')
+                await getDownloadURL(storageRef).then((url) => {
+                    const tmp = [...pp]
+                    tmp.push(url)
+                    console.log("rm", tmp)
+                    setPp(tmp)
+                }).catch((error) => {
+                    return
+                })
+            }
+        } catch (error) {
+        console.log("a", error)
+        }
+    }
 
     async function getemploye() {
       await req.doReq(bearer_token, "https://masurao.fr/api/employees/me").then((response)  => response.json()).then((responseData) => {
         setMyinformation(responseData);
       })
     }
-    async function transformPicture(picture) {
-        const arrayBuffer = await picture.arrayBuffer();
-        const base64 = Buffer.from(arrayBuffer).toString('base64');
-        return Promise.resolve('data:image/png;base64,' + base64);
-      }
       const uploadImage = async () => {
-        setUploading(true)
-        const response = await fetch(image.uri)
-        const blob = response.blob()
-        const filename = image.uri.substring(image.uri.lastIndexOf('/')+1)
-        var ref = firebase.storage().ref().child(filename).put(blob)
         try {
-            await ref;
-        } catch (e){
-            console.log(e)
+            const blob = await uriToBlob(image.uri)
+            setImage(null)
+            const storageRef = ref(getStorage(), 'images/' + route.params.id + '/' +( pp.length + 1) +'.png')
+            setUploading(true)
+            uploadBytes(storageRef, blob).then((snapshot) => {
+            setUploading(false)
+            getpp()
+            Alert.alert("Image uploaded")
+            });
+        } catch (error) {
+            console.log(error)
         }
-        setUploading(false)
-        Alert.alert(
-            'Photo uploaded!'
-        );
-        setImage(null);
-    } 
+    }
 
     uriToBlob = (uri) => {
         return new Promise((resolve, reject) => { 
@@ -71,20 +109,9 @@ export default function App( { navigation, route }) {
         const source = {uri: result.assets[0].uri}
         console.log(source)
         setImage(source)
-    }; 
-
+    };
       useEffect(() => {
-        async function getPp() {
-          const image = await req.doReq(bearer_token, "https://masurao.fr/api/employees/" + myinformation.id +"/image")
-          const image64 = await transformPicture(image)
-          setPp(image64)
-        }
-        if (myinformation != null) {
-          getPp()
-        }
-      }, [myinformation])
-
-      useEffect(() => {
+        getpp()
         getemploye()
     }, []);
 
@@ -93,10 +120,16 @@ export default function App( { navigation, route }) {
             uploadImage()
         }
     }, [image])
+
+    useEffect(() => {
+        console.log(pp)
+    }
+    , [pp])
+
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../../../assets/background.png')} resizeMode='cover' style={{width: '100%', height: '100%'}}>
-                <TouchableOpacity onPress={() => pickImage()} style = {styles.photo}></TouchableOpacity>
+                <TouchableOpacity onPress={() => pickImage()} style = {styles.photo}>{pp[display] ? <Image style = {{width: "100%", height: "100%", borderRadius: 100000}} resizeMode='contain' source = {{uri : pp[display]}} />  : null}</TouchableOpacity>
                 <ProfilHead index = {2} navigation = { navigation } my = {myinformation} id = {route.params.id} code = {route.params.code} me = {route.params.me}/>
                 <View style = {styles.pagecontainer}>
                     <ScrollView showsVerticalScrollIndicator={false} >
@@ -150,7 +183,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
-        borderRadius: 1000,
+        borderRadius: 100000,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

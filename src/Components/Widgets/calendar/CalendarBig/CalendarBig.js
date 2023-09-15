@@ -3,39 +3,25 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 
 
 class CalendarBig extends Component {
+  constructor(props) {
+    super(props);
+    this.currentDay = new Date().getDate();
+    this.day = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+    this.currentDayofWeek= new Date().getDay();
+    this.actualday = this.currentDay - this.currentDayofWeek + 1
+    console.log(this.props.event)
+}
     render() {
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate("Calendar")} style = {this.props.click == false ? styles.calendar : styles.calendarclick} onLongPress={ () => this.props.callback() }>
               {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
-            <View style = {styles.calendarday}>
-              <Text style = {styles.daywithoutevent}>Mo</Text>
-              <Text style = {styles.date}>1</Text>
-            </View>
-            <View style = {styles.calendarday}>
-              <Text style = {styles.daywithoutevent}>Tu</Text>
-              <Text style = {styles.date}>2</Text>
-            </View>
-            <View style = {styles.calendarday}>
-              <Text style = {styles.daywithoutevent}>We</Text>
-              <Text style = {styles.date}>3</Text>
-            </View>
-            <View style = {[styles.calendarday, styles.today]}>
-              <Text style = {[styles.daywithoutevent, styles.todaytxt]}>Th</Text>
-              <Text style = {[styles.date, styles.todaydate]}>4</Text>
-            </View>
-            <View style = {styles.calendarday}>
-              <Text style = {styles.daywithoutevent}>Fr</Text>
-              <Text style = {styles.date}>5</Text>
-            </View>
-            <View style = {styles.calendarday}>
-              <Text style = {styles.daywithoutevent}>Sa</Text>
-              <Text style = {styles.date}>6</Text>
-            </View>
-            <View style = {styles.calendarday}>
-              <Text style = {styles.day}>Su</Text>
-              <Text style = {styles.date}>7</Text>
-              <View style = {styles.event}></View>
-            </View>
+              {this.day.map((item, index) => (
+                  <View key={index} style = {[styles.calendarday, index == this.currentDayofWeek - 1 ? styles.today : null]}>
+                    <Text style = {[styles.day, index == this.currentDayofWeek - 1 ? styles.todaytxt : null]}>{item}</Text>
+                    <Text style = {[styles.date, index == this.currentDayofWeek - 1 ? styles.todaydate : null]}>{this.actualday + index}</Text>
+                    <View style = {styles.event}></View>
+                  </View>
+                ))}
           </TouchableOpacity>
         )
     }
@@ -111,7 +97,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#000",
         marginTop: 7,
-        marginLeft: "37%",
+        marginLeft: "23%",
       },
       event : {
         height: 6,

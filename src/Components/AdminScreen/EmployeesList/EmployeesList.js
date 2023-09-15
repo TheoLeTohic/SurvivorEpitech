@@ -2,27 +2,37 @@ import {Component, useState} from "react";
 import {Modal, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Touchable} from 'react-native';
 import { Svg, Path, Use } from 'react-native-svg';
 import { BlurView } from 'expo-blur';
-import {getDatabase, ref, push} from "firebase/database";
+import {getDatabase, ref, push, set} from "firebase/database";
 import firebase from "../../../firebase/config";
 
 export default class NewEmployees extends Component {
     render() {
+    console.log("member", this.props.member)
         return (
             <View style = {styles.container}>
                 <View style = {styles.topcontainer}>
                     <Text style = {styles.title}>Employees List</Text>
                     <TextInput style = {styles.searchbar} placeholder = "Search user..."/>
                 </View>
-                {this.props.member.map((item, index) => {
-                    <View style = {styles.card}>
-                        <View style = {styles.picture}></View>
-                        <Text style = {styles.name}>Julia</Text>
-                        <Text style = {styles.date}>11/09/2023</Text>
-                        <View style = {styles.jobcontainerblue}>
-                            <Text style = {styles.jobblue}>CEO</Text>
+                {this.props.member.filter((item) => item.cmp.compagny == this.props.code).map((item) => {
+                    return (<View style = {styles.card}>
+                        <Text style = {styles.name}>{item.name}</Text>
+                        <Text style = {styles.date}>{item.date}</Text>
+                        {item.cmp.status == false ? <TouchableOpacity onPress={
+                            () => {
+                                const db = getDatabase(firebase);
+                                set(ref(db, 'users/'+ item.idConnect + '/cmp'), {
+                                    compagny: this.props.code,
+                                    status: true
+                                });
+                            }
+                        }><Text>np</Text></TouchableOpacity> : null}
+                        <View style = {styles.jobcontainerred}>
+                            <Text style = {styles.jobred}>{item.job}</Text>
                         </View>
-                    </View>
-                })}
+                    </View>)
+                }
+                )}
             </View>
     );
 }

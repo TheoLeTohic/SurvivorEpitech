@@ -13,6 +13,7 @@ export default function App( { navigation, route }) {
     const [memberlist, setMemberlist] = useState([]);
     const dbRef = ref(getDatabase());
     const [data, setData] = useState([]);
+    const [datas, setDatas] = useState([]);
 
     async function getcompagnyWidgets() {
         try {
@@ -43,21 +44,19 @@ export default function App( { navigation, route }) {
         }
     }
 
-    async function getMemberList() {
+    async function getemploye() {
         try {
-            let snapshot = await get(child(dbRef, `factory/${companycode}/memberList`));
-            snapshot = snapshot.val();
-            const tmp = Object.keys(snapshot);
-            let objectlist = [];
-            for (const obj of tmp) {
-              objectlist.push(snapshot[obj]);
-            }
-            setMemberlist(objectlist);
-          } catch(e) {
-              console.log(e)
-            setMemberlist("error");
+          let snapshot = await get(child(dbRef, `users`));
+          snapshot = snapshot.val();
+          const employees = Object.values(snapshot);
+          for (let i = 0; i < employees.length; i++) {
+            employees[i].isopen = false;
           }
-    }
+            setDatas(employees)
+        } catch(e) {
+            console.log(e)
+        }
+      }
 
     async function setAllwidgetsdb() {
         if (autorizewidgets.length == 0) {
@@ -79,6 +78,15 @@ export default function App( { navigation, route }) {
     useEffect(() => {
         setAllwidgetsdb()
     }, [allwidgets])
+
+    useEffect(() => {
+        if (datas == undefined)
+          setDatas([])
+        if (datas.length > 0) {
+          console.log(datas.length)
+          console.log(datas.filter((data) => data.cmp.compagny == route.params.code).length)
+        } 
+      }, [datas]);
 
     function autorize(name) {
         const tmp2 = [...allwidgets];
@@ -105,7 +113,7 @@ export default function App( { navigation, route }) {
     }
 
     useEffect(() => {
-        getMemberList()
+        getemploye()
         getcompagnyWidgets()
     }, [])
 
@@ -125,11 +133,11 @@ export default function App( { navigation, route }) {
         
         </View>
         <View style = {{width: "100%", height: "19.9%", display: "flex", flexDirection: "row", alignItems: "center",}}>
-        <NewEmployeesBlock data = {data.members}/>
-        <TotalEmployees data = {data.members} max = {data.maxmembers}/>
+        <NewEmployeesBlock data = {datas.filter((data) => data.cmp.compagny == route.params.code).length}/>
+        <TotalEmployees data = {datas.filter((data) => data.cmp.compagny == route.params.code).length} max = {data.maxmembers}/>
         </View>
         <CompagnyCode code = {route.params.code}/>
-        <EmployeesList member = {memberlist}/>
+        <EmployeesList member = {datas} code = {route.params.code}/>
         <View style = {styles.containere}>
                 <View style = {styles.topcontainer}>
                     <Text style = {styles.title}>Widgets</Text>
