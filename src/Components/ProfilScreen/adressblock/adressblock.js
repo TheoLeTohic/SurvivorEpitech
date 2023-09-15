@@ -2,14 +2,16 @@ import {Component, useState} from "react";
 import {Modal, StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Touchable} from 'react-native';
 import { Svg, Path, Use } from 'react-native-svg';
 import { BlurView } from 'expo-blur';
-import {getDatabase, ref, push} from "firebase/database";
-import firebase from "../../../firebase/config";
+import {pushDataToDatabase, setDataToDatabase} from "../../../data/FirebaseUtils";
 
 export default class adressblock extends Component {
     state = {
         modalVisible: false,
         userAddress: "",
         subAddress: "",
+        editUserAddress: [],
+        editUserSubAddress: [],
+        addressesEdited: [],
     }
 
     showModal = () => {
@@ -29,22 +31,42 @@ export default class adressblock extends Component {
     }
 
     saveAddress = () => {
-        if (this.state.userAddress == "" || this.state.subAddress == "")
+        if (this.state.userAddress === "" || this.state.subAddress === "")
             return ;
         this.hideModal();
-        const db = getDatabase(firebase);
-        const addressRef = ref(db, `users/Theo/address`);
-        if (this.state.userAddress === "" || this.state.subAddress === "") {
-            return
-        }
-        push(addressRef, {
+
+        const newIndex = this.props.alladdress.length;
+        console.log(newIndex)
+        setDataToDatabase(`users/${this.props.id}/address/${newIndex}`, {
             main: this.state.userAddress,
             sub: this.state.subAddress,
-        });
+        }).then(r => console.log(r));
         this.props.alladdress.push({
             main: this.state.userAddress,
             sub: this.state.subAddress,
         })
+    }
+
+    confirmEdit = (index) => {
+        const { addressesEdited, editUserAddress, editUserSubAddress } = this.state;
+        const { alladdress } = this.props;
+
+        addressesEdited.push(index);
+        alladdress[index] = {
+            main: editUserAddress,
+            sub: editUserSubAddress,
+        };
+        setDataToDatabase(`users/${this.props.id}/address/${index}`, {
+            main: this.state.editUserAddress[index],
+            sub: this.state.editUserSubAddress[index],
+        }).then(r => console.log(r));
+        this.setState({ addressesEdited, editUserAddress: "", editUserSubAddress: "" });
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (!prevProps.isEditMode && this.props.isEditMode) {
+            this.setState({ addressesEdited: [] });
+        }
     }
 
     render() {
@@ -65,16 +87,47 @@ export default class adressblock extends Component {
                 </View>
                 <View style = {styles.alladress}>
                     {this.props.alladdress.map((item, index) => {
+                        const isAddressEdited = this.state.addressesEdited.includes(index);
+
                         return (
                             <View key={index} style = {styles.adress}>
                                 <View style = {styles.topadress}>
                                     <Svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/Svg">
                                         <Path d="M13.8116 13.4759H13.146V5.3619C13.146 4.91552 12.9596 4.49795 12.6335 4.22436L11.8147 3.5332L11.8014 1.7693C11.8014 1.37332 11.5019 1.05654 11.1358 1.05654H8.86605L7.97412 0.307783C7.49487 -0.102594 6.81594 -0.102594 6.3367 0.307783L1.67736 4.22436C1.35121 4.49795 1.16483 4.91552 1.16483 5.3547L1.13155 13.4759H0.499214C0.226311 13.4759 0 13.7207 0 14.0159C0 14.311 0.226311 14.5558 0.499214 14.5558H13.8116C14.0845 14.5558 14.3108 14.311 14.3108 14.0159C14.3108 13.7207 14.0845 13.4759 13.8116 13.4759ZM3.4945 7.35615V6.27621C3.4945 5.88023 3.79403 5.55625 4.16012 5.55625H5.49136C5.85745 5.55625 6.15698 5.88023 6.15698 6.27621V7.35615C6.15698 7.75213 5.85745 8.07611 5.49136 8.07611H4.16012C3.79403 8.07611 3.4945 7.75213 3.4945 7.35615ZM8.81946 13.4759H5.49136V11.4959C5.49136 10.8984 5.93732 10.416 6.48979 10.416H7.82103C8.37349 10.416 8.81946 10.8984 8.81946 11.4959V13.4759ZM10.8163 7.35615C10.8163 7.75213 10.5168 8.07611 10.1507 8.07611H8.81946C8.45336 8.07611 8.15384 7.75213 8.15384 7.35615V6.27621C8.15384 5.88023 8.45336 5.55625 8.81946 5.55625H10.1507C10.5168 5.55625 10.8163 5.88023 10.8163 6.27621V7.35615Z" fill="black"/>
                                     </Svg>
-                                    {item.main ? <Text style = {styles.maintxt}>{item.main}</Text> : <Text style = {styles.maintxt}>Main</Text>}
+                                    {this.props.isEditMode && !isAddressEdited ? (
+                                        <View style = {{width: "100%", display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                                            <TextInput
+                                                style={styles.inputstyle}
+                                                value={this.state.editUserAddress[index] || ""}
+                                                onChangeText={(text) => {
+                                                    let updatedAddresses = [...this.state.editUserAddress];
+                                                    updatedAddresses[index] = text;
+                                                    this.setState({editUserAddress: updatedAddresses});
+                                                }}
+                                            />
+                                            <TouchableOpacity onPress={() => this.confirmEdit(index)} style={{marginLeft: "2%", width: 20, height: 20}}>
+                                                <Image source={require("../../../../assets/add.png")} resizeMode="cover" style={{width: "100%", height: "100%", tintColor: "#56AF8D"}}/>
+                                            </TouchableOpacity>
+                                        </View>
+                                    ) : (
+                                        <Text style = {styles.maintxt}>{item.main || "Main"}</Text>
+                                    )}
                                 </View>
                                 <View style = {styles.bottomadress}>
-                                    <Text style = {styles.adresstxtsecond}>{item.sub}</Text>
+                                    {this.props.isEditMode && !isAddressEdited ? (
+                                        <TextInput
+                                            style={styles.inputsecondstyle}
+                                            value={this.state.editUserSubAddress[index] || ""}
+                                            onChangeText={(text) => {
+                                                let updatedAddresses = [...this.state.editUserSubAddress];
+                                                updatedAddresses[index] = text;
+                                                this.setState({editUserSubAddress: updatedAddresses});
+                                            }}
+                                        />
+                                    ) : (
+                                        <Text style = {styles.adresstxtsecond}>{item.sub || "Sub"}</Text>
+                                    )}
                                 </View>
                             </View>
                         )})}
@@ -121,8 +174,7 @@ export default class adressblock extends Component {
             </Modal>
             </View>
     );
-}
-}
+}}
 
 
 const styles = StyleSheet.create({
@@ -174,7 +226,7 @@ const styles = StyleSheet.create({
         marginLeft: '5%',
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#639DE4',
+        color: '#56AF8D',
     },
     alladress: {
         marginTop: 10,
@@ -287,5 +339,22 @@ const styles = StyleSheet.create({
         width: "80%",
         marginBottom: 10,
     },
+    inputstyle: {
+        width: "80%",
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginLeft: '5%',
+        borderRadius: 5,
+        borderBottomWidth: 1,
+        borderColor: "rgba(0, 0, 0, 0.2)",
+    },
+    inputsecondstyle: {
+        width: "80%",
+        fontSize: 12,
+        marginLeft: '10%',
+        borderRadius: 5,
+        borderBottomWidth: 1,
+        borderColor: "rgba(0, 0, 0, 0.2)",
+    }
 
 })

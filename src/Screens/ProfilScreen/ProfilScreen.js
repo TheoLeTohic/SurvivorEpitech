@@ -1,4 +1,4 @@
-import {StyleSheet, View, ImageBackground, ScrollView, Image} from 'react-native';
+import {StyleSheet, View, ImageBackground, ScrollView, Image, TouchableOpacity} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { NavBar, ProfilHead, AdressBlock, InformationBlock, PhoneSvg } from '../../Components/index';
 import { getDatabase, ref, child, get, set } from "firebase/database";
@@ -9,6 +9,7 @@ import { Buffer } from 'buffer';
 export default function App( { navigation, route }) {
 
   const [object, setObject] = useState([]);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [myinformation, setMyinformation] = useState();
   const [objectother, setObjectother] = useState([]);
   const dbRef = ref(getDatabase(firebase));
@@ -19,6 +20,10 @@ export default function App( { navigation, route }) {
     await req.doReq(bearer_token, "https://masurao.fr/api/employees/me").then((response)  => response.json()).then((responseData) => {
       setMyinformation(responseData);
     })
+  }
+
+  function toggleEditMode() {
+      setIsEditMode(prev => !prev);
   }
 
   async function transformPicture(picture) {
@@ -52,7 +57,6 @@ export default function App( { navigation, route }) {
           objectlist.push(snapshot[obj]);
         }
         setObject(objectlist);
-        console.log(objectlist)
       } catch(e) {
         setObject("error");
       }
@@ -63,6 +67,7 @@ export default function App( { navigation, route }) {
       let snapshot = await get(child(dbRef, `users/${route.params.id}`));
       snapshot = snapshot.val();
       setObjectother(snapshot);
+      console.log(snapshot)
     } catch(e) {
       setObjectother("error");
     }
@@ -74,26 +79,24 @@ export default function App( { navigation, route }) {
       getotherinfo()
   }, []);
 
-  useEffect(() => {
-    console.log(object)
-  }, [object, objectother])
-
-  useEffect(() => {
-  }, [myinformation])
-
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../../../assets/background.png')} resizeMode='cover' style={{width: '100%', height: '100%'}}>
+                <View style = {styles.topcontainer}>
+                    <TouchableOpacity style = {styles.modifybutton} onPress={toggleEditMode}>
+                        <Image source={require('../../../assets/modify.png')} style={styles.modifybuttonimage}/>
+                    </TouchableOpacity>
+                </View>
                 <View style = {styles.photo}></View>
                 {pp == null && <View style = {styles.photo}></View>}
                 {pp != null && <Image source={{ uri: pp }} style={styles.photo} />}
-                <ProfilHead index = {1} navigation = {navigation} my = {myinformation} id = {route.params.id} code = {route.params.code} me = {route.params.me}/>
+                <ProfilHead index = {1} navigation = {navigation} my = {objectother} id = {route.params.id} code = {route.params.code} me = {route.params.me}/>
                     <View style = {styles.pagecontainer}>
                         <ScrollView showsVerticalScrollIndicator={false} >
                             <View style = {styles.body}>
-                                <AdressBlock alladdress = {object} id = {route.params.id} code = {route.params.code}/>
-                                <InformationBlock icon = {1} txt = {"Mobile"} value = {objectother.phone}/>
-                                <InformationBlock icon = {2} txt = {"Email"} value = {objectother.Email} />
+                                <AdressBlock alladdress = {object} id = {route.params.id} code = {route.params.code} isEditMode={isEditMode}/>
+                                <InformationBlock id = {route.params.id} icon = {1} txt = {"Phone"} value = {objectother.phone ? objectother.phone.phone : ""} isEditMode={isEditMode}/>
+                                <InformationBlock id = {route.params.id} icon = {2} txt = {"Email"} value = {objectother.email ? objectother.email.email : ""} isEditMode={isEditMode}/>
                             </View>
                             <View style = {{height: 120}}/>
                         </ScrollView>
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
     body: {
         width: '100%',
         height: '60%',
-        marginTop: '27%',
+        marginTop: '33%',
         alignItems: 'center',
     },
     container: {
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#EAEAEA',
     },
     pagecontainer: {
-        marginTop: '70%',
+        marginTop: '35%',
         borderRadius: 25,
         width: '100%',
         height: '70%',
@@ -143,4 +146,25 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
     },
+    topcontainer: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        marginTop: "15%",
+        paddingRight: "8%",
+    },
+    modifybutton: {
+        display: "flex",
+        backgroundColor: "#EAEAEA",
+        borderRadius: 1000,
+        width: 60,
+        height: 60,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    modifybuttonimage: {
+        width: 25,
+        height: 25,
+    }
 });
