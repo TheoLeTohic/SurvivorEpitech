@@ -32,6 +32,13 @@ export default function ChessGame({ }) {
     });
   };
 
+  const isPieceOfCurrentPlayer = (position) => {
+    const piece = game.get(position);
+    if (!piece) return false;
+    return (piece.color === 'w' && userTurn === "White") || (piece.color === 'b' && userTurn === "Black");
+  };
+  
+
   const [board, setBoard] = useState(getBoardFromGame());
 
   const handleCellPress = (rowIndex, cellIndex) => {
@@ -52,7 +59,9 @@ export default function ChessGame({ }) {
           setSelectedSquare(algebraicPosition);
         }
       } else {
-        setSelectedSquare(algebraicPosition);
+        if (isPieceOfCurrentPlayer(algebraicPosition)) {
+          setSelectedSquare(algebraicPosition);
+        }
       }
     } catch (error) {
       setError(error.message);
