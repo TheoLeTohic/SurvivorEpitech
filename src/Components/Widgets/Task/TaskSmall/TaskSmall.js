@@ -5,8 +5,8 @@ import Svg, { Path } from "react-native-svg";
 class TaskSmall extends Component {
     render() {
         return (
-          <TouchableOpacity style = {this.props.click == false ? styles.tasksmall : styles.tasksmallclick} onPress={() => this.props.navigation.navigate("ToDo", {list :this.props.task, id: this.props.me})} onLongPress={ () => this.props.callback() }>
-              {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
+          <TouchableOpacity style = {this.props.click === false ? styles.tasksmall : styles.tasksmallclick} onPress={() => this.props.navigation.navigate("ToDo", {list :this.props.task, id: this.props.me})} onLongPress={ () => this.props.callback() }>
+              {this.props.click === true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
             <View style = { styles.tasksmalltop }>
               <Text style = { styles.tasksmalltxt }>Add Task</Text>
               <TouchableOpacity style = { styles.tasksmallplusbtn }>
