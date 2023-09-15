@@ -2,6 +2,8 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, Modal, TextInput} from
 import React, { useState, useEffect } from 'react';
 import {BlurView} from "expo-blur";
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import { getDatabase, ref, child, get, set } from "firebase/database";
+import firebase from '../../firebase/config';
 
 
 
@@ -22,6 +24,7 @@ export default function App( { navigation, route }) {
     const [maxdayinmonth, setMaxdayinmonth] = useState(new Date(year, month + 1, 0).getDate());
     const [firstdayinmonth, setFirstdayinmonth] = useState((new Date(year, month, 1).getDay()) - 1 % 7);
     const [prevmonth, setPrevmonth] = useState(month - 1);
+    const dbRef = ref(getDatabase());
     const [events, setEvents] = useState([{
         name: "meeting Nicole",
         year: 2023,
@@ -33,6 +36,43 @@ export default function App( { navigation, route }) {
         minend: 30,
     }]);
 
+    async function getotherinfo() {
+        try {
+          let snapshot = await get(child(dbRef, `users/1KP7mTG8SNOV4sbvxDYhMSA1iGB3/events`));
+          snapshot = snapshot.val();
+          const events = [];
+            for (const key in snapshot) {   
+                events.push(snapshot[key]);
+            }
+          if (snapshot == null || snapshot === "" || snapshot === undefined || snapshot === "error" || snapshot === "null" || snapshot === "undefined" || snapshot === " ") {
+            setEvents([]);
+            return ;
+          }
+          setEvents(events);
+        } catch(e) {
+            setEvents([])
+        }
+    }
+
+    useEffect(() => {
+        getotherinfo();
+    }
+    , []);
+
+    useEffect(() => {
+        if (events.length > 0)
+            setcities();
+    }, [events]);
+
+    async function setcities(d)
+    {
+        try {
+            for (let i = 0; i < events.length; i++)
+                await set(ref(getDatabase(firebase), `users/1KP7mTG8SNOV4sbvxDYhMSA1iGB3/event/${i}`), events[i]);
+        } catch(e) {
+            console.log(e);
+        }
+    }
 
     if (prevmonth < 0)
         setPrevmonth(11);

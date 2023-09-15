@@ -119,7 +119,11 @@ export default function App( { navigation, route }) {
   function newwidget(activity, type) {
     console.log("newwidget")
     const tmp = [...allwidgets];
+    if (type == "big") {
     tmp.push({name: activity, type: type, index: allwidgets.length})
+    } else {
+      tmp.push({name: "duo", type: type, index: allwidgets.length, content: {0: {name: activity, type: type, index: "0"}}})
+    }
     try {
       if (type == "small") {
         set(child(dbRef, `users/${route.params.id}/widgets/${allwidgets.length}`), {name: "duo", type: type, index: allwidgets.length, content: {0: {name: activity, type: type, index: "0"}}});
@@ -198,9 +202,11 @@ export default function App( { navigation, route }) {
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
                 console.log(items.name),
-                items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : console.log("no"),
-                items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null,
-                items.name == "Task" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null
+                <>
+                {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index}/> : console.log("no")}
+                {items.name == "Task" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index}/> : console.log("no")}
+                {items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index}/> : console.log("no")}
+                </>
               ))}
             </View> : null}
         </View>

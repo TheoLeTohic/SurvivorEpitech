@@ -7,13 +7,6 @@ urlfemalname = "https://www.randomlists.com/data/names-female.json"
 urllastname = "https://www.randomlists.com/data/names-last.json"
 
 firebaseconfig = {
-    "apiKey": "AIzaSyDPQaOXylHp7aRAwHVAMC015Zcg6OJZaYk",
-    "authDomain": "survivor-fc090.firebaseapp.com",
-    "databaseURL": "https://survivor-fc090-default-rtdb.europe-west1.firebasedatabase.app",
-    "projectId": "survivor-fc090",
-    "storageBucket": "survivor-fc090.appspot.com",
-    "messagingSenderId": "489716387724",
-    "appId": "1:489716387724:web:0b2b29a6354c43391e50a9"
 }
 
 def get_names(url):

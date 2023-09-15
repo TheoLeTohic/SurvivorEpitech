@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { firebase } from '../../firebase/config'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, child, get, set, del } from "firebase/database";
 import {LinearGradient} from "expo-linear-gradient";
 
 
@@ -35,24 +35,23 @@ export default function App({ navigation, route }) {
     async function setCompagnyMemberplus1(snapshot) {
             const temp = snapshot
             console.log("temp", temp)
-            console.log(snapshot.members)
+            console.log(temp["members"])
+            console.log(temp.members)
             set(ref(getDatabase(firebase), 'factory/' + code), {
-                compagny: snapshot.compagny,
-                members: snapshot.members + 1,
-                memmberList: snapshot.memmberList,
-                maxmembers: snapshot.maxmembers,
-                type: snapshot.type,
+                compagny: temp.compagny,
+                members: (temp.members + 1),
+                memmberList: temp.memmberList,
+                maxmembers: temp.maxmembers,
+                type: temp.type,
             });
     }
 
     async function submit() {
         SetCode(nb1 + nb2 + nb3 + nb4)
-        console.log(code)
         try {
             let actualcode = nb1 + nb2 + nb3 + nb4
-            console.log(actualcode)
             let snapshot = await get(child(dbRef, `factory/${actualcode}`));
-            console.log("snap", snapshot)
+            snapshot = snapshot.val()
             if (snapshot != null) {
                 setCompagnytouser(nb1 + nb2 + nb3 + nb4)
                 setCompagnyMemberplus1(snapshot)

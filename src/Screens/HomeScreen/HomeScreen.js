@@ -130,14 +130,14 @@ export default function App({ navigation, route }) {
       </View>
       <View style = {{flex: 1}}>
       <ScrollView style = {styles.allcard} showsVerticalScrollIndicator={ false }>
-      {datas.map((goal, index) => (
+      {datas.filter((data) => data.cmp.compagny && data.cmp.compagny == route.params.code).map((goal, index) => (
         index % 2 == 0 ? (
           (goal.isopen == false ? (
           <TouchableOpacity key={index} onPress={() => toggleOpen(index)} style = {styles.card}>
             <View style = {styles.leftcard}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>
             <View style = {styles.rightcard}>
               <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-              <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
+              <Text style = {styles.jobtxt}>{goal.job}</Text>
             </View>
           </TouchableOpacity>
           ) : (
@@ -149,7 +149,7 @@ export default function App({ navigation, route }) {
           )}
           <View style = {styles.rightcarddev}>
           <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-          <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
+          <Text style = {styles.jobtxt}>{goal.job}</Text>
           </View>
         </View>
         <View style= {styles.bottomcard}>
@@ -165,7 +165,7 @@ export default function App({ navigation, route }) {
               <View style = {styles.rightcardopo}>
                 
                 <Text style = {styles.nametxtopo}>{goal.name} {goal.surname}</Text>
-                <Text style = {styles.jobtxtopo}>{"Frontend Developer"}</Text>
+                <Text style = {styles.jobtxtopo}>{goal.job}</Text>
               </View>
               {!employeesPicture.has(goal.id) && <View style = {styles.leftcardopo}><Text style = {styles.ppletter}>{goal.surname[0]}</Text></View>}
                 {/* {employeesPicture.has(goal.id) && <Text>Hey</Text>} */}
@@ -182,7 +182,7 @@ export default function App({ navigation, route }) {
             )}
             <View style = {styles.rightcarddev}>
             <Text style = {styles.nametxt}>{goal.name} {goal.surname}</Text>
-            <Text style = {styles.jobtxt}>{"Frontend Developer"}</Text>
+            <Text style = {styles.jobtxt}>{goal.job}</Text>
             </View>
           </View>
           <View style= {styles.bottomcard}>

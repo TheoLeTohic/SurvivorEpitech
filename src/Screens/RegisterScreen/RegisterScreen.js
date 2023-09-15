@@ -23,9 +23,9 @@ export default function App({ navigation }) {
 
     function createAccount(idco) {
         set(ref(db, 'users/' + idco), {
-            name: user,
+            name: name,
             Email: email,
-            surname: user,
+            surname: surname,
             idConnect: idco,
             job: Job,
             phone: "    ",

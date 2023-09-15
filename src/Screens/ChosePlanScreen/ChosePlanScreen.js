@@ -11,6 +11,7 @@ import { getDatabase, ref, child, get, set } from "firebase/database";
 export default function App( { navigation, route }) {
   const [number, setNumber] = useState(1)
   const [state, setState] = useState("")
+  const dbRef = ref(getDatabase());
 
   function onSwipe(gestureName, gestureState) {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
@@ -38,6 +39,18 @@ export default function App( { navigation, route }) {
       directionalOffsetThreshold: 80
   };
 
+  async function getcompagnyWidgets(id) {
+    try {
+      let snapshot = await get(child(dbRef, `users/${id}`));
+      snapshot = snapshot.val();
+      console.log(snapshot)
+      if (snapshot != null)
+        navigation.navigate("Payment", {id: id, code: route.params.code, me: snapshot})
+    } catch(e) {
+        console.log(e)
+    }
+  }
+
   function setCompagnytouser(nbr) {
       set(ref(getDatabase(firebase), 'users/' + route.params.id + '/cmp'), {
           compagny: nbr,
@@ -53,11 +66,11 @@ export default function App( { navigation, route }) {
         type: 1,
         maxmembers: 10,
         members: 1,
-        autorizewidgets: {autorizewidgets: "Calendar,Meteo,Task"},
+        autorizewidgets: {autorizewidgets: "Calendar,Meteo,Task,duo"},
         memberList: {"0": {id: route.params.id, name: "Theo", role: "admin"}},
     });
     setCompagnytouser(state)
-    navigation.navigate("Payment", {id: route.params.id, code: state, me: route.params.me})
+    getcompagnyWidgets(route.params.id)
   }
 
   function generateRandomNumber () {

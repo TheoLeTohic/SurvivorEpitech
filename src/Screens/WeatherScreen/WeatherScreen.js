@@ -14,7 +14,7 @@ export default function App( { navigation, route }) {
     const dbRef = ref(getDatabase());
     async function getotherinfo() {
         try {
-          let snapshot = await get(child(dbRef, `users/1KP7mTG8SNOV4sbvxDYhMSA1iGB3/meteocities`));
+          let snapshot = await get(child(dbRef, `users/${route.params.id}/meteocities`));
           snapshot = snapshot.val();
           if (snapshot == null || snapshot === "" || snapshot === undefined || snapshot === "error" || snapshot === "null" || snapshot === "undefined" || snapshot === " ") {
             setCities(["Barcelona"]);
@@ -31,7 +31,7 @@ export default function App( { navigation, route }) {
         console.log("setcities");
         console.log(cities);
         try {
-            await set(ref(getDatabase(firebase), `users/1KP7mTG8SNOV4sbvxDYhMSA1iGB3/meteocities`), cities.join(","));
+            await set(ref(getDatabase(firebase), `users/${route.params.id}/meteocities`), cities.join(","));
         } catch(e) {
             console.log(e);
         }
