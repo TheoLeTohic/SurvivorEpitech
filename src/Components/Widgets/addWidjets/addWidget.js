@@ -139,5 +139,5 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         width: 40,
         height: 40,
-    }
+    },
 })

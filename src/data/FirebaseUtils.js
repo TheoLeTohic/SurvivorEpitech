@@ -1,4 +1,4 @@
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, child, get, set, push } from "firebase/database";
 import firebase from "../firebase/config";
 
 const dbRef = ref(getDatabase(firebase));
@@ -33,3 +33,17 @@ export const setDataToDatabase = async (path, data) => {
         console.error(error);
     }
 };
+
+/**
+ * Pushes data to the database
+ * @param path
+ * @param data
+ * @returns {Promise<void>}
+ */
+export const pushDataToDatabase = async (path, data) => {
+    try {
+        await push(child(dbRef, path), data);
+    } catch (error) {
+        console.error(error);
+    }
+}
