@@ -14,6 +14,7 @@ export default class MeteoBig extends Component {
             />
               {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
               <View style = {styles.left}>
+                <Image style = {styles.icon} source={require("../../../../../assets/sun.png")}/>
               </View>
               <View style = {styles.right}>
                 <View style={styles.citycontainer}><Text style = {styles.city}>{this.props.city[0]}</Text></View>
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   left : {
-    //make glassmorphism
     height: "80%",
     marginTop: "2.5%",
     width: "22%",
@@ -191,9 +191,7 @@ const styles = StyleSheet.create({
   },
   icon : {
     height: "100%",
-    width: "10%",
-    marginTop: "15%",
-    marginLeft: "5%",
+    width: "100%",
   },
 
 });

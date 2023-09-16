@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default class WeatherSmall extends Component {
@@ -15,6 +15,7 @@ export default class WeatherSmall extends Component {
               {this.props.click === true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
               <View style = {styles.topsmall}>
                 <View style = {styles.leftsmall}>
+                  <Image style = {styles.iconsmall} source={require("../../../../../assets/sun.png")}/>
                 </View>
                 <View style = {styles.rightsmall}>
                   <View style={styles.tempnumcontainersmall}>
@@ -187,10 +188,8 @@ const styles = StyleSheet.create({
         opacity: 0.5,
       },
       iconsmall : {
-        height: "120%",
-        width: "120%",
-        marginTop: "20%",
-        marginLeft: "12%",
+        height: "100%",
+        width: "100%",
       },
 
 })
