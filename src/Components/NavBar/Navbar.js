@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { Svg, Path } from 'react-native-svg';
 
 export default class Navbar extends Component {
@@ -13,10 +13,7 @@ export default class Navbar extends Component {
                 {this.props.index === 1 ? <Text style={styles.txtnavbar}>Home</Text> : null}
             </TouchableOpacity>
             <TouchableOpacity style = {styles.navbaritem} onPress={() => this.props.navigation.navigate("Feed", {id: this.props.id, code: this.props.code, me: this.props.me})}>
-            <Svg width="25" height="24" viewBox="0 0 25 24" fill="none">
-    <Path fill-rule="evenodd" clip-rule="evenodd" d="M11.7 4C7.83402 4 4.70001 7.13401 4.70001 11C4.70001 14.866 7.83402 18 11.7 18C15.566 18 18.7 14.866 18.7 11C18.7 7.13401 15.566 4 11.7 4ZM2.70001 11C2.70001 6.02944 6.72945 2 11.7 2C16.6706 2 20.7 6.02944 20.7 11C20.7 15.9706 16.6706 20 11.7 20C6.72945 20 2.70001 15.9706 2.70001 11Z" fill={this.props.index === 2 ? "#539DF3" : "#484C52"}/>
-    <Path fill-rule="evenodd" clip-rule="evenodd" d="M16.6429 15.9429C17.0335 15.5524 17.6666 15.5524 18.0571 15.9429L22.4071 20.2929C22.7977 20.6834 22.7977 21.3166 22.4071 21.7071C22.0166 22.0977 21.3835 22.0977 20.9929 21.7071L16.6429 17.3571C16.2524 16.9666 16.2524 16.3334 16.6429 15.9429Z" fill={this.props.index === 2 ? "#539DF3" : "#484C52"}/>
-    </Svg>
+            {this.props.index != 2 ? <Image source={require("../../../assets/discuter.png")} style={{width: 25, height: 25}}/> : <Image source={require("../../../assets/discuter-2.png")} style={{width: 25, height: 25}}/>}
     {this.props.index === 2 ? <Text style={styles.txtnavbar}>Message</Text> : null}
             </TouchableOpacity>
             {this.props.me.role.role == "admin" ?

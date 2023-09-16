@@ -1,5 +1,6 @@
 export { default as NavBar } from './NavBar/Navbar'
 export { default as MeteoSmall } from './Widgets/Meteo/MeteoSmall/MeteoSmall'
+export { default as ChessSmall } from './Widgets/Chess/ChessSmall'
 export { default as MeteoBig } from './Widgets/Meteo/MeteoBig/MeteoBig'
 export { default as TaskSmall } from './Widgets/Task/TaskSmall/TaskSmall'
 export { default as CalendarSmall } from './Widgets/calendar/CalendarSmall/CalendarSmall'
@@ -16,3 +17,4 @@ export { default as TotalEmployees } from './AdminScreen/TotalEmployees/TotalEmp
 export { default as CompagnyCode } from './AdminScreen/COmpagnyCode/CompagnyCode'
 export { default as EmployeesList } from './AdminScreen/EmployeesList/EmployeesList'
 export { default as RecipeSmall } from './Widgets/Recipee/RecipeSmall'
+export { default as TwitterSmall } from './Widgets/twitter/twitterSmall/twitterSmall'

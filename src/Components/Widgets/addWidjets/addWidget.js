@@ -22,7 +22,7 @@ class CalendarBig extends Component {
     render() {
         return (
             <>
-            {this.props.open === false ? <TouchableOpacity onPress={() => this.props.toopen()} style = {styles.roundstyle}></TouchableOpacity> : (
+            {this.props.open === false ? <TouchableOpacity onPress={() => this.props.toopen()} style = {styles.roundstyle}><Image resizeMode="contain" style= {{width: "90%", height: "100%"}} source={require("../../../../assets/plus.png")}/></TouchableOpacity> : (
             <TouchableOpacity onPress={() => this.props.toopen()} style = {styles.screen}>
                 <Text style={styles.title}>Choose Widget</Text>
                 <TouchableOpacity onPress={() => this.setActivity("")} style={styles.menustyle}>
@@ -43,6 +43,18 @@ class CalendarBig extends Component {
                             <TouchableOpacity onPress={() => this.setActivity("Maps")} style = {styles.activity}>
                                 <Image source={require("../../../../assets/maps_icon.png")} style={styles.icon}/>
                                 <Text style={styles.description}>Maps</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setActivity("Rec")} style = {styles.activity}>
+                                <Image source={require("../../../../assets/maps_icon.png")} style={styles.icon}/>
+                                <Text style={styles.description}>Receipes</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setActivity("Twitter")} style = {styles.activity}>
+                                <Image source={require("../../../../assets/twitter.png")} style={styles.icon}/>
+                                <Text style={styles.description}>Twitter</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setActivity("Chess")} style = {styles.activity}>
+                                <Image source={require("../../../../assets/chess.png")} style={styles.icon}/>
+                                <Text style={styles.description}>Chess</Text>
                             </TouchableOpacity>
                         </>
                     ) : (
@@ -79,7 +91,6 @@ const styles = StyleSheet.create({
         opacity: 1,
         top: "85%",
         left: "85%",
-        backgroundColor: 'orange'
     },
     menustyle : {
         width: "95%",

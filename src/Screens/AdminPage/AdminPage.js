@@ -134,7 +134,7 @@ export default function App( { navigation, route }) {
         </View>
         <View style = {{width: "100%", height: "19.9%", display: "flex", flexDirection: "row", alignItems: "center",}}>
         <NewEmployeesBlock data = {datas.filter((data) => data.cmp.compagny == route.params.code).length}/>
-        <TotalEmployees data = {datas.filter((data) => data.cmp.compagny == route.params.code).length} max = {data.maxmembers}/>
+        <TotalEmployees data = {datas.filter((data) => data.cmp.compagny == route.params.code).length} max = {50}/>
         </View>
         <CompagnyCode code = {route.params.code}/>
         <EmployeesList member = {datas} code = {route.params.code}/>
@@ -144,8 +144,18 @@ export default function App( { navigation, route }) {
                     <TextInput style = {styles.searchbar} placeholder = "Search user..."/>
                 </View>
                 {autorizewidgets.map((item, index) => (
-                    item == "duo" ? null :
-                    <View style = {styles.card}>
+                    item == "duo" ? null : (
+                    index == autorizewidgets.length - 1 ?
+                        <View style = {styles.cardlast}>
+                        <View style = {styles.picture}><Image source={require('../../../assets/' + "Calendar" + '.png')} resizeMode='cover' style = {styles.imglittle}></Image></View>
+                        <Text style = {styles.name}>{item}</Text>
+                        <Text style = {styles.date}></Text>
+                        <TouchableOpacity onPress={() => unautorize(item)} style = {styles.jobcontainergreen}>
+                            <Text style = {styles.jobgreen}>Add</Text>
+                        </TouchableOpacity>
+                    </View> 
+                    :
+                    <View style = {styles.cardlast}>
                     <View style = {styles.picture}><Image source={require('../../../assets/' + "Calendar" + '.png')} resizeMode='cover' style = {styles.imglittle}></Image></View>
                     <Text style = {styles.name}>{item}</Text>
                     <Text style = {styles.date}></Text>
@@ -153,9 +163,11 @@ export default function App( { navigation, route }) {
                         <Text style = {styles.jobgreen}>Add</Text>
                     </TouchableOpacity>
                 </View>
+                )
                 ))}
                 {allwidgets.map((item, index) => (
-                    <View style = {styles.card}>
+                    index == allwidgets.length - 1 ?
+                    <View style = {styles.cardlast}>
                     <View style = {styles.picture}><Image source={require('../../../assets/' + "Calendar" + '.png')} resizeMode='cover' style = {styles.imglittle}></Image></View>
                     <Text style = {styles.name}>{item}</Text>
                     <Text style = {styles.date}></Text>
@@ -163,6 +175,15 @@ export default function App( { navigation, route }) {
                         <Text style = {styles.jobred}>Remove</Text>
                     </TouchableOpacity>
                 </View>
+                :
+                <View style = {styles.card}>
+                <View style = {styles.picture}><Image source={require('../../../assets/' + "Calendar" + '.png')} resizeMode='cover' style = {styles.imglittle}></Image></View>
+                <Text style = {styles.name}>{item}</Text>
+                <Text style = {styles.date}></Text>
+                <TouchableOpacity onPress={() => autorize(item)} style = {styles.jobcontainerred}>
+                    <Text style = {styles.jobred}>Remove</Text>
+                </TouchableOpacity>
+            </View>
                 ))}                
             </View>
         <NavBar navigation={navigation} index = {3} id = {route.params.id} code = {route.params.code} me = {route.params.me}/>
@@ -218,7 +239,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     borderColor: "#D3D3D3",
-    borderWidth: 1,
     borderRadius: 20,
 },
 topcontainer: {

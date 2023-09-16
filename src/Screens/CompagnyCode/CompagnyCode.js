@@ -118,10 +118,11 @@ const styles = StyleSheet.create({
         zIndex: 0,
     },
     titleContainer: {
+        zIndex: 100,
         marginTop: 100,
     },
     title: {
-        zIndex: 1,
+        zIndex: 100,
         color: '#FFF',
         fontSize: 34,
         fontStyle: 'normal',

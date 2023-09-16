@@ -1,6 +1,6 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { NavBar, MeteoSmall, TaskSmall, CalendarSmall, CalendarBig, MeteoBig, AddWidget } from '../../Components/index';
+import { NavBar, MeteoSmall, TaskSmall, CalendarSmall, CalendarBig, MeteoBig, AddWidget, RecipeSmall, ChessSmall, TwitterSmall } from '../../Components/index';
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 import * as Location from "expo-location";
@@ -9,12 +9,10 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 export default function App( { navigation, route }) {
   const compagny = route.params.code
-
   const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
   const [city, setCity] = useState(["Barcelona", "Paris", "London"])
   const [cityweather, setCityWeather] = useState([])
-  const [weather, Setweather] = useState()
   const [cityIndex, setCityIndex] = useState(1)
   const [temp, setTemp] = useState(false)
   const [newopen, setNewopen] = useState(false)
@@ -81,6 +79,10 @@ export default function App( { navigation, route }) {
     try {
       let snapshot = await get(child(dbRef, `users/${route.params.id}/widgets`));
       snapshot = snapshot.val();
+      if (snapshot == null || snapshot === "" || snapshot === undefined || snapshot === "error" || snapshot === "null" || snapshot === "undefined" || snapshot === " ") {
+        SetAllWidgets([]);
+        return ;
+      }
       const tmp = Object.keys(snapshot);
       let objectlist = [];
       for (const obj of tmp) {
@@ -113,23 +115,41 @@ export default function App( { navigation, route }) {
     directionalOffsetThreshold: 80
   };
 
-  function newwidget(activity, type) {
-    const tmp = [...allwidgets];
-    if (type == "big") {
-    tmp.push({name: activity, type: type, index: allwidgets.length})
-    } else {
-      tmp.push({name: "duo", type: type, index: allwidgets.length, content: {0: {name: activity, type: type, index: "0"}}})
+
+  function availablewidgets() {
+    for (const widget of allwidgets) {
+      console.log("widget", widget)
+      if (widget.name == "duo" && widget.content.length < 2)
+        return (true);
     }
+    return (false);
+  }
+
+  function newwidget(activity, type) {
+    console.log("newwidget")
+    const tmp = [...allwidgets];
     try {
-      if (type == "small") {
+    if (type == "big" || type == "medium") {
+      tmp.push({name: activity, type: type, index: allwidgets.length})
+      set(child(dbRef, `users/${route.params.id}/widgets/${allwidgets.length}`), {name: activity, type: type, index: allwidgets.length});
+    } else {
+      console.log("availablewidgets", availablewidgets())
+      if (availablewidgets() == false) {
+        tmp.push({name: "duo", type: type, index: allwidgets.length, content: {0: {name: activity, type: type, index: "0"}}})
         set(child(dbRef, `users/${route.params.id}/widgets/${allwidgets.length}`), {name: "duo", type: type, index: allwidgets.length, content: {0: {name: activity, type: type, index: "0"}}});
       } else {
-      set(child(dbRef, `users/${route.params.id}/widgets/${allwidgets.length}`), {name: activity, type: type, index: allwidgets.length});
+        for (const widget of tmp) {
+          if (widget.name == "duo" && widget.content.length < 2) {
+            widget.content.push({name: activity, type: type, index: widget.content.length})
+            set(child(dbRef, `users/${route.params.id}/widgets/${widget.index}/content/${widget.content.length}`), {name: activity, type: type, index: widget.content.length});
+          }
+        }
       }
+    }
     } catch(e) {
       console.log(e);
     }
-    SetAllWidgets(tmp);
+    getwidgets()
   }
 
   async function getinfoindatabase() {
@@ -177,8 +197,7 @@ export default function App( { navigation, route }) {
   }, [cityIndex])
 
   useEffect(() => {
-    console.log("useeffect")
-    console.log(allwidgets)
+    console.log("allwidgets", allwidgets)
   }, [allwidgets])
 
 
@@ -206,7 +225,6 @@ useEffect(() => {
 , []);
 
 useEffect(() => {
-  console.log("events", events)
 }, [events]);
 
 
@@ -217,7 +235,6 @@ useEffect(() => {
     style={{flex: 1}}>
       <ScrollView style = {styles.allwidgets}>
       {allwidgets.map((item, index) => (
-        console.log(item.name),
         <View key={index} style = {styles.test}>
           {item.name == "Calendar" && item.type == "big" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
           {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
@@ -225,19 +242,14 @@ useEffect(() => {
 
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
-                console.log("item", items),
                 <>
-                {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : console.log("no")}
-                {items.name == "Tasks" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} task = {object} navigation = {navigation} me = {route.params.id}/> : console.log("no")}
-                {items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : console.log("no")}
-                </>
-              ))}
-            </View> : null}
-        </View>
-        ))}
-        <View style = {styles.orga}>
-        <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove}/>
-        <View style = {{height: 168, width: "45%", borderRadius: 20, marginTop: 20}}>
+                {/* {items.name == "Twitter" ? <TwitterSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
+                {/* {items.name == "Chess" ? <ChessSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
+                {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+                {items.name == "Tasks" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} task = {object} navigation = {navigation} me = {route.params.id}/> : null}
+                {items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+                {items.name == "Rec" ? <RecipeSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+                {items.name == "Maps" ? <TouchableOpacity onLongPress={() => push()} style = {{height: 168, width: "45%", borderRadius: 20, marginTop: 20}}>
         <MapView style={styles.map} initialRegion={initialRegion}>
           {currentLocation && (
             <Marker
@@ -248,8 +260,15 @@ useEffect(() => {
               title="Your Location"
             />
           )}
-        </MapView>
+        </MapView></TouchableOpacity> : null}
+
+                </>
+              ))}
+            </View> : null}
         </View>
+        ))}
+        <View style = {styles.orga}>
+        
         </View>
         <View style = {{height: 300}}></View>
       </ScrollView>

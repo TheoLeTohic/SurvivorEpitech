@@ -15,7 +15,7 @@ export default class NewEmployees extends Component {
                     <TextInput style = {styles.searchbar} placeholder = "Search user..."/>
                 </View>
                 {this.props.member.filter((item) => item.cmp.compagny == this.props.code).map((item) => {
-                    return (<View style = {styles.card}>
+                    return (<View style = {styles.cardlast}>
                         <Text style = {styles.name}>{item.name}</Text>
                         <Text style = {styles.date}>{item.date}</Text>
                         {item.cmp.status == false ? <TouchableOpacity onPress={
