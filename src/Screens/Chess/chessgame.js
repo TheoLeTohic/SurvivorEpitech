@@ -11,7 +11,7 @@ const pieces = {
 
 export default function ChessGame({ }) {
   const [userTurn, setUserTurn] = useState("White");
-  const [game] = useState(new Chess());
+  const [game, setGame] = useState(new Chess());
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
   const [error, setError] = useState(null);
@@ -37,9 +37,29 @@ export default function ChessGame({ }) {
     if (!piece) return false;
     return (piece.color === 'w' && userTurn === "White") || (piece.color === 'b' && userTurn === "Black");
   };
-  
 
   const [board, setBoard] = useState(getBoardFromGame());
+
+  function Restart() {
+    console.log("Restart")
+    setGame(new Chess())
+    setError(null)
+    setUserTurn('White')
+    setWinner(null)
+    setSelectedSquare(null)
+    setGameOver(null)
+    setBoard(getBoardFromGame())
+  }
+
+  function EndGame() {
+    return (
+      <View>
+        <TouchableOpacity onPress={Restart} style={styles.restartbutton}>
+          <Text>Restart</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
   const handleCellPress = (rowIndex, cellIndex) => {
     const algebraicPosition = `${String.fromCharCode(97 + cellIndex)}${8 - rowIndex}`;
@@ -94,6 +114,7 @@ export default function ChessGame({ }) {
       ))}
       {error != null && <Text>{error}</Text>}
       {selectedSquare != null && <Text style={null}>{selectedSquare}</Text>}
+      {gameOver == true && EndGame()}
     </View>
   );
 }
@@ -103,6 +124,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  restartbutton: {
+    // position: 'absolute',
+    bottom: '-150%', // Adjust the percentage as needed
+    left: '-41%', // Adjust the percentage as needed
+    backgroundColor: 'blue', // Change to the desired background color
+    padding: '1%', // Adjust
+    borderRadius: 5
   },
   row: {
     flexDirection: 'row',
