@@ -48,14 +48,15 @@ export default function ChessGame({ }) {
     setWinner(null)
     setSelectedSquare(null)
     setGameOver(null)
-    setBoard(getBoardFromGame())
+    const newBoard = getBoardFromGame();
+    setBoard(newBoard);
   }
 
   function EndGame() {
     return (
       <View>
         <TouchableOpacity onPress={Restart} style={styles.restartbutton}>
-          <Text>Restart</Text>
+          <Text style={styles.restartText}>Restart</Text>
         </TouchableOpacity>
       </View>
     )
@@ -96,24 +97,32 @@ export default function ChessGame({ }) {
     }
   };
 
+  useEffect(() => {
+    setBoard(getBoardFromGame());
+  }, [game]);
+
   return (
     <View style={styles.board}>
       {gameOver && <Text style={{marginBottom: 50, fontSize: 20}}>{winner + " Wins"}</Text>}
-      <Text style={{marginBottom: 50, fontSize: 20}}>{userTurn + " Turn"}</Text>
-      {board.map((row, rowIndex) => (
-        <View key={rowIndex} style={styles.row}>
-          {row.map((cell, cellIndex) => (
-            <TouchableOpacity
-              key={cellIndex}
-              style={[styles.cell, (rowIndex + cellIndex) % 2 === 0 ? styles.light : styles.dark]}
-              onPress={() => handleCellPress(rowIndex, cellIndex)}>
-              <Text style={styles.piece}>{pieces[cell]}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      ))}
+      <View style={styles.turnBox}>
+        <Text style={{textAlign: 'center', color: 'white'}}>{userTurn + " Turn"}</Text>
+      </View>
+      {board.map((row, rowIndex) => {
+        return (
+          <View key={rowIndex} style={styles.row}>
+            {row.map((cell, cellIndex) => (
+              <TouchableOpacity
+                key={cellIndex}
+                style={[styles.cell, (rowIndex + cellIndex) % 2 === 0 ? styles.light : styles.dark]}
+                onPress={() => handleCellPress(rowIndex, cellIndex)}>
+                <Text style={styles.piece}>{pieces[cell]}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )
+      })}
       {error != null && <Text>{error}</Text>}
-      {selectedSquare != null && <Text style={null}>{selectedSquare}</Text>}
+      {selectedSquare != null && <Text style={null}>selected : {selectedSquare}</Text>}
       {gameOver == true && EndGame()}
     </View>
   );
@@ -126,15 +135,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   restartbutton: {
-    // position: 'absolute',
-    bottom: '-150%', // Adjust the percentage as needed
-    left: '-41%', // Adjust the percentage as needed
-    backgroundColor: 'blue', // Change to the desired background color
-    padding: '1%', // Adjust
-    borderRadius: 5
+    bottom: '-75%',
+    left: '-0%',
+    backgroundColor: 'red',
+    padding: '1%',
+    borderRadius: 5,
+    width : 115,
+    height: 45,
+  },
+  restartText: {
+    left: '25%',
+    bottom: '-25%',
   },
   row: {
     flexDirection: 'row',
+  },
+  turnBox: {
+    width: 100,
+    backgroundColor: 'grey',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: -50,
+    marginBottom: 40,
   },
   cell: {
     width: 45,
