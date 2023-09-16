@@ -18,14 +18,16 @@ export default function App({ navigation, route }) {
     const user = route.params.other;
     const me = route.params.id;
     const name = strSort([user.idConnect, me]);
-    console.log(user);
-    const namea = name[0] + name[1];
+    console.log("user", user);
+    const namea = strSort([user.idConnect, me]).join("");
+    console.log("namea", namea);
 
     async function getinfoindatabase()
     {
       try {
         let snapshot = await get(child(dbRef, `conversation/${namea}`));
         snapshot = snapshot.val();
+        console.log("snapshot", snapshot);
         if (snapshot == null) {
           createConversation();
           setObject([]);
@@ -36,9 +38,11 @@ export default function App({ navigation, route }) {
         for (const obj of tmp) {
           objectlist.push(snapshot[obj]);
         }
-        const tmp2 = [...objectlist];
-        tmp.sort((a, b) => a.date - b.date);
-        setObject(tmp);
+        //SORT BY DATE
+        objectlist.sort(function(a, b) {
+          return a.date - b.date;
+        });
+        setObject(objectlist);
       } catch(e) {
         setObject([]);
       }
@@ -98,9 +102,7 @@ export default function App({ navigation, route }) {
     }, []);
  
     useEffect(() => {
-        if (object != null) {
-            // order by date
-        }
+        console.log("object,", object);
     }, [object]);
     return (
         <View style={styles.container}>

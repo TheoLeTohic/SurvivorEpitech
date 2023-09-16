@@ -5,9 +5,9 @@ import { firebase } from "../../firebase/config";
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function TwitterPage({ navinavigationgation, route }) {
-    const teamId = "2332";
-    const userId = "1234";
+export default function TwitterPage({ navigation, route }) {
+    const teamId = route.params.code;
+    const userId = route.params.id;
     const dbRef = ref(getDatabase(firebase));
     const [messages, setMessages] = React.useState([]);
     const [newMessage, setNewMessage] = React.useState("");
@@ -127,9 +127,6 @@ export default function TwitterPage({ navinavigationgation, route }) {
                     </View>
                 </View>
             </Modal>
-
-
-            <Navbar navigation={navigation} index={4} />
         </SafeAreaView>
     );}
 

@@ -91,13 +91,13 @@ export default function App({ navigation, route }) {
       <View style = {styles.hellocontainer}>
             <View style = {styles.picture}><Text style = {styles.ppletter}>{route.params.me.surname[0]}</Text></View>
         <Text style = {styles.msg}>Hello, {route.params.me.name}</Text>
-        <View style = {{marginLeft: "40%"}}>
+        <TouchableOpacity style = {{marginLeft: "40%"}} onPress={() => navigation.navigate("Twitter", {id: route.params.id, code: route.params.code, me: route.params.me})}>
         <Svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 30" fill="none">
 <Path d="M21.0233 14.75V11.1375C21.0233 7.01245 17.8733 3.63745 14.0233 3.63745C10.1617 3.63745 7.02334 6.99995 7.02334 11.1375V14.75C7.02334 15.5125 6.72001 16.675 6.35834 17.325L5.01668 19.7125C4.18834 21.1875 4.76001 22.825 6.27668 23.375C11.305 25.175 16.73 25.175 21.7583 23.375C23.17 22.875 23.7883 21.0875 23.0183 19.7125" stroke="#171717" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
 <Path d="M16.1817 3.9998C15.82 3.8873 15.4467 3.7998 15.0617 3.7498C13.9417 3.5998 12.8683 3.6873 11.865 3.9998C12.2033 3.0748 13.0433 2.4248 14.0233 2.4248C15.0033 2.4248 15.8433 3.0748 16.1817 3.9998Z" stroke="#171717" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 <Path d="M17.5233 23.8252C17.5233 25.8877 15.9483 27.5752 14.0233 27.5752C13.0667 27.5752 12.18 27.1502 11.55 26.4752C10.92 25.8002 10.5233 24.8502 10.5233 23.8252" stroke="#171717" stroke-width="1.5" stroke-miterlimit="10"/>
 </Svg>
-    </View>
+    </TouchableOpacity>
         
       </View>
       <View style = {styles.welcomemessage}>

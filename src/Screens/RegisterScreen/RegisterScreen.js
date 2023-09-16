@@ -60,6 +60,10 @@ export default function App({ navigation }) {
             role: {
                 role: "member",
             },
+            cmp: {
+                compagny: "",
+                status: false,
+            }
           });
 
     }
@@ -68,8 +72,7 @@ export default function App({ navigation }) {
         try {
           let snapshot = await get(child(dbRef, `users/${id}`));
           snapshot = snapshot.val();
-          console.log(snapshot)
-          if (snapshot != null && snapshot.cmp != null) {
+          if (snapshot != null && snapshot.cmp != null && snapshot.cmp.compagny != "") {
             navigation.navigate("Home", {id: id, code: snapshot.cmp.compagny, me: snapshot})
           }
           else {

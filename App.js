@@ -1,4 +1,4 @@
-import { LoginScreen, HomeScreen, WidjetScreen, ProfilScreen, ProfilScreenSecond, ProfilScreenThird, RegisterScreen, CompagnyCode, ChosePlanScreen, PaymentScreen, TwitterPage, AdminPage, MapScreen, ConvScreen, ForgetpasswordScreen, FeedScreen, CalendarScreen, WeatherScreen, ToDoScreen, WaitingScreen } from './src/Screens'
+import { LoginScreen, HomeScreen, WidjetScreen, ProfilScreen, ProfilScreenSecond, ProfilScreenThird, RegisterScreen, CompagnyCode, ChosePlanScreen, PaymentScreen, TwitterPage, AdminPage, MapScreen, ConvScreen, ForgetpasswordScreen, FeedScreen, CalendarScreen, WeatherScreen, ToDoScreen, WaitingScreen, ChessScreen } from './src/Screens'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 
