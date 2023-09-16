@@ -27,6 +27,7 @@ export default function App() {
       <Stack.Screen name="Weather" component={ WeatherScreen } />
       <Stack.Screen name="ToDo" component={ ToDoScreen } />
       <Stack.Screen name="Waiting" component={ WaitingScreen } />
+      <Stack.Screen name="Chess" component={ ChessScreen } />
       </Stack.Navigator>
     </NavigationContainer>
   );
