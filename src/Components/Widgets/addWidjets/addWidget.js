@@ -48,6 +48,14 @@ class CalendarBig extends Component {
                                 <Image source={require("../../../../assets/maps_icon.png")} style={styles.icon}/>
                                 <Text style={styles.description}>Receipes</Text>
                             </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setActivity("Twitter")} style = {styles.activity}>
+                                <Image source={require("../../../../assets/twitter.png")} style={styles.icon}/>
+                                <Text style={styles.description}>Twitter</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.setActivity("Chess")} style = {styles.activity}>
+                                <Image source={require("../../../../assets/chess.png")} style={styles.icon}/>
+                                <Text style={styles.description}>Chess</Text>
+                            </TouchableOpacity>
                         </>
                     ) : (
                         <>

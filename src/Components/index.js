@@ -17,3 +17,4 @@ export { default as TotalEmployees } from './AdminScreen/TotalEmployees/TotalEmp
 export { default as CompagnyCode } from './AdminScreen/COmpagnyCode/CompagnyCode'
 export { default as EmployeesList } from './AdminScreen/EmployeesList/EmployeesList'
 export { default as RecipeSmall } from './Widgets/Recipee/RecipeSmall'
+export { default as TwitterSmall } from './Widgets/twitter/twitterSmall/twitterSmall'

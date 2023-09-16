@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { NavBar, MeteoSmall, TaskSmall, CalendarSmall, CalendarBig, MeteoBig, AddWidget, RecipeSmall, ChessSmall } from '../../Components/index';
+import { NavBar, MeteoSmall, TaskSmall, CalendarSmall, CalendarBig, MeteoBig, AddWidget, RecipeSmall, ChessSmall, TwitterSmall } from '../../Components/index';
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 import * as Location from "expo-location";
@@ -243,6 +243,7 @@ useEffect(() => {
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
                 <>
+                {/* {items.name == "Meteo" ? <TwitterSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
                 {/* {items.name == "Meteo" ? <ChessSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
                 {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
                 {items.name == "Tasks" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} task = {object} navigation = {navigation} me = {route.params.id}/> : null}
