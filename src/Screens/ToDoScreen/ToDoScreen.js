@@ -1,11 +1,6 @@
 import {StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, Modal, TextInput} from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { LinearGradient } from "expo-linear-gradient";
-import { BlurView } from "expo-blur";
-import { WeatherApi } from '../../data/WeatherApi';
-import Swiper from "react-native-swiper"
 import { getDatabase, ref, child, get, set, del } from "firebase/database";
-import firebase from '../../firebase/config';
 
 export default function App( { navigation, route }) {
     const [task, setTask] = useState(route.params.list)
@@ -14,13 +9,10 @@ export default function App( { navigation, route }) {
 
 
     useEffect(() => {
-        console.log(task)
-        if (task != [])
-        {
+        if (task !== []) {
             const db = getDatabase();
             set(ref(db, 'users/' + route.params.id + '/todo'), null);
-            for (let i = 0; i < task.length; i++)
-            {
+            for (let i = 0; i < task.length; i++) {
                 set(ref(db, 'users/' + route.params.id + '/todo/' + i), {
                     name: task[i].name,
                     done: task[i].done,
@@ -32,30 +24,35 @@ export default function App( { navigation, route }) {
 
     return (
         <View style={styles.container}>
+            <Text style = {styles.title}>To Do List</Text>
             <ScrollView style={styles.alltask}>
                 {task.map((item, index) => (
-                    <View key={index} style={styles.task}>
-                        {item.done == true ? <Text style = {styles.txtdone}>{item.name}</Text> : <Text style = {styles.tasktxt}>{item.name}</Text>}
-                        <TouchableOpacity onPress={() => {
-                            const tmp = [...task];
-                            tmp[index].done = !tmp[index].done;
-                            setTask(tmp);
-                        }
-                        }><Text>Done</Text></TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
+                    <TouchableOpacity key={index} style={styles.task} onPress={() => {
+                        const tmp = [...task];
+                        tmp[index].done = !tmp[index].done;
+                        setTask(tmp);
+                    }}>
+                        <View style={styles.leftside}>
+                            {item.done === true ? <View style = {styles.selectedcircle}></View> : <View style = {styles.circle}></View>}
+                            {item.done === true ? <Text style = {styles.txtdone}>{item.name}</Text> : <Text style = {styles.tasktxt}>{item.name}</Text>}
+                        </View>
+                        {item.done === true ?
+                        <TouchableOpacity style={styles.remove} onPress={() => {
                             const tmp = [...task];
                             tmp.splice(index, 1);
                             setTask(tmp);
                         }
-                        }><Text>Remove</Text></TouchableOpacity>
-                    </View>
+                        }><Text style={styles.removetext}>Remove</Text></TouchableOpacity>
+                        : <Text></Text>}
+                    </TouchableOpacity>
                 ))
                 }
             </ScrollView>
-            <TextInput style = {{height: 40, borderColor: 'gray', borderWidth: 1}} onSubmitEditing={() => {
+            <TextInput style={styles.searchbar} onSubmitEditing={() => {
                 const tmp = [...task];
                 tmp.push({name: newtask, done: false});
-                setTask(tmp);                
+                setTask(tmp);
+                setNewtask("");
             }
             } onChangeText={text => setNewtask(text)} value={newtask}/>
         </View>
@@ -64,39 +61,89 @@ export default function App( { navigation, route }) {
 
 const styles = StyleSheet.create({
     container: {
+        display: "flex",
         flex: 1,
+        alignItems: "center",
         backgroundColor: '#fff',
     },
-    alltask: {
-        marginTop: "10%",
-        marginLeft: "10%",
-        width: "80%",
-        height: "60%",
-    },
-    task: {
-        height: 50,
-        width: "100%",
-        backgroundColor: "#ffffff7d",
+    title: {
+        width: "103%",
+        paddingBottom: "3%",
+        fontSize: 40,
+        fontWeight: "bold",
+        textAlign: "center",
+        paddingTop: "10%",
+        borderWidth: 2,
+        borderBottomColor: "#000000",
         borderRadius: 20,
-        marginTop: 20,
+    },
+    leftside: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+    },
+    alltask: {
+        width: "90%",
+        height: "60%",
+    },
+    circle: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        borderColor: 'black',
+        borderWidth: 2,
+    },
+    selectedcircle: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        borderColor: 'black',
+        borderWidth: 2,
+        backgroundColor: "black",
+    },
+    task: {
+        width: "100%",
+        paddingVertical: 15,
+        backgroundColor: "#ffffff7d",
+        marginTop: 20,
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "row",
+        alignItems: "center",
         paddingHorizontal: 10,
-        shadowColor: "#000000",
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3,
+        borderBottomWidth: 2,
+        borderBottomColor: "#676767",
     },
     tasktxt: {
         fontSize: 20,
         fontWeight: "bold",
-        marginLeft: "5%",
+        marginLeft: "15%",
     },
     txtdone: {
         fontSize: 20,
         fontWeight: "bold",
-        marginLeft: "5%",
+        marginLeft: "15%",
         textDecorationLine: "line-through",
+    },
+    remove: {
+        backgroundColor: "black",
+        borderRadius: 5,
+    },
+    removetext: {
+        color: "white",
+        fontSize: 12,
+        fontWeight: "bold",
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+    },
+    searchbar: {
+        width: "90%",
+        borderWidth: 2,
+        borderColor: "black",
+        borderRadius: 10,
+        paddingHorizontal: "5%",
+        marginBottom: "5%",
+        paddingVertical: "2%",
+        fontSize: 18,
     },
 });
