@@ -18,8 +18,8 @@ export default class WeatherSmall extends Component {
                 </View>
                 <View style = {styles.rightsmall}>
                   <View style={styles.tempnumcontainersmall}>
-                    <Text style = {styles.tempnumsmall}>23°</Text>
-                    <Text style = {styles.humiditynumsmall}>67°</Text>
+                    <Text style = {styles.tempnumsmall}>{this.props.cityweather && this.props.cityweather.current ? Math.round(this.props.cityweather.current.temp_c) : "0°"}</Text>
+                    <Text style = {styles.humiditynumsmall}>{this.props.cityweather && this.props.cityweather.current ? Math.round(this.props.cityweather.current.humidity) : "0°"}%</Text>
                   </View>
               </View>
               </View>

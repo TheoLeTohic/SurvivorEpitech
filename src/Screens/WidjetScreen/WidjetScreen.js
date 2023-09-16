@@ -5,13 +5,14 @@ import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
+import { WeatherApi } from '../../data/WeatherApi';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 export default function App( { navigation, route }) {
   const compagny = route.params.code
   const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
-  const [city, setCity] = useState(["Barcelona", "Paris", "London"])
+  const [city, setCity] = useState(["Barcelona"])
   const [cityweather, setCityWeather] = useState([])
   const [cityIndex, setCityIndex] = useState(1)
   const [temp, setTemp] = useState(false)
@@ -37,9 +38,29 @@ export default function App( { navigation, route }) {
     } catch(e) {
       setAutorizewidgets("error");
     }
-  }
+}
+
+async function getweather() {
+  try {
+    let cityData = await WeatherApi.fetchCityData(city);
+
+    if (!cityData || cityData.length === 0) return;
+
+    const lat = cityData[0].lat;
+    const lon = cityData[0].lon;
+
+    let [forecastData, currentWeatherData] = await Promise.all([
+        WeatherApi.fetchForecastData(lat, lon),
+        WeatherApi.fetchWeatherData(city)
+    ]);
+    setCityWeather(currentWeatherData);
+} catch (error) {
+    console.log('Error fetching weather data:', error);
+}
+}
   
   useEffect(() => {
+    getweather()
     getwidgets()
     getcompagnyWidgets()
   }, [])
@@ -106,7 +127,6 @@ export default function App( { navigation, route }) {
       case SWIPE_LEFT:
         break;
       case SWIPE_RIGHT:
-        navigation.navigate("Home")
         break;
     }
   }
@@ -205,6 +225,10 @@ export default function App( { navigation, route }) {
     try {
       let snapshot = await get(child(dbRef, `users/${route.params.id}/event`));
       snapshot = snapshot.val();
+      if (snapshot == null || snapshot === "" || snapshot === undefined || snapshot === "error" || snapshot === "null" || snapshot === "undefined" || snapshot === " ") {
+        setEvents([]);
+        return ;
+      }
       const events = [];
         for (const key in snapshot) {   
             events.push(snapshot[key]);
@@ -237,15 +261,14 @@ useEffect(() => {
       {allwidgets.map((item, index) => (
         <View key={index} style = {styles.test}>
           {item.name == "Calendar" && item.type == "big" ? <CalendarBig callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
-          {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id}/> : null}
+          {item.name == "Meteo" && item.type == "big" ? <MeteoBig city = {city} cityweather = {cityweather} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation} me = {route.params.id} code = {route.params.code} my = {route.params.me}/> : null}
           {item.name == "Calendar" && item.type == "small" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation} event = {events} me = {route.params.id}/> : null}
 
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
                 <>
-                {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+                {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
                 {items.name == "Tasks" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} task = {object} navigation = {navigation} me = {route.params.id}/> : null}
-                {items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
                 {items.name == "Rec" ? <RecipeSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
                 {items.name == "Maps" ? <TouchableOpacity onLongPress={() => push()} style = {{height: 168, width: "45%", borderRadius: 20, marginTop: 20}}>
         <MapView style={styles.map} initialRegion={initialRegion}>

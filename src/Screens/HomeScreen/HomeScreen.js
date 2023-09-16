@@ -14,6 +14,7 @@ export default function App({ navigation, route }) {
   const [datas, setDatas] = useState([])
   const [all, setAll] = useState([])
   const [search, setSearch] = useState("")
+  const [me, setMe] = useState({})
   const bearer_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzQsImVtYWlsIjoib2xpdmVyLmxld2lzQG1hc3VyYW8uanAiLCJuYW1lIjoiT2xpdmVyIiwic3VybmFtZSI6Ikxld2lzIiwiZXhwIjoxNjk1ODI3MjQzfQ.-tSPtN90QZpMxWzO2e-VpQdIZmLwZoOa2i6zwTXNR5E"
 
   async function getemploye() {
@@ -37,10 +38,21 @@ export default function App({ navigation, route }) {
     return Promise.resolve('data:image/png;base64,' + base64);
   }
 
+  async function getme() {
+    try {
+      let snapshot = await get(child(dbRef, `users/${route.params.id}`));
+      snapshot = snapshot.val();
+      setMe(snapshot)
+    } catch(e) {
+        console.log(e)
+    }
+  }
+
   useEffect(() => {
     if (route.params.me.cmp.status == false) {
       navigation.navigate("Waiting", {id: route.params.id, code: route.params.code, me: route.params.me})
     }
+    setMe()
     getemploye()
   }, []);
 

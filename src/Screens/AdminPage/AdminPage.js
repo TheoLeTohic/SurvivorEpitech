@@ -130,7 +130,6 @@ export default function App( { navigation, route }) {
 <Path d="M17.5233 23.8252C17.5233 25.8877 15.9483 27.5752 14.0233 27.5752C13.0667 27.5752 12.18 27.1502 11.55 26.4752C10.92 25.8002 10.5233 24.8502 10.5233 23.8252" stroke="#171717" stroke-width="1.5" stroke-miterlimit="10"/>
 </Svg>
     </View>
-        
         </View>
         <View style = {{width: "100%", height: "19.9%", display: "flex", flexDirection: "row", alignItems: "center",}}>
         <NewEmployeesBlock data = {datas.filter((data) => data.cmp.compagny == route.params.code).length}/>

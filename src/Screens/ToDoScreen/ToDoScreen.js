@@ -1,6 +1,8 @@
 import {StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, Modal, TextInput} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, child, get, set, del } from "firebase/database";
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+
 
 export default function App( { navigation, route }) {
     const [task, setTask] = useState(route.params.list)
@@ -22,7 +24,35 @@ export default function App( { navigation, route }) {
     }
     , [task])
 
+    function onSwipe(gestureName, gestureState) {
+        const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+        switch (gestureName) {  
+          case SWIPE_UP:
+            console.log("up");
+            break;
+          case SWIPE_DOWN:
+            console.log("down");
+            break;
+          case SWIPE_LEFT:
+            break;
+          case SWIPE_RIGHT:
+            navigation.goBack();
+            break;
+        }
+      }
+
+      const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+      };
     return (
+        <GestureRecognizer
+        onSwipe={(direction, state) => onSwipe(direction, state)}
+        config={config}
+        style={{
+          flex: 1,
+        }}
+        >
         <View style={styles.container}>
             <Text style = {styles.title}>To Do List</Text>
             <ScrollView style={styles.alltask}>
@@ -56,6 +86,7 @@ export default function App( { navigation, route }) {
             }
             } onChangeText={text => setNewtask(text)} value={newtask}/>
         </View>
+        </GestureRecognizer>
     );
 }
 

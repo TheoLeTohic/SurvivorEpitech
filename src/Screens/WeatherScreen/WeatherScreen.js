@@ -7,7 +7,7 @@ import Swiper from "react-native-swiper"
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 
-export default function App( { navigation }) {
+export default function App( { navigation, route }) {
     const [cities, setCities] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isScrolling, setIsScrolling] = useState(false);
@@ -51,7 +51,7 @@ export default function App( { navigation }) {
     , [cities]);
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('Widjet')} style={styles.leftbutton}>
+            <TouchableOpacity onPress={() => navigation.navigate('Widjet', {id: route.params.id, code: route.params.code, me: route.params.me})} style={styles.leftbutton}>
                 <Image source={require('../../../assets/return.png')} resizeMode="cover" style={styles.arrowbutton}/>
             </TouchableOpacity>
             <Swiper
@@ -92,7 +92,6 @@ function CityWeather({ city, cities, setIsScrolling }) {
     };
 
     const fetchWeatherData = async () => {
-        const API_KEY = "66ef064fdc6a4c1bb88142620231309"
         try {
             let cityData = await WeatherApi.fetchCityData(city);
 
@@ -167,7 +166,7 @@ function CityWeather({ city, cities, setIsScrolling }) {
             <View style={styles.topcontainer}>
                 <View style={ styles.titlecontainer }>
                     <Text style={ styles.title }>{city}</Text>
-                    <Text style={ styles.subtitle }>Wednesday, 13 September</Text>
+                    <Text style={ styles.subtitle }>Saturday, 16 September</Text>
                 </View>
             </View>
             <Image source={getWeatherIcon(

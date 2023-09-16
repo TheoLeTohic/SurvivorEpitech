@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default class MeteoBig extends Component {
     render () {
         return (
-          <TouchableOpacity onPress={() => this.props.navigation.navigate("Weather", {id: this.props.me})} style = {styles.meteobig} onLongPress={ () => this.props.callback() }>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate("Weather", {id: this.props.me, code: this.props.code, me: this.props.my})} style = {styles.meteobig} onLongPress={ () => this.props.callback() }>
             <LinearGradient
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
@@ -20,11 +20,11 @@ export default class MeteoBig extends Component {
                 <View style = {styles.infocontainer}>
                   <View style = {styles.temp}>
                     <Text style = {styles.temptxt}>Partly Cloudy</Text>
-                    <Text style = {styles.tempnum}>{this.props.cityweather && this.props.cityweather.main ? Math.round(this.props.cityweather.main.temp) : 0}°</Text>
+                    <Text style = {styles.tempnum}>{this.props.cityweather && this.props.cityweather.current ? Math.round(this.props.cityweather.current.temp_c) : "0°"}°</Text>
                   </View>
                   <View style = {styles.humidity}>
                     <Text style = {styles.humiditytxt}>Humidity</Text>
-                    <Text style = {styles.humiditynum}>{this.props.cityweather && this.props.cityweather.main ? Math.round(this.props.cityweather.main.humidity) : 0}%</Text>
+                    <Text style = {styles.humiditynum}>{this.props.cityweather && this.props.cityweather.current ? Math.round(this.props.cityweather.current.humidity) : "0°"}%</Text>
                   </View>
                 </View>
               </View>

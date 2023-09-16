@@ -33,18 +33,6 @@ export default function App({ navigation }) {
             phone: {
                 phone: "",
             },
-            widgets: {
-                0: {
-                    name: "Calendar",
-                    type: "small",
-                    id: 0,
-                },
-                1: {
-                    name: "Calendar",
-                    type: "big",
-                    id: 1,
-                }
-            },
             address: {
                 0: {
                     main: "Rue de la paix",

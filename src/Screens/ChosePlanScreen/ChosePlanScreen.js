@@ -10,6 +10,7 @@ import { getDatabase, ref, child, get, set } from "firebase/database";
 
 export default function App( { navigation, route }) {
   const [number, setNumber] = useState(1)
+  const [me, setMe] = useState(route.params.me)
   const [state, setState] = useState("")
   const dbRef = ref(getDatabase());
 
@@ -45,7 +46,7 @@ export default function App( { navigation, route }) {
       snapshot = snapshot.val();
       console.log(snapshot)
       if (snapshot != null)
-        navigation.navigate("Payment", {id: id, code: route.params.code, me: snapshot})
+        navigation.navigate("Payment", {id: id, code: state, me: snapshot})
     } catch(e) {
         console.log(e)
     }
@@ -56,6 +57,9 @@ export default function App( { navigation, route }) {
           compagny: nbr,
           status: true,
       });
+      const tmp = route.params.me
+      tmp.cmp = {compagny: nbr, status: true}
+      setMe(tmp)
       set(ref(getDatabase(firebase), 'users/' + route.params.id + '/role'), {
         role: "admin",
     });
@@ -67,7 +71,7 @@ export default function App( { navigation, route }) {
         type: 1,
         maxmembers: 10,
         members: 1,
-        autorizewidgets: {autorizewidgets: "Calendar,Meteo,Task,duo"},
+        autorizewidgets: {autorizewidgets: "Calendar,Meteo,Task,duo,Rec"},
         memberList: {"0": {id: route.params.id, name: "Theo", role: "admin"}},
     });
     setCompagnytouser(state)

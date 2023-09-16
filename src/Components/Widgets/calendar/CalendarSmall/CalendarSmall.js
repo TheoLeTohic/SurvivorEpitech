@@ -9,9 +9,12 @@ class CalendarBig extends Component {
     this.day = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
     this.currentDayofWeek= new Date().getDay();
     this.actualday = this.currentDay - this.currentDayofWeek + 1
-    console.log(this.props.event)
 }
     render () {
+      console.log(this.props.event)
+      if (this.props.event == undefined || this.props.event.length == 0) {
+        this.props.event = []
+      }
         return (
           <TouchableOpacity onPress={() => this.props.navigation.navigate("Calendar", {id: this.props.me})} style = {this.props.click == false ? styles.calendarbig : styles.calendarclick} onLongPress={ () => this.props.callback() }>
               {this.props.click == true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
