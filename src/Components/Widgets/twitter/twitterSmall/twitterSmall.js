@@ -10,7 +10,7 @@ export default class ChessSmall extends Component {
 
     handleClick = () => {
         console.log("Twitter")
-        this.props.navigation.navigate('Twitter')
+        // this.props.navigation.navigate('Twitter')
     }
 
 
@@ -18,6 +18,7 @@ export default class ChessSmall extends Component {
         const imageUrl = "../../../../../assets/twitter.png"
         return (
             <TouchableOpacity style={styles.container} onPress={() =>  this.handleClick() }>
+                {this.props.click === true ? <TouchableOpacity style = {styles.remover} onPress={() => this.props.remove(this.props.id)}></TouchableOpacity> : null}
                 <ImageBackground imageStyle={{borderRadius: 20}} style={styles.backgroundimage} source={require(imageUrl)}>
                 </ImageBackground>
             </TouchableOpacity>
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: "red",
+        backgroundColor: "white",
         borderRadius: 20,
     },
     backgroundimage: {

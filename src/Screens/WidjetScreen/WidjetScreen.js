@@ -243,8 +243,8 @@ useEffect(() => {
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
                 <>
-                {/* {items.name == "Meteo" ? <TwitterSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
-                {/* {items.name == "Meteo" ? <ChessSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
+                {/* {items.name == "Twitter" ? <TwitterSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
+                {/* {items.name == "Chess" ? <ChessSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
                 {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
                 {items.name == "Tasks" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} task = {object} navigation = {navigation} me = {route.params.id}/> : null}
                 {items.name == "Calendar" ? <CalendarSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
