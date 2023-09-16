@@ -9,13 +9,13 @@ export default class ChessSmall extends Component {
     }
 
     handleClick = () => {
-        console.log("twitter")
-        this.props.navigation.navigate('twitter')
+        console.log("Twitter")
+        this.props.navigation.navigate('Twitter')
     }
 
 
     render() {
-        const imageUrl = "../../../../assets/twitter.png"
+        const imageUrl = "../../../../../assets/twitter.png"
         return (
             <TouchableOpacity style={styles.container} onPress={() =>  this.handleClick() }>
                 <ImageBackground imageStyle={{borderRadius: 20}} style={styles.backgroundimage} source={require(imageUrl)}>
