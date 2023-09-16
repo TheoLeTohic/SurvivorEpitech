@@ -13,7 +13,7 @@ export const fetchDataFromDatabase = async (path) => {
         let snapshot = await get(child(dbRef, path));
         if (!snapshot.exists()) return [];
         const values = snapshot.val();
-        return Object.values(values);
+        return values;
     } catch (error) {
         console.error(error);
         return "error";

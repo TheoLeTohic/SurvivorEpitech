@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { NavBar, MeteoSmall, TaskSmall, CalendarSmall, CalendarBig, MeteoBig, AddWidget, RecipeSmall } from '../../Components/index';
+import { NavBar, MeteoSmall, TaskSmall, CalendarSmall, CalendarBig, MeteoBig, AddWidget, RecipeSmall, ChessSmall, TwitterSmall } from '../../Components/index';
 import { getDatabase, ref, child, get, set } from "firebase/database";
 import firebase from '../../firebase/config';
 import * as Location from "expo-location";
@@ -267,7 +267,9 @@ useEffect(() => {
           {item.name == "duo" ? <View style = {styles.orga}>
               {item.content.map((items, indexs) => (
                 <>
-                {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
+                {/* {items.name == "Twitter" ? <TwitterSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
+                {/* {items.name == "Chess" ? <ChessSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null} */}
+                {items.name == "Meteo" ? <MeteoSmall city = {city} cityweather = {cityweather[cityIndex]} cityindex = {cityIndex} callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
                 {items.name == "Tasks" ? <TaskSmall callback = {push} click = {temp} remove = {remove} id = {item.index} task = {object} navigation = {navigation} me = {route.params.id}/> : null}
                 {items.name == "Rec" ? <RecipeSmall callback = {push} click = {temp} remove = {remove} id = {item.index} navigation = {navigation}/> : null}
                 {items.name == "Maps" ? <TouchableOpacity onLongPress={() => push()} style = {{height: 168, width: "45%", borderRadius: 20, marginTop: 20}}>
