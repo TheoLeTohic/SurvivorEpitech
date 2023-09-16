@@ -8,6 +8,7 @@ import { Alert } from 'react-native';
 import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { getDatabase, set } from "firebase/database";
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import { fetchDataFromDatabase } from "../../data/FirebaseUtils";
 
 
 export default function App( { navigation, route }) {
@@ -61,9 +62,9 @@ export default function App( { navigation, route }) {
     }
 
     async function getemploye() {
-      await req.doReq(bearer_token, "https://masurao.fr/api/employees/me").then((response)  => response.json()).then((responseData) => {
-        setMyinformation(responseData);
-      })
+        fetchDataFromDatabase(`users/${route.params.id}`).then((response) => {
+            setMyinformation(response);
+        });
     }
       const uploadImage = async () => {
         try {
