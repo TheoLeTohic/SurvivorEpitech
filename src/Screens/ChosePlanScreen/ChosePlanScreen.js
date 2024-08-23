@@ -66,16 +66,18 @@ export default function App( { navigation, route }) {
   }
 
   function createCompagny() {
-    set(ref(getDatabase(firebase), 'factory/' + state), {
-        compagny: state,
-        type: 1,
-        maxmembers: 10,
-        members: 1,
-        autorizewidgets: {autorizewidgets: "Calendar,Meteo,Task,duo,Rec"},
-        memberList: {"0": {id: route.params.id, name: "Theo", role: "admin"}},
-    });
-    setCompagnytouser(state)
-    getcompagnyWidgets(route.params.id)
+    // set(ref(getDatabase(firebase), 'factory/' + state), {
+    //     compagny: state,
+    //     type: 1,
+    //     maxmembers: 10,
+    //     members: 1,
+    //     autorizewidgets: {autorizewidgets: "Calendar,Meteo,Task,duo,Rec"},
+    //     memberList: {"0": {id: route.params.id, name: "Theo", role: "admin"}},
+    // });
+    // setCompagnytouser(state)
+    // getcompagnyWidgets(route.params.id)
+      navigation.navigate("Payment", {id: route.params.id, code: state, me: me})
+
   }
 
   function generateRandomNumber () {

@@ -1,9 +1,11 @@
 import { LoginScreen, HomeScreen, WidjetScreen, ProfilScreen, ProfilScreenSecond, ProfilScreenThird, RegisterScreen, CompagnyCode, ChosePlanScreen, PaymentScreen, TwitterPage, AdminPage, MapScreen, ConvScreen, ForgetpasswordScreen, FeedScreen, CalendarScreen } from './index'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { LogBox } from "react-native";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+  LogBox.ignoreAllLogs();
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown : false}}>

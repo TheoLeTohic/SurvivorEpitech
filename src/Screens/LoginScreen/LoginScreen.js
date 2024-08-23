@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,9 +7,8 @@ import firebase from '../../firebase/config';
 import { Path, Svg } from 'react-native-svg';
 
 export default function App( { navigation }) {
-  const dbRef = ref(getDatabase());
-  const [email, SetEmail] = useState("testmil@gmail.com")
-  const [password, SetPassword] = useState("Charlie.02")
+  const [email, SetEmail] = useState("")
+  const [password, SetPassword] = useState("")
   const [token, SetToken] = useState("")
 
 

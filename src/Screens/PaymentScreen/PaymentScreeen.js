@@ -7,14 +7,14 @@ import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App({ navigation, route }) {
-    const [number, setNumber] = useState("")
+    const [number, setNumber] = useState("3123 ")
     const [date, setDate] = useState("")
     const [cvv, setCvv] = useState("")
     const [name, setName] = useState("")
     const [cardFace, setCardFace] = useState(1)
 
     function cardFlip(nbr) {
-        if (nbr == cardFace)
+        if (nbr === cardFace)
             return 1
         setCardFace(nbr)
     }

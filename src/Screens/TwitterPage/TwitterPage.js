@@ -66,38 +66,29 @@ export default function TwitterPage({ navigation, route }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={ styles.circle1 } />
-            <View style={ styles.circle2 } />
             <Text style={styles.textTitle}>Welcome back</Text>
-            <Text style={styles.textUsername}>Aymeric</Text>
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 {messages.map((item, index) => (
                     <View style={styles.messageContainer} key={index}>
-                        <Text style={styles.textName}>{item.user}</Text>
-                        <Text style={styles.textJob}>Front-end Developer</Text>
+                        <View style={styles.topcontainer}>
+                            <Text style={styles.textName}>{item.user}</Text>
+                            <Text style={styles.textJob}>Front-end Developer</Text>
+                        </View>
                         <Text style={styles.messageText}>{item.content}</Text>
-                        <TouchableOpacity style={styles.rowLikeAndComment}>
-                            <Image source={require('../../../assets/twitterL.png')} style = {styles.icon}></Image>
-                            <Text style={styles.likeAndComment}>Like</Text>
-                            <Image source={require('../../../assets/comment.png')} style = {styles.icon}></Image>
-                            <Text style={styles.likeAndComment}>Comment</Text>
-                        </TouchableOpacity>
                     </View>
                 ))}
             </ScrollView>
-            <TextInput
-                value={newMessage}
-                onChangeText={setNewMessage}
-                placeholder="Type a message..."
-                style={styles.input}
-            />
-            <TouchableOpacity onPress={handleSendMessage} style={styles.sendButton}>
-                <Text>Send</Text>
-            </TouchableOpacity>
-            <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-                <View style={styles.ellipse}></View>
-            </TouchableWithoutFeedback>
-
+            <View style={styles.inputcontainer}>
+                <TextInput
+                    value={newMessage}
+                    onChangeText={setNewMessage}
+                    placeholder="Type a message..."
+                    style={styles.input}
+                />
+                <TouchableOpacity onPress={handleSendMessage} style={styles.sendButton}>
+                    <Text style={styles.sendtext}>Send</Text>
+                </TouchableOpacity>
+            </View>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -133,21 +124,26 @@ export default function TwitterPage({ navigation, route }) {
     const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // alignItems: 'flex-start',
-        // justifyContent: 'flex-start',
+        backgroundColor: "#d5cfcf",
     },
-
+        picture: {
+        width: 50,
+        height: 50,
+            backgroundColor: 'blue'
+        },
     scrollViewContent: {
-      //  flex: 1, // Allow the ScrollView content to expand to fill the available space
-        //width: "100%",
-      },
+    },
+        topcontainer : {
+        marginLeft: "2%"
+        },
 
     textTitle: {
         width: "100%",
-        left: "10%",
+        marginLeft: "8%",
+        marginTop: "5%",
         fontWeight: "600",
-        fontSize: 32,
-        color: "#FFFFFF",
+        fontSize: 40,
+        color: "white",
       },
 
     textUsername: {
@@ -155,7 +151,7 @@ export default function TwitterPage({ navigation, route }) {
         left: "10%",
         fontWeight: "400",
         fontSize: 25,
-        color: "#FFFFFF",
+        color: "black",
         marginBottom: "3%",
     },
 
@@ -174,13 +170,10 @@ export default function TwitterPage({ navigation, route }) {
         width: 30,
         height: 30,
         borderRadius: 50,
-        // marginTop: "%",
     },
 
     rowLikeAndComment: {
         flexDirection: 'row',
-        // justifyContent: 'space-between',
-
         width: '100%',
     },
 
@@ -197,13 +190,11 @@ export default function TwitterPage({ navigation, route }) {
         left: 310,
         top: 649,
         backgroundColor: '#2587F9',
-        borderRadius: 25, // To create a circle, set borderRadius to half of the width/height
+        borderRadius: 25,
     },
 
     textName: {
     width:  "100%",
-    left: "20%",
-    top: "10%",
     fontWeight: '800',
     fontSize: 12,
     lineHeight: 16,
@@ -212,8 +203,6 @@ export default function TwitterPage({ navigation, route }) {
 
     textJob: {
         width:  "100%",
-        left: "20%",
-        top: "10%",
         fontWeight: '400',
         fontSize: 12,
         lineHeight: 16,
@@ -229,8 +218,7 @@ export default function TwitterPage({ navigation, route }) {
         paddingBottom: "5%",
         color: '#000000',
     },
-
-      loremText: {
+        loremText: {
         width: "100%",
         left: "2.5%",
         fontWeight: '500',
@@ -251,13 +239,11 @@ export default function TwitterPage({ navigation, route }) {
         padding: 20,
         backgroundColor: 'white',
         borderRadius: 10,
-        // alignItems: 'center',
     },
 
     modalTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 10,
         marginLeft: "10%",
         marginBottom: "10%",
     },
@@ -313,7 +299,35 @@ export default function TwitterPage({ navigation, route }) {
         top: -414,
         left: -284,
     },
-
+        inputcontainer: {
+            width: '100%',
+            display: "flex",
+            flexDirection: "row",
+            marginBottom: "5%",
+            justifyContent: "space-around",
+            alignItems: "center",
+        },
+        input: {
+            width: '75%',
+            borderWidth: 2,
+            borderColor: '#ccc',
+            paddingHorizontal: 10,
+            paddingVertical: 10,
+            borderRadius: 10,
+            backgroundColor: 'white',
+            color: 'white',
+        },
+        sendButton: {
+            width: '20%',
+            backgroundColor: '#2FDB73',
+            borderRadius: 10,
+        },
+        sendtext: {
+            color: 'white',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            marginVertical: 15,
+        },
     circle2: {
         backgroundColor: '#74D294',
         position: 'absolute',
@@ -323,8 +337,5 @@ export default function TwitterPage({ navigation, route }) {
         top: 579,
         left: 154,
     },
-    
-  
-      
     });
 

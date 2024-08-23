@@ -11,15 +11,13 @@ export default function App( { navigation, route }) {
 
 
     useEffect(() => {
-        if (task !== []) {
-            const db = getDatabase();
-            set(ref(db, 'users/' + route.params.id + '/todo'), null);
-            for (let i = 0; i < task.length; i++) {
-                set(ref(db, 'users/' + route.params.id + '/todo/' + i), {
-                    name: task[i].name,
-                    done: task[i].done,
-                });
-            }
+        const db = getDatabase();
+        set(ref(db, 'users/' + route.params.id + '/todo'), null);
+        for (let i = 0; i < task.length; i++) {
+            set(ref(db, 'users/' + route.params.id + '/todo/' + i), {
+                name: task[i].name,
+                done: task[i].done,
+            });
         }
     }
     , [task])
